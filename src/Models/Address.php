@@ -2,7 +2,12 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Webpatser\Countries\Countries;
 
+/**
+ * Class Address
+ * @package vendocrat\Addresses\Models
+ */
 class Address extends Model
 {
 	use SoftDeletes;
@@ -20,7 +25,18 @@ class Address extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'name',
+		'street',
+		'city',
+		'state',
+		'post_code',
+		'country_id',
+		'lat',
+		'lng',
+		'addressable_id',
+		'addressable_type',
+		'is_primary',
+		'is_billing',
+		'is_shipping',
 	];
 
 	/**
@@ -38,13 +54,29 @@ class Address extends Model
 	protected $dates = ['deleted_at'];
 
 	/**
-	 * Boot function
+	 * {@inheritdoc}
+	 */
+	public function country()
+	{
+		return $this->belongsTo(Countries::class, 'country_id');
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function addressable()
+	{
+		return $this->morphTo();
+	}
+
+	/**
+	 * {@inheritdoc}
 	 */
 	public static function boot() {
 		parent::boot();
 
 		static::saving(function($address) {
-			if(\Config::get('addresses::geocode')) {
+			if(\Config::get('addresses.geocode')) {
 				$address->geocode();
 			}
 		});
@@ -53,13 +85,18 @@ class Address extends Model
 	/**
 	 * @return array
 	 */
-	public static function rules() {
-		$rules = array(
-			'adressee' =>'Max:100',
-			'street'   =>'required|max:100',
-			'city'     =>'required',
-			'zip'      =>'required|min:4|max:10|AlphaDash',
-		);
+	public static function getValidationRules() {
+		$rules = [
+			'street'     => 'required|string|min:3|max:60',
+			'city'       => 'required|string|min:3|max:60',
+			'state'      => 'string|min:3|max:60',
+			'post_code'  => 'required|min:4|max:10|AlphaDash',
+			'country_id' => 'required|integer',
+		];
+
+		foreach( \Config::get('addresses.flags') as $flag ) {
+			$rules['is_'.$flag] = 'boolean';
+		}
 
 		return $rules;
 	}
@@ -69,22 +106,25 @@ class Address extends Model
 	 * from google maps api and set them as attributes
 	 */
 	public function geocode() {
-		$str = [];
+		// build query string
+		$query = [];
+		$query[] = $this->street        ?: '';
+		$query[] = $this->city          ?: '';
+		$query[] = $this->state         ?: '';
+		$query[] = $this->post_code     ?: '';
 
-		if( ! empty($this->zip) ) {
-			$str[] = $this->street;
-			$str[] = sprintf('%s, %s %s', $this->city, $this->state, $this->zip);
-			$str[] = $this->country_name;
-		}
+		if ( $this->country && $country = $this->country->name )
+			$query[] = $country;
 
-		$query = str_replace(' ', '+', implode(', ', $str));
+		$query = trim( implode(',', array_filter($query)) );
+		$query = str_replace(' ', '+', $query);
 
 		$geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address='.$query.'&sensor=false');
 		$output  = json_decode($geocode);
 
 		if ( count($output->results) ) {
-			$this->latitude  = $output->results[0]->geometry->location->lat;
-			$this->longitude = $output->results[0]->geometry->location->lng;
+			$this->lat = $output->results[0]->geometry->location->lat;
+			$this->lng = $output->results[0]->geometry->location->lng;
 		} else {
 		//	throw new InvalidValueException('Address Could Not be Validated');
 		}
