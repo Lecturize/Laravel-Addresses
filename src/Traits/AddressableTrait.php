@@ -39,4 +39,6 @@ trait AddressableTrait
 	public function shippingAddress() {
 		return $this->addresses()->orderBy('is_shipping', 'DESC')->first();
 	}
+
+
 }
