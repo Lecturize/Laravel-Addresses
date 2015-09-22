@@ -1,6 +1,6 @@
 {
     "name": "vendocrat/laravel-addresses",
-    "description": "Simple address and contact management with polymorph many-to-many relations.",
+    "description": "Simple address and contact management for Laravel 5.",
     "homepage" : "https://github.com/AlexanderPoellmann/laravel-addresses",
     "license": "MIT",
     "keywords": [

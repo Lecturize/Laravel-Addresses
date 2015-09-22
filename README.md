@@ -4,7 +4,7 @@
 
 # Laravel Addresses
 
-Simple address and contact management with polymorph many-to-many relations.
+Simple address and contact management for Laravel 5.
 
 ## Installation
 
