@@ -1,0 +1,41 @@
+{
+    "name": "vendocrat/laravel-addresses",
+    "description": "Laravel Addresses",
+    "homepage" : "https://github.com/vendocrat/laravel-addresses",
+    "license": "MIT",
+    "keywords": [
+        "addresses",
+        "contacts",
+        "laravel"
+    ],
+    "authors": [
+        {
+            "name"     : "Alexander Manfred Poellmann",
+            "homepage" : "http://twitter.com/AMPoellmann",
+            "role"     : "developer"
+        }
+    ],
+    "require": {
+        "php"                   : ">=5.5.9",
+        "doctrine/dbal"         : "2.5.x",
+        "illuminate/support"    : ">=5.1",
+        "illuminate/database"   : ">=5.1"
+    },
+    "require-dev": {
+        "mockery/mockery" : "0.9.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "vendocrat\\Addresses\\" : "src/"
+        }
+    },
+    "extra": {
+        "branch-alias" : {
+            "dev-master" : "0.0.x-dev"
+        }
+    },
+    "support" : {
+        "source" : "https://github.com/AlexanderPoellmann/laravel-addresses",
+        "issues" : "https://github.com/AlexanderPoellmann/laravel-addresses/issues"
+    }
+}
