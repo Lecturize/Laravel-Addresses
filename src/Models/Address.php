@@ -54,7 +54,7 @@ class Address extends Model
 	protected $dates = ['deleted_at'];
 
 	/**
-	 * {@inheritdoc}
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function country()
 	{
@@ -62,7 +62,7 @@ class Address extends Model
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
 	 */
 	public function addressable()
 	{
@@ -83,6 +83,8 @@ class Address extends Model
 	}
 
 	/**
+	 * Get validation rules
+	 *
 	 * @return array
 	 */
 	public static function getValidationRules() {
@@ -102,52 +104,97 @@ class Address extends Model
 	}
 
 	/**
-	 * Using the address in memory, fetch get latitude and longitude
-	 * from google maps api and set them as attributes
+	 * Try to fetch the coordinates from Google
+	 * and store it to database
+	 *
+	 * @return $this
 	 */
 	public function geocode() {
 		// build query string
 		$query = [];
-		$query[] = $this->street        ?: '';
-		$query[] = $this->city          ?: '';
-		$query[] = $this->state         ?: '';
-		$query[] = $this->post_code     ?: '';
+		$query[] = $this->street       ?: '';
+		$query[] = $this->city         ?: '';
+		$query[] = $this->state        ?: '';
+		$query[] = $this->post_code    ?: '';
+		$query[] = $this->getCountry() ?: '';
 
-		if ( $this->country && $country = $this->country->name )
-			$query[] = $country;
-
+		// build query string
 		$query = trim( implode(',', array_filter($query)) );
 		$query = str_replace(' ', '+', $query);
 
-		$geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address='.$query.'&sensor=false');
-		$output  = json_decode($geocode);
+		// build url
+		$url = 'http://maps.google.com/maps/api/geocode/json?address='.$query.'&sensor=false';
 
-		if ( count($output->results) ) {
-			$this->lat = $output->results[0]->geometry->location->lat;
-			$this->lng = $output->results[0]->geometry->location->lng;
-		} else {
-		//	throw new InvalidValueException('Address Could Not be Validated');
+		// try to get geo codes
+		if ( $geocode = file_get_contents($url) ) {
+			$output = json_decode($geocode);
+
+			if ( count($output->results) && isset($output->results[0]) ) {
+				if ( $geo = $output->results[0]->geometry ) {
+					$this->lat = $geo->location->lat;
+					$this->lng = $geo->location->lng;
+				}
+			}
 		}
 
 		return $this;
 	}
 
 	/**
-	 * Get formatted address
+	 * Get address as array
+	 *
+	 * @return array|null
 	 */
-	public function getAddress() {
-		$str = [];
+	public function getArray() {
+		$address = $two = [];
 
-		foreach ( array('street', 'street_extra') as $line ) {
-			if ( strlen($this->{$line} ) ) {
-				$str []= $this->{$line};
-			}
-		}
+		$two[] = $this->post_code ?: '';
+		$two[] = $this->city      ?: '';
+		$two[] = $this->state     ? '('. $this->state .')' : '';
 
-		if ( strlen($this->city) ) {
-			$str []= sprintf('%s, %s %s', $this->city, $this->state, $this->zip);
-		}
+		$address[] = $this->street ?: '';
+		$address[] = implode( ' ', array_filter($two) );
+		$address[] = $this->getCountry() ?: '';
 
-		return implode(', ', $str);
+		if ( count($address = array_filter($address)) > 0 )
+			return $address;
+
+		return null;
+	}
+
+	/**
+	 * Get address as html block
+	 *
+	 * @return string|null
+	 */
+	public function getHtml() {
+		if ( $address = $this->getArray() )
+			return '<address>'. implode( '<br />', array_filter($address) ) .'</address>';
+
+		return null;
+	}
+
+	/**
+	 * Get address as a simple line
+	 *
+	 * @return string|null
+	 */
+	public function getLine() {
+		if ( $address = $this->getArray() )
+			return implode( ', ', array_filter($address) );
+
+		return null;
+	}
+
+	/**
+	 * Try to get country name
+	 *
+	 * @return string|null
+	 */
+	public function getCountry() {
+		if ( $this->country && $country = $this->country->name )
+			return $country;
+
+		return null;
 	}
 }

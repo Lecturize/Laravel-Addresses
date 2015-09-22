@@ -39,8 +39,10 @@ class CreateAddressesTable extends Migration
 
 			$table->integer('country_id')->unsigned()->index();
 
-			$table->float('lat')->nullable();
-			$table->float('lng')->nullable();
+            $table->string('note');
+
+            $table->float('lat', 10, 6)->nullable();
+            $table->float('lng', 10, 6)->nullable();
 
             $table->morphs('addressable');
 

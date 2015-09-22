@@ -1,6 +1,6 @@
 <?php namespace vendocrat\Addresses\Traits;
 
-use vendocrat\Addresses\Exceptions\InvalidAddressException;
+use vendocrat\Addresses\Exceptions\FailedValidationException;
 use vendocrat\Addresses\Models\Address;
 
 /**
@@ -16,6 +16,16 @@ trait AddressableTrait
 	 */
 	public function addresses() {
 		return $this->morphMany(Address::class, 'addressable');
+	}
+
+	/**
+	 * Check if model has an address.
+	 *
+	 * @return bool
+	 */
+	public function hasAddress()
+	{
+		return (bool) $this->addresses()->count();
 	}
 
 	/**
@@ -101,7 +111,7 @@ trait AddressableTrait
 	 *
 	 * @param  array $attributes
 	 * @return array $attributes
-	 * @throws InvalidAddressException
+	 * @throws FailedValidationException
 	 */
 	public function loadAddressAttributes( array $attributes ) {
 		// return if no country given
@@ -124,7 +134,7 @@ trait AddressableTrait
 		$validator = $this->validateAddress($attributes);
 
 		if ( $validator->fails() )
-			throw new InvalidAddressException;
+			throw new FailedValidationException('Validator failed for: '. implode(', ', $attributes));
 
 		// return attributes array with country_id key/value pair
 		return $attributes;

@@ -16,7 +16,7 @@ return [
 	'flags' => ['primary', 'billing', 'shipping'],
 
 	/*
-	 * Enable geocoding to add coordinates (lon/lat) to addresses
+	 * Enable geocoding to add coordinates (lng/lat) to addresses
 	 */
 	'geocode' => true,
 ];
