@@ -54,7 +54,7 @@ Check out [Webpatser\Countries](https://github.com/webpatser/laravel-countries) 
 
 ## Usage
 
-#### Add an Address to a Model
+##### Add an Address to a Model
 ```php
 $post = Post::find(1);
 $post->addAddress([
@@ -81,40 +81,40 @@ $post->addAddress($address);
 
 Available attributes are `street`, `city`, `post_code`, `state`, `country`, `state`, `note` (for internal use), `is_primary`, `is_billing` & `is_shipping`. Optionally you could also pass `lng` and `lat`, in case you deactivated the included geocoding functionality and want to add them yourself.
 
-#### Check if Model has an Address
+##### Check if Model has an Address
 ```php
 if ( $post->hasAddress() ) {
     // Do something
 }
 ```
 
-#### Get all Addresses for a Model
+##### Get all Addresses for a Model
 ```php
 $addresses = $post->addresses()->get();
 ```
 
-#### Get primary/billing/shipping Addresses
+##### Get primary/billing/shipping Addresses
 ```php
 $address = $post->getPrimaryAddress();
 $address = $post->getBillingAddress();
 $address = $post->getShippingAddress();
 ```
 
-#### Update an Address for a Model
+##### Update an Address for a Model
 ```php
 $address = $post->addresses()->first(); // fetch the address
 
 $post->updateAddress($address, $new_attributes);
 ```
 
-#### Delete an Address from a Model
+##### Delete an Address from a Model
 ```php
 $address = $post->addresses()->first(); // fetch the address
 
 $post->deleteAddress($address); // delete by passing it as argument
 ```
 
-#### Delete all Addresses from a Model
+##### Delete all Addresses from a Model
 ```php
 $post->flushAddresses();
 ```
