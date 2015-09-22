@@ -123,7 +123,7 @@ class Address extends Model
 		$query = str_replace(' ', '+', $query);
 
 		// build url
-		$url = 'http://maps.google.com/maps/api/geocode/json?address='.$query.'&sensor=false';
+		$url = 'https://maps.google.com/maps/api/geocode/json?address='.$query.'&sensor=false';
 
 		// try to get geo codes
 		if ( $geocode = file_get_contents($url) ) {
