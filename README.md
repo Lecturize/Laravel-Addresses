@@ -18,27 +18,30 @@ Require the package from your `composer.json` file
 
 and run `$ composer update` or both in one with `$ composer require vendocrat/laravel-addresses`.
 
-Next register the service provider and (optional) facade to your `config/app.php` file
+Next register the following service providers and facades to your `config/app.php` file
 
 ```php
 'providers' => [
     // Illuminate Providers ...
     // App Providers ...
-    vendocrat\Addresses\AddressesServiceProvider::class
+    vendocrat\Addresses\AddressesServiceProvider::class,
+    Webpatser\Countries\CountriesServiceProvider::class,
 ];
 ```
 
 ```php
 'providers' => [
 	// Illuminate Facades ...
-    'Address' => vendocrat\Addresses\Facades\Addresses::class
+    'Address'   => vendocrat\Addresses\Facades\Addresses::class,
+    'Countries' => Webpatser\Countries\CountriesFacade::class,
 ];
 ```
 
 ## Configuration & Migration
 
 ```bash
-$ php artisan vendor:publish --provider="vendocrat\Addresses\AddressesServiceProvider"
+$ php artisan vendor:publish
+$ php artisan countries:migration
 ```
 
 This will create a `config/addresses.php` and a migration file. In the config file you can customize the table names, finally you'll have to run migration like so:
