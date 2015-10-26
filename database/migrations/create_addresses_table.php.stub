@@ -12,13 +12,15 @@ class CreateAddressesTable extends Migration
      * Table names
      */
     private $table_addresses;
+    private $table_contacts;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->table_addresses = config('addresses.table_addresses');
+        $this->table_addresses = config('addresses.addresses.table');
+        $this->table_contacts  = config('addresses.contacts.table');
     }
 
     /**
@@ -46,13 +48,45 @@ class CreateAddressesTable extends Migration
 
             $table->morphs('addressable');
 
-			foreach( \Config::get('addresses.flags') as $flag ) {
+			foreach( \Config::get('addresses.addresses.flags') as $flag ) {
 				$table->boolean('is_'. $flag)->default(false)->index();
 			}
 
 			$table->timestamps();
 			$table->softDeletes();
 		});
+        /*
+        Schema::create($this->table_contacts, function(Blueprint $table)
+		{
+			$table->increments('id');
+
+            $table->string('type', 20);
+
+            $table->string('first_name',  20)->nullable();
+            $table->string('middle_name', 20)->nullable();
+            $table->string('last_name',   20)->nullable();
+
+            $table->string('company',  20)->nullable();
+            $table->string('position', 20)->nullable();
+
+            $table->string('phone',    16);
+            $table->string('mobile',   16);
+            $table->string('fax',      16);
+            $table->string('email',    60);
+            $table->string('website', 100);
+
+            $table->morphs('contactable');
+
+            foreach( \Config::get('addresses.contacts.flags') as $flag ) {
+                $table->boolean('is_'. $flag)->default(false)->index();
+            }
+
+            $table->longText('notes');
+
+			$table->timestamps();
+			$table->softDeletes();
+		});
+        */
     }
 
     /**
@@ -62,6 +96,7 @@ class CreateAddressesTable extends Migration
      */
     public function down()
     {
+    //  Schema::drop($this->table_contacts);
         Schema::drop($this->table_addresses);
     }
 }

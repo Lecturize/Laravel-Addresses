@@ -1,22 +1,37 @@
 <?php
 return [
 	/*
-	 * Table for contacts
+	 * Contacts
 	 */
-	'table_contacts' => 'contacts',
+	'contacts' => [
+		/*
+		 * Main table
+		 */
+		'table' => 'contacts',
+
+		/*
+		 * Flag columns to be added to table
+		 */
+		'flags' => ['public', 'primary'],
+	],
 
 	/*
-	 * Table for addresses
+	 * Contacts
 	 */
-	'table_addresses' => 'addresses',
+	'addresses' => [
+		/*
+		 * Main table
+		 */
+		'table'   => 'addresses',
 
-	/*
-	 * Flags for addresses
-	 */
-	'flags' => ['primary', 'billing', 'shipping'],
+		/*
+		 * Flag columns to be added to table
+		 */
+		'flags'   => ['public', 'primary', 'billing', 'shipping'],
 
-	/*
-	 * Enable geocoding to add coordinates (lng/lat) to addresses
-	 */
-	'geocode' => true,
+		/*
+		 * Enable geocoding to add coordinates (lon/lat) to addresses
+		 */
+		'geocode' => true,
+	],
 ];
