@@ -76,7 +76,7 @@ class Address extends Model
 		parent::boot();
 
 		static::saving(function($address) {
-			if(\Config::get('addresses.geocode')) {
+			if ( config('addresses.addresses.geocode') ) {
 				$address->geocode();
 			}
 		});
@@ -96,7 +96,7 @@ class Address extends Model
 			'country_id' => 'required|integer',
 		];
 
-		foreach( \Config::get('addresses.flags') as $flag ) {
+		foreach( config('addresses.addresses.flags') as $flag ) {
 			$rules['is_'.$flag] = 'boolean';
 		}
 
