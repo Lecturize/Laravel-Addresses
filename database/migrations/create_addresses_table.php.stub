@@ -48,7 +48,7 @@ class CreateAddressesTable extends Migration
 
             $table->morphs('addressable');
 
-			foreach( \Config::get('addresses.addresses.flags') as $flag ) {
+			foreach( config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag ) {
 				$table->boolean('is_'. $flag)->default(false)->index();
 			}
 
@@ -77,7 +77,7 @@ class CreateAddressesTable extends Migration
 
             $table->morphs('contactable');
 
-            foreach( \Config::get('addresses.contacts.flags') as $flag ) {
+            foreach( config('lecturize.contacts.flags', ['public', 'primary']) as $flag ) {
                 $table->boolean('is_'. $flag)->default(false)->index();
             }
 
