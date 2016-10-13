@@ -1,11 +1,11 @@
-<?php namespace vendocrat\Addresses\Traits;
+<?php namespace Lecturize\Addresses\Traits;
 
-use vendocrat\Addresses\Exceptions\FailedValidationException;
-use vendocrat\Addresses\Models\Address;
+use Lecturize\Addresses\Exceptions\FailedValidationException;
+use Lecturize\Addresses\Models\Address;
 
 /**
  * Class AddressableTrait
- * @package vendocrat\Addresses\Traits
+ * @package Lecturize\Addresses\Traits
  */
 trait AddressableTrait
 {

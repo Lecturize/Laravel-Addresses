@@ -1,7 +1,6 @@
-<?php namespace vendocrat\Addresses\Facades;
+<?php namespace Lecturize\Addresses\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use vendocrat\Addresses\Addresses as AddressesAccessor;
 
 class Addresses extends Facade
 {
@@ -12,6 +11,6 @@ class Addresses extends Facade
 	 */
 	protected static function getFacadeAccessor()
 	{
-		return AddressesAccessor::class;
+		return 'addresses';
 	}
 }

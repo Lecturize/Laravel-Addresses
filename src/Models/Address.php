@@ -1,4 +1,4 @@
-<?php namespace vendocrat\Addresses\Models;
+<?php namespace Lecturize\Addresses\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -6,7 +6,7 @@ use Webpatser\Countries\Countries;
 
 /**
  * Class Address
- * @package vendocrat\Addresses\Models
+ * @package Lecturize\Addresses\Models
  */
 class Address extends Model
 {
@@ -14,6 +14,7 @@ class Address extends Model
 
 	/**
 	 * The database table used by the model.
+     * @todo make this editable via config file
 	 *
 	 * @var string
 	 */
@@ -76,7 +77,7 @@ class Address extends Model
 		parent::boot();
 
 		static::saving(function($address) {
-			if ( config('addresses.addresses.geocode') ) {
+			if ( config('lecturize.addresses.geocode', true) ) {
 				$address->geocode();
 			}
 		});
@@ -96,7 +97,7 @@ class Address extends Model
 			'country_id' => 'required|integer',
 		];
 
-		foreach( config('addresses.addresses.flags') as $flag ) {
+		foreach( config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag ) {
 			$rules['is_'.$flag] = 'boolean';
 		}
 

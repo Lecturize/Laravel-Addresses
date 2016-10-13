@@ -19,8 +19,8 @@ class CreateAddressesTable extends Migration
      */
     public function __construct()
     {
-        $this->table_addresses = config('addresses.addresses.table');
-        $this->table_contacts  = config('addresses.contacts.table');
+        $this->table_addresses = config('lecturize.addresses.table', 'addresses');
+        $this->table_contacts  = config('lecturize.contacts.table', 'contacts');
     }
 
     /**

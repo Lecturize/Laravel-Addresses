@@ -1,9 +1,10 @@
 {
-    "name": "vendocrat/laravel-addresses",
+    "name": "lecturize/laravel-addresses",
     "description": "Simple address and contact management for Laravel 5.",
-    "homepage" : "https://github.com/AlexanderPoellmann/laravel-addresses",
+    "homepage" : "https://github.com/Lecturize/Laravel-Addresses",
     "license": "MIT",
     "keywords": [
+        "lecturize",
         "addresses",
         "contacts",
         "laravel"
@@ -27,7 +28,7 @@
     },
     "autoload": {
         "psr-4": {
-            "vendocrat\\Addresses\\" : "src/"
+            "Lecturize\\Addresses\\" : "src/"
         }
     },
     "extra": {
@@ -36,7 +37,7 @@
         }
     },
     "support" : {
-        "source" : "https://github.com/AlexanderPoellmann/laravel-addresses",
-        "issues" : "https://github.com/AlexanderPoellmann/laravel-addresses/issues"
+        "source" : "https://github.com/Lecturize/Laravel-Addresses",
+        "issues" : "https://github.com/Lecturize/Laravel-Addresses/issues"
     }
 }

@@ -12,7 +12,7 @@ Require the package from your `composer.json` file
 
 ```php
 "require": {
-	"vendocrat/laravel-addresses": "dev-master"
+	"lecturize/laravel-addresses": "dev-master"
 }
 ```
 
@@ -24,7 +24,7 @@ Next register the following service providers and facades to your `config/app.ph
 'providers' => [
     // Illuminate Providers ...
     // App Providers ...
-    vendocrat\Addresses\AddressesServiceProvider::class,
+    Lecturize\Addresses\AddressesServiceProvider::class,
     Webpatser\Countries\CountriesServiceProvider::class,
 ];
 ```
@@ -32,7 +32,7 @@ Next register the following service providers and facades to your `config/app.ph
 ```php
 'providers' => [
 	// Illuminate Facades ...
-    'Address'   => vendocrat\Addresses\Facades\Addresses::class,
+    'Address'   => Lecturize\Addresses\Facades\Addresses::class,
     'Countries' => Webpatser\Countries\CountriesFacade::class,
 ];
 ```
@@ -44,7 +44,7 @@ $ php artisan vendor:publish
 $ php artisan countries:migration
 ```
 
-This will create a `config/addresses.php` and the migration files. In the config file you can customize the table names, finally you'll have to run migration like so:
+This will create a `config/lecturize.php` and the migration files. In the config file you can customize the table names, finally you'll have to run migration like so:
 
 ```bash
 $ php artisan migrate
@@ -125,4 +125,4 @@ Licensed under [MIT license](http://opensource.org/licenses/MIT).
 
 ## Author
 
-**Handcrafted with love by [Alexander Manfred Poellmann](http://twitter.com/AMPoellmann) for [vendocrat](https://vendocr.at) in Vienna &amp; Rome.**
+**Handcrafted with love by [Alexander Manfred Poellmann](http://twitter.com/AMPoellmann) for [Lecturize](https://lecturize.com) in Vienna &amp; Rome.**

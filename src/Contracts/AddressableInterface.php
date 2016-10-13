@@ -1,4 +1,4 @@
-<?php namespace vendocrat\Addresses\Contracts;
+<?php namespace Lecturize\Addresses\Contracts;
 
 interface AddressableInterface
 {
