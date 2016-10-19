@@ -1,6 +1,8 @@
-<?php namespace Lecturize\Addresses\Exceptions;
+<?php
+
+namespace Lecturize\Addresses\Exceptions;
 
 class AddressNotFoundException extends \Exception
 {
-	//
+    //
 }
