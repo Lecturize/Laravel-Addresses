@@ -30,9 +30,7 @@ class AddressesServiceProvider extends ServiceProvider
 	}
 
 	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return string[]
+     * @inheritdoc
 	 */
 	public function provides()
 	{
