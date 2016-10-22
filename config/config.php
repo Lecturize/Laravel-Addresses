@@ -16,7 +16,7 @@ return [
 	],
 
 	/*
-	 * Contacts
+	 * Addresses
 	 */
 	'addresses' => [
 		/*

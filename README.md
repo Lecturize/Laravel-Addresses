@@ -1,10 +1,14 @@
-[![Latest Stable Version](https://poser.pugx.org/vendocrat/laravel-addresses/v/stable)](https://packagist.org/packages/vendocrat/laravel-addresses)
-[![Total Downloads](https://poser.pugx.org/vendocrat/laravel-addresses/downloads)](https://packagist.org/packages/vendocrat/laravel-addresses)
-[![License](https://poser.pugx.org/vendocrat/laravel-addresses/license)](https://packagist.org/packages/vendocrat/laravel-addresses)
+[![Latest Stable Version](https://poser.pugx.org/lecturize/laravel-addresses/v/stable)](https://packagist.org/packages/lecturize/laravel-addresses)
+[![Total Downloads](https://poser.pugx.org/lecturize/laravel-addresses/downloads)](https://packagist.org/packages/lecturize/laravel-addresses)
+[![License](https://poser.pugx.org/lecturize/laravel-addresses/license)](https://packagist.org/packages/lecturize/laravel-addresses)
 
 # Laravel Addresses
 
 Simple address and contact management for Laravel 5 with automatical geocoding to add longitude and latitude. Uses the famous [Countries](https://github.com/webpatser/laravel-countries) package by Webpatser.
+
+## Important Notice
+
+We've transferred this package to a new owner and therefor updated the namespaces to **Lecturize\Addresses**. The config file is now `config/lecturize.php`.
 
 ## Installation
 
@@ -16,7 +20,7 @@ Require the package from your `composer.json` file
 }
 ```
 
-and run `$ composer update` or both in one with `$ composer require vendocrat/laravel-addresses`.
+and run `$ composer update` or both in one with `$ composer require lecturize/laravel-addresses`.
 
 Next register the following service providers and facades to your `config/app.php` file
 
@@ -30,9 +34,8 @@ Next register the following service providers and facades to your `config/app.ph
 ```
 
 ```php
-'providers' => [
+'aliases' => [
 	// Illuminate Facades ...
-    'Address'   => Lecturize\Addresses\Facades\Addresses::class,
     'Countries' => Webpatser\Countries\CountriesFacade::class,
 ];
 ```
