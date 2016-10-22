@@ -13,17 +13,13 @@ class Address extends Model
 	use SoftDeletes;
 
 	/**
-	 * The database table used by the model.
      * @todo make this editable via config file
-	 *
-	 * @var string
+     * @inheritdoc
 	 */
 	protected $table = 'addresses';
 
 	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
+     * @inheritdoc
 	 */
 	protected $fillable = [
 		'street',
@@ -41,16 +37,12 @@ class Address extends Model
 	];
 
 	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
+     * @inheritdoc
 	 */
 	protected $hidden = [];
 
 	/**
-	 * The attributes that should be mutated to dates.
-	 *
-	 * @var array
+     * @inheritdoc
 	 */
 	protected $dates = ['deleted_at'];
 
