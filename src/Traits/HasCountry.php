@@ -21,17 +21,14 @@ trait HasCountry
 	/**
 	 * Scope by country.
 	 *
-	 * @param $query
-	 * @param string $locale
+	 * @param  $query
+	 * @param  integer  $id
 	 * @return mixed
 	 */
-	public function scopeLanguages( $query, $locale = '' )
+	public function scopeByCountry( $query, $id )
 	{
-		if ( ! $locale )
-			$locale = app()->getLocale();
-
-		return $query->whereHas('language', function($q) use($locale) {
-			$q->where( 'locale', $locale );
+		return $query->whereHas('country', function($q) use($id) {
+			$q->where( 'id', $id );
 		});
 	}
 }
