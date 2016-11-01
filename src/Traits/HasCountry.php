@@ -11,11 +11,11 @@ trait HasCountry
 	/**
 	 * Get the models country.
 	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function country()
 	{
-		return $this->hasOne(Countries::class);
+		return $this->belongsTo(Countries::class);
 	}
 
 	/**
