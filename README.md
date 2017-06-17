@@ -59,6 +59,27 @@ Check out [Webpatser\Countries](https://github.com/webpatser/laravel-countries) 
 
 ## Usage
 
+Load it into each model where you want to use
+
+```php
+
+<?php
+
+use Lecturize\Addresses\Traits\HasAddresses;
+
+class Post extends Model
+{
+
+	use HasAddresses;
+
+	...
+
+}
+
+?>
+
+```
+
 ##### Add an Address to a Model
 ```php
 $post = Post::find(1);
