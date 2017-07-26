@@ -18,12 +18,14 @@
     ],
     "require": {
         "php"                 : ">=5.6.4|^7.0",
-        "illuminate/support"  : ">=5.4",
-        "illuminate/database" : ">=5.4",
+        "illuminate/support"  : ">=5.3",
+        "illuminate/database" : ">=5.3",
         "webpatser/laravel-countries" : "^1.5"
     },
     "require-dev": {
+        "laravel/framework" : "5.3.*",
         "mockery/mockery" : "0.9.*",
+        "phpunit/phpunit" : "^6.0",
         "doctrine/dbal"   : "2.5.x"
     },
     "autoload": {
