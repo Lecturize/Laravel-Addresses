@@ -20,7 +20,7 @@ class CreateAddressesTable extends Migration
     public function __construct()
     {
         $this->table_addresses = config('lecturize.addresses.table', 'addresses');
-        $this->table_contacts  = config('lecturize.contacts.table', 'contacts');
+        $this->table_contacts  = config('lecturize.contacts.table',  'contacts');
     }
 
     /**
@@ -31,36 +31,36 @@ class CreateAddressesTable extends Migration
     public function up()
     {
         Schema::create($this->table_addresses, function(Blueprint $table)
-		{
-			$table->increments('id');
+        {
+            $table->increments('id');
 
-			$table->string('street',    60);
-			$table->string('city',      60);
-			$table->string('state',     60);
-			$table->string('post_code', 10);
+            $table->string('street',    60)->nullable();
+            $table->string('city',      60)->nullable();
+            $table->string('state',     60)->nullable();
+            $table->string('post_code', 10)->nullable();
 
-			$table->integer('country_id')->unsigned()->index();
+            $table->integer('country_id')->unsigned()->index();
 
-            $table->string('note');
+            $table->string('note')->nullable();
 
             $table->float('lat', 10, 6)->nullable();
             $table->float('lng', 10, 6)->nullable();
 
-            $table->morphs('addressable');
+            $table->nullableMorphs('addressable');
 
-			foreach( config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag ) {
-				$table->boolean('is_'. $flag)->default(false)->index();
-			}
+            foreach( config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag ) {
+                $table->boolean('is_'. $flag)->default(false)->index();
+            }
 
-			$table->timestamps();
-			$table->softDeletes();
-		});
+            $table->timestamps();
+            $table->softDeletes();
+        });
         /*
         Schema::create($this->table_contacts, function(Blueprint $table)
 		{
 			$table->increments('id');
 
-            $table->string('type', 20);
+            $table->string('type', 20)->default('default');
 
             $table->string('first_name',  20)->nullable();
             $table->string('middle_name', 20)->nullable();
@@ -69,19 +69,19 @@ class CreateAddressesTable extends Migration
             $table->string('company',  20)->nullable();
             $table->string('position', 20)->nullable();
 
-            $table->string('phone',    16);
-            $table->string('mobile',   16);
-            $table->string('fax',      16);
-            $table->string('email',    60);
-            $table->string('website', 100);
+            $table->string('phone',    16)->nullable();
+            $table->string('mobile',   16)->nullable();
+            $table->string('fax',      16)->nullable();
+            $table->string('email',    60)->nullable();
+            $table->string('website', 100)->nullable();
 
-            $table->morphs('contactable');
+            $table->nullableMorphs('contactable');
 
             foreach( config('lecturize.contacts.flags', ['public', 'primary']) as $flag ) {
                 $table->boolean('is_'. $flag)->default(false)->index();
             }
 
-            $table->longText('notes');
+            $table->longText('notes')->nullable();
 
 			$table->timestamps();
 			$table->softDeletes();
@@ -96,7 +96,7 @@ class CreateAddressesTable extends Migration
      */
     public function down()
     {
-    //  Schema::drop($this->table_contacts);
-        Schema::drop($this->table_addresses);
+    //  Schema::dropIfExists($this->table_contacts);
+        Schema::dropIfExists($this->table_addresses);
     }
 }
