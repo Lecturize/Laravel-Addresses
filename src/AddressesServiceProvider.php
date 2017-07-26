@@ -9,9 +9,7 @@ class AddressesServiceProvider extends ServiceProvider
     ];
 
 	/**
-	 * Boot the service provider.
-	 *
-	 * @return void
+     * @inheritdoc
 	 */
 	public function boot()
 	{
@@ -20,13 +18,11 @@ class AddressesServiceProvider extends ServiceProvider
 	}
 
 	/**
-	 * Register the service provider.
-	 *
-	 * @return void
+     * @inheritdoc
 	 */
 	public function register()
 	{
-	//  $this->app->singleton(Addresses::class);
+	    //
 	}
 
 	/**
@@ -38,7 +34,7 @@ class AddressesServiceProvider extends ServiceProvider
 	}
 
     /**
-     * Publish and merge the config file
+     * Publish and merge the config file.
      *
      * @return void
      */
@@ -52,14 +48,14 @@ class AddressesServiceProvider extends ServiceProvider
     }
 
     /**
-     * Publish migrations
+     * Publish migrations.
      *
      * @return void
      */
     private function handleMigrations()
     {
-        foreach ( $this->migrations as $class => $file ) {
-            if ( ! class_exists($class) ) {
+        foreach ($this->migrations as $class => $file) {
+            if (! class_exists($class)) {
                 $timestamp = date('Y_m_d_His', time());
 
                 $this->publishes([
