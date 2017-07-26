@@ -9,13 +9,16 @@ use Illuminate\Database\Migrations\Migration;
 class CreateAddressesTable extends Migration
 {
     /**
-     * Table names
+     * Table names.
+     *
+     * @var string  $table_addresses  The addresses table name.
+     * @var string  $table_contacts   The contacts table name.
      */
-    private $table_addresses;
-    private $table_contacts;
+    protected $table_addresses;
+    protected $table_contacts;
 
     /**
-     * Constructor
+     * Create a new migration instance.
      */
     public function __construct()
     {

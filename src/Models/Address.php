@@ -13,12 +13,6 @@ class Address extends Model
 	use SoftDeletes;
 
 	/**
-     * @todo make this editable via config file
-     * @inheritdoc
-	 */
-	protected $table = 'addresses';
-
-	/**
      * @inheritdoc
 	 */
 	protected $fillable = [
@@ -39,12 +33,17 @@ class Address extends Model
 	/**
      * @inheritdoc
 	 */
-	protected $hidden = [];
-
-	/**
-     * @inheritdoc
-	 */
 	protected $dates = ['deleted_at'];
+
+    /**
+     * @inheritdoc
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->table = config('lecturize.addresses.table', 'addresses');
+    }
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
