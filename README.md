@@ -130,4 +130,4 @@ Licensed under [MIT license](http://opensource.org/licenses/MIT).
 
 ## Author
 
-**Handcrafted with love by [Alexander Manfred Poellmann](http://twitter.com/AMPoellmann) for [Lecturize](https://lecturize.com) in Vienna &amp; Rome.**
+**Handcrafted with love by [Alexander Manfred Poellmann](https://twitter.com/AMPoellmann) in Vienna &amp; Rome.**
