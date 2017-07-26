@@ -5,7 +5,8 @@ use Illuminate\Support\ServiceProvider;
 class AddressesServiceProvider extends ServiceProvider
 {
     protected $migrations = [
-        'CreateAddressesTable' => 'create_addresses_table'
+        'CreateAddressesTable' => 'create_addresses_table',
+        'CreateContactsTable'  => 'create_contacts_table'
     ];
 
 	/**
