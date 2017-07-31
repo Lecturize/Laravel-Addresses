@@ -64,11 +64,12 @@ class Address extends Model
 	/**
 	 * {@inheritdoc}
 	 */
-	public static function boot() {
+	public static function boot()
+    {
 		parent::boot();
 
 		static::saving(function($address) {
-			if ( config('lecturize.addresses.geocode', true) ) {
+			if (config('lecturize.addresses.geocode', true)) {
 				$address->geocode();
 			}
 		});
@@ -79,7 +80,8 @@ class Address extends Model
 	 *
 	 * @return array
 	 */
-	public static function getValidationRules() {
+	public static function getValidationRules()
+    {
 		$rules = [
 			'street'     => 'required|string|min:3|max:60',
 			'city'       => 'required|string|min:3|max:60',
@@ -88,7 +90,7 @@ class Address extends Model
 			'country_id' => 'required|integer',
 		];
 
-		foreach( config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag ) {
+		foreach(config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag) {
 			$rules['is_'.$flag] = 'boolean';
 		}
 
@@ -101,7 +103,8 @@ class Address extends Model
 	 *
 	 * @return $this
 	 */
-	public function geocode() {
+	public function geocode()
+    {
 		// build query string
 		$query = [];
 		$query[] = $this->street       ?: '';
@@ -111,18 +114,21 @@ class Address extends Model
 		$query[] = $this->getCountry() ?: '';
 
 		// build query string
-		$query = trim( implode(',', array_filter($query)) );
+		$query = trim(implode(',', array_filter($query)));
 		$query = str_replace(' ', '+', $query);
+
+		if (! $query)
+		    return $this;
 
 		// build url
 		$url = 'https://maps.google.com/maps/api/geocode/json?address='.$query.'&sensor=false';
 
 		// try to get geo codes
-		if ( $geocode = file_get_contents($url) ) {
+		if ($geocode = file_get_contents($url)) {
 			$output = json_decode($geocode);
 
-			if ( count($output->results) && isset($output->results[0]) ) {
-				if ( $geo = $output->results[0]->geometry ) {
+			if (count($output->results) && isset($output->results[0])) {
+				if ($geo = $output->results[0]->geometry) {
 					$this->lat = $geo->location->lat;
 					$this->lng = $geo->location->lng;
 				}
@@ -145,10 +151,10 @@ class Address extends Model
 		$two[] = $this->state     ? '('. $this->state .')' : '';
 
 		$address[] = $this->street ?: '';
-		$address[] = implode( ' ', array_filter($two) );
+		$address[] = implode(' ', array_filter($two));
 		$address[] = $this->getCountry() ?: '';
 
-		if ( count($address = array_filter($address)) > 0 )
+		if (count($address = array_filter($address)) > 0)
 			return $address;
 
 		return null;
@@ -159,9 +165,10 @@ class Address extends Model
 	 *
 	 * @return string|null
 	 */
-	public function getHtml() {
-		if ( $address = $this->getArray() )
-			return '<address>'. implode( '<br />', array_filter($address) ) .'</address>';
+	public function getHtml()
+    {
+		if ($address = $this->getArray())
+			return '<address>'. implode('<br />', array_filter($address)) .'</address>';
 
 		return null;
 	}
@@ -171,9 +178,10 @@ class Address extends Model
 	 *
 	 * @return string|null
 	 */
-	public function getLine() {
-		if ( $address = $this->getArray() )
-			return implode( ', ', array_filter($address) );
+	public function getLine()
+    {
+		if ($address = $this->getArray())
+			return implode(', ', array_filter($address));
 
 		return null;
 	}
@@ -183,8 +191,9 @@ class Address extends Model
 	 *
 	 * @return string|null
 	 */
-	public function getCountry() {
-		if ( $this->country && $country = $this->country->name )
+	public function getCountry()
+    {
+		if ($this->country && $country = $this->country->name)
 			return $country;
 
 		return null;
