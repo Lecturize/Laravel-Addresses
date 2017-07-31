@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Webpatser\Countries\Countries;
+
+use Lecturize\Addresses\Traits\HasCountry;
 
 /**
  * Class Address
@@ -10,6 +11,7 @@ use Webpatser\Countries\Countries;
  */
 class Address extends Model
 {
+	use HasCountry;
 	use SoftDeletes;
 
 	/**
@@ -46,14 +48,8 @@ class Address extends Model
     }
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function country()
-	{
-		return $this->belongsTo(Countries::class, 'country_id');
-	}
-
-	/**
+	 * Get the related model.
+	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
 	 */
 	public function addressable()
@@ -64,22 +60,23 @@ class Address extends Model
 	/**
 	 * {@inheritdoc}
 	 */
-	public static function boot() {
+	public static function boot()
+    {
 		parent::boot();
 
 		static::saving(function($address) {
-			if (config('lecturize.addresses.geocode', true)) {
+			if (config('lecturize.addresses.geocode', true))
 				$address->geocode();
-			}
 		});
 	}
 
 	/**
-	 * Get validation rules
+	 * Get the validation rules.
 	 *
 	 * @return array
 	 */
-	public static function getValidationRules() {
+	public static function getValidationRules()
+    {
 		$rules = [
 			'street'     => 'required|string|min:3|max:60',
 			'city'       => 'required|string|min:3|max:60',
@@ -88,16 +85,14 @@ class Address extends Model
 			'country_id' => 'required|integer',
 		];
 
-		foreach( config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag ) {
+		foreach(config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag)
 			$rules['is_'.$flag] = 'boolean';
-		}
 
 		return $rules;
 	}
 
 	/**
-	 * Try to fetch the coordinates from Google
-	 * and store it to database
+	 * Try to fetch the coordinates from Google and store them.
 	 *
 	 * @return $this
 	 */
@@ -122,11 +117,11 @@ class Address extends Model
 		$url = 'https://maps.google.com/maps/api/geocode/json?address='.$query.'&sensor=false';
 
 		// try to get geo codes
-		if ( $geocode = file_get_contents($url) ) {
+		if ($geocode = file_get_contents($url)) {
 			$output = json_decode($geocode);
 
-			if ( count($output->results) && isset($output->results[0]) ) {
-				if ( $geo = $output->results[0]->geometry ) {
+			if (count($output->results) && isset($output->results[0])) {
+				if ($geo = $output->results[0]->geometry) {
 					$this->lat = $geo->location->lat;
 					$this->lng = $geo->location->lng;
 				}
@@ -137,9 +132,9 @@ class Address extends Model
 	}
 
 	/**
-	 * Get address as array
+	 * Get the address as array.
 	 *
-	 * @return array|null
+	 * @return array
 	 */
 	public function getArray()
 	{
@@ -160,38 +155,39 @@ class Address extends Model
 	}
 
 	/**
-	 * Get address as html block
+	 * Get the address as html block.
 	 *
-	 * @return string|null
+	 * @return string
 	 */
 	public function getHtml()
 	{
-		if ( $address = $this->getArray() )
-			return '<address>'. implode( '<br />', array_filter($address) ) .'</address>';
+		if ($address = $this->getArray())
+			return '<address>'. implode('<br />', array_filter($address)) .'</address>';
 
 		return null;
 	}
 
 	/**
-	 * Get address as a simple line
+	 * Get the address as a simple line.
 	 *
-	 * @return string|null
+	 * @return string
 	 */
 	public function getLine()
-	{
+    {
 		if ($address = $this->getArray())
-			return implode( ', ', array_filter($address) );
+			return implode(', ', array_filter($address));
 
 		return null;
 	}
 
 	/**
-	 * Try to get country name
+	 * Get the country name.
 	 *
 	 * @return string|null
 	 */
-	public function getCountry() {
-		if ( $this->country && $country = $this->country->name )
+	public function getCountry()
+    {
+		if ($this->country && $country = $this->country->name)
 			return $country;
 
 		return null;

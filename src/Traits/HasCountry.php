@@ -21,14 +21,14 @@ trait HasCountry
 	/**
 	 * Scope by country.
 	 *
-	 * @param  $query
+	 * @param  object   $query
 	 * @param  integer  $id
 	 * @return mixed
 	 */
 	public function scopeByCountry( $query, $id )
 	{
 		return $query->whereHas('country', function($q) use($id) {
-			$q->where( 'id', $id );
+			$q->where('id', $id);
 		});
 	}
 }

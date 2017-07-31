@@ -81,40 +81,44 @@ trait HasAddresses
 	}
 
 	/**
-	 * Get primary address
+	 * Get the primary address.
 	 *
 	 * @return Address|null
 	 */
-	public function getPrimaryAddress() {
+	public function getPrimaryAddress()
+	{
 		return $this->addresses()->orderBy('is_primary', 'DESC')->first();
 	}
 
 	/**
-	 * Get billing address
+	 * Get the billing address.
 	 *
 	 * @return Address|null
 	 */
-	public function getBillingAddress() {
+	public function getBillingAddress()
+	{
 		return $this->addresses()->orderBy('is_billing', 'DESC')->first();
 	}
 
 	/**
-	 * Get shipping address
+	 * Get the shipping address.
 	 *
 	 * @return Address|null
 	 */
-	public function getShippingAddress() {
+	public function getShippingAddress()
+	{
 		return $this->addresses()->orderBy('is_shipping', 'DESC')->first();
 	}
 
 	/**
-	 * Add country id to attributes array
+	 * Add country id to attributes array.
 	 *
 	 * @param  array  $attributes
-	 * @return array  $attributes
+	 * @return array
 	 * @throws FailedValidationException
 	 */
-	public function loadAddressAttributes( array $attributes ) {
+	public function loadAddressAttributes(array $attributes)
+	{
 		// return if no country given
 		if (! isset($attributes['country']))
 			return $attributes;
@@ -142,10 +146,10 @@ trait HasAddresses
 	}
 
 	/**
-	 * Add country id to attributes array
+	 * Validate the address.
 	 *
 	 * @param  array  $attributes
-	 * @return array  $attributes
+	 * @return array
 	 */
 	function validateAddress(array $attributes)
 	{
