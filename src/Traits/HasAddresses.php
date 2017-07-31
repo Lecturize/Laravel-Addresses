@@ -1,7 +1,7 @@
 <?php namespace Lecturize\Addresses\Traits;
 
-use Lecturize\Addresses\Exceptions\FailedValidationException;
 use Lecturize\Addresses\Models\Address;
+use Lecturize\Addresses\Exceptions\FailedValidationException;
 
 /**
  * Class HasAddresses
@@ -14,7 +14,8 @@ trait HasAddresses
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
-	public function addresses() {
+	public function addresses()
+	{
 		return $this->morphMany(Address::class, 'addressable');
 	}
 
@@ -31,10 +32,10 @@ trait HasAddresses
 	/**
 	 * Add an address to this model.
 	 *
-	 * @param  array $attributes
+	 * @param  array  $attributes
 	 * @return mixed
 	 */
-	public function addAddress( array $attributes )
+	public function addAddress(array $attributes)
 	{
 		$attributes = $this->loadAddressAttributes($attributes);
 
@@ -44,11 +45,11 @@ trait HasAddresses
 	/**
 	 * Updates the given address.
 	 *
-	 * @param  Address $address
-	 * @param  array   $attributes
+	 * @param  Address  $address
+	 * @param  array    $attributes
 	 * @return mixed
 	 */
-	public function updateAddress( Address $address, array $attributes )
+	public function updateAddress(Address $address, array $attributes)
 	{
 		$attributes = $this->loadAddressAttributes($attributes);
 
@@ -58,12 +59,12 @@ trait HasAddresses
 	/**
 	 * Deletes given address.
 	 *
-	 * @param  Address $address
+	 * @param  Address  $address
 	 * @return bool
 	 */
-	public function deleteAddress( Address $address )
+	public function deleteAddress(Address $address)
 	{
-		if ( $this != $address->addressable()->first() )
+		if ($this != $address->addressable()->first())
 			return false;
 
 		return $address->delete();
@@ -109,31 +110,31 @@ trait HasAddresses
 	/**
 	 * Add country id to attributes array
 	 *
-	 * @param  array $attributes
-	 * @return array $attributes
+	 * @param  array  $attributes
+	 * @return array  $attributes
 	 * @throws FailedValidationException
 	 */
 	public function loadAddressAttributes( array $attributes ) {
 		// return if no country given
-		if ( ! isset($attributes['country']) )
+		if (! isset($attributes['country']))
 			return $attributes;
 
 		// find country
 		$country = \Countries::where('iso_3166_2', $attributes['country'])
-			->orWhere('iso_3166_3', $attributes['country'])
-			->first();
+							 ->orWhere('iso_3166_3', $attributes['country'])
+							 ->first();
 
 		// unset country from attributes array
 		unset($attributes['country']);
 
 		// add country_id to attributes array
-		if ( is_object($country) && isset($country->id) )
+		if (is_object($country) && isset($country->id))
 			$attributes['country_id'] = $country->id;
 
 		// run validation
 		$validator = $this->validateAddress($attributes);
 
-		if ( $validator->fails() )
+		if ($validator->fails())
 			throw new FailedValidationException('Validator failed for: '. implode(', ', $attributes));
 
 		// return attributes array with country_id key/value pair
@@ -143,10 +144,11 @@ trait HasAddresses
 	/**
 	 * Add country id to attributes array
 	 *
-	 * @param  array $attributes
-	 * @return array $attributes
+	 * @param  array  $attributes
+	 * @return array  $attributes
 	 */
-	function validateAddress( array $attributes ) {
+	function validateAddress(array $attributes)
+	{
 		$rules = Address::getValidationRules();
 
 		return \Validator::make($attributes, $rules);

@@ -68,7 +68,7 @@ class Address extends Model
 		parent::boot();
 
 		static::saving(function($address) {
-			if ( config('lecturize.addresses.geocode', true) ) {
+			if (config('lecturize.addresses.geocode', true)) {
 				$address->geocode();
 			}
 		});
@@ -101,7 +101,8 @@ class Address extends Model
 	 *
 	 * @return $this
 	 */
-	public function geocode() {
+	public function geocode()
+	{
 		// build query string
 		$query = [];
 		$query[] = $this->street       ?: '';
@@ -111,8 +112,11 @@ class Address extends Model
 		$query[] = $this->getCountry() ?: '';
 
 		// build query string
-		$query = trim( implode(',', array_filter($query)) );
+		$query = trim(implode(',', array_filter($query)));
 		$query = str_replace(' ', '+', $query);
+
+		if (! $query)
+			return $this;
 
 		// build url
 		$url = 'https://maps.google.com/maps/api/geocode/json?address='.$query.'&sensor=false';
@@ -137,7 +141,8 @@ class Address extends Model
 	 *
 	 * @return array|null
 	 */
-	public function getArray() {
+	public function getArray()
+	{
 		$address = $two = [];
 
 		$two[] = $this->post_code ?: '';
@@ -145,10 +150,10 @@ class Address extends Model
 		$two[] = $this->state     ? '('. $this->state .')' : '';
 
 		$address[] = $this->street ?: '';
-		$address[] = implode( ' ', array_filter($two) );
+		$address[] = implode(' ', array_filter($two));
 		$address[] = $this->getCountry() ?: '';
 
-		if ( count($address = array_filter($address)) > 0 )
+		if (count($address = array_filter($address)) > 0)
 			return $address;
 
 		return null;
@@ -159,7 +164,8 @@ class Address extends Model
 	 *
 	 * @return string|null
 	 */
-	public function getHtml() {
+	public function getHtml()
+	{
 		if ( $address = $this->getArray() )
 			return '<address>'. implode( '<br />', array_filter($address) ) .'</address>';
 
@@ -171,8 +177,9 @@ class Address extends Model
 	 *
 	 * @return string|null
 	 */
-	public function getLine() {
-		if ( $address = $this->getArray() )
+	public function getLine()
+	{
+		if ($address = $this->getArray())
 			return implode( ', ', array_filter($address) );
 
 		return null;
