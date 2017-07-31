@@ -39,7 +39,7 @@ class CreateAddressesTable extends Migration
             $table->string('state',     60)->nullable();
             $table->string('post_code', 10)->nullable();
 
-            $table->integer('country_id')->unsigned()->index();
+            $table->integer('country_id')->nullable()->unsigned()->index();
 
             $table->string('note')->nullable();
 
