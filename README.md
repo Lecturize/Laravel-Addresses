@@ -45,13 +45,14 @@ Next register the following service providers and facades to your `config/app.ph
 ## Configuration & Migration
 
 ```bash
-$ php artisan vendor:publish
-$ php artisan countries:migration
+$ php artisan vendor:publish --provider="Webpatser\Countries\CountriesServiceProvider"
+$ php artisan vendor:publish --provider="Lecturize\Addresses\AddressesServiceProvider"
 ```
 
-This will create a `config/lecturize.php` and the migration files. In the config file you can customize the table names, finally you'll have to run migration like so:
+This will create a `config/countries.php`, a `config/lecturize.php` and the migration files, that you'll have to run like so:
 
 ```bash
+$ php artisan countries:migration
 $ php artisan migrate
 ```
 
@@ -88,7 +89,7 @@ Available attributes are `street`, `city`, `post_code`, `state`, `country`, `sta
 
 ##### Check if Model has an Address
 ```php
-if ( $post->hasAddress() ) {
+if ($post->hasAddress()) {
     // Do something
 }
 ```
