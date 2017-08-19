@@ -60,6 +60,22 @@ Check out [Webpatser\Countries](https://github.com/webpatser/laravel-countries) 
 
 ## Usage
 
+First, add our `HasAddresses` trait to your model.
+        
+```php
+<?php namespace App\Models;
+
+use Lecturize\Addresses\Traits\HasAddresses;
+
+class Post extends Model
+{
+    use HasAddresses;
+
+    // ...
+}
+?>
+```
+
 ##### Add an Address to a Model
 ```php
 $post = Post::find(1);
