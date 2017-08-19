@@ -23,6 +23,7 @@ class Address extends Model
         'state',
         'post_code',
         'country_id',
+        'note',
         'lat',
         'lng',
         'addressable_id',
