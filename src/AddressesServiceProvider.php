@@ -9,30 +9,30 @@ class AddressesServiceProvider extends ServiceProvider
         'CreateContactsTable'  => 'create_contacts_table'
     ];
 
-	/**
+    /**
      * @inheritdoc
-	 */
-	public function boot()
-	{
+     */
+    public function boot()
+    {
         $this->handleConfig();
         $this->handleMigrations();
-	}
+    }
 
-	/**
+    /**
      * @inheritdoc
-	 */
-	public function register()
-	{
-	    //
-	}
+     */
+    public function register()
+    {
+        //
+    }
 
-	/**
+    /**
      * @inheritdoc
-	 */
-	public function provides()
-	{
-		return [];
-	}
+     */
+    public function provides()
+    {
+        return [];
+    }
 
     /**
      * Publish and merge the config file.

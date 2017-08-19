@@ -8,27 +8,27 @@ use Webpatser\Countries\Countries;
  */
 trait HasCountry
 {
-	/**
-	 * Get the models country.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function country()
-	{
-		return $this->belongsTo(Countries::class);
-	}
+    /**
+     * Get the models country.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function country()
+    {
+        return $this->belongsTo(Countries::class);
+    }
 
-	/**
-	 * Scope by country.
-	 *
-	 * @param  object   $query
-	 * @param  integer  $id
-	 * @return mixed
-	 */
-	public function scopeByCountry( $query, $id )
-	{
-		return $query->whereHas('country', function($q) use($id) {
-			$q->where('id', $id);
-		});
-	}
+    /**
+     * Scope by country.
+     *
+     * @param  object   $query
+     * @param  integer  $id
+     * @return mixed
+     */
+    public function scopeByCountry( $query, $id )
+    {
+        return $query->whereHas('country', function($q) use($id) {
+            $q->where('id', $id);
+        });
+    }
 }

@@ -7,5 +7,5 @@
  */
 trait AddressableTrait
 {
-	use HasAddresses;
+    use HasAddresses;
 }
