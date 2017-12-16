@@ -2,6 +2,7 @@
 
 use Lecturize\Addresses\Models\Address;
 use Lecturize\Addresses\Exceptions\FailedValidationException;
+use Webpatser\Countries\Countries;
 
 /**
  * Class HasAddresses
@@ -34,6 +35,8 @@ trait HasAddresses
      *
      * @param  array  $attributes
      * @return mixed
+     *
+     * @throws \Exception
      */
     public function addAddress(array $attributes)
     {
@@ -47,7 +50,9 @@ trait HasAddresses
      *
      * @param  Address  $address
      * @param  array    $attributes
-     * @return mixed
+     * @return bool
+     *
+     * @throws \Exception
      */
     public function updateAddress(Address $address, array $attributes)
     {
@@ -61,10 +66,12 @@ trait HasAddresses
      *
      * @param  Address  $address
      * @return bool
+     *
+     * @throws \Exception
      */
     public function deleteAddress(Address $address)
     {
-        if ($this != $address->addressable()->first())
+        if ($this !== $address->addressable()->first())
             return false;
 
         return $address->delete();
@@ -83,7 +90,7 @@ trait HasAddresses
     /**
      * Get the primary address.
      *
-     * @return Address|null
+     * @return Address
      */
     public function getPrimaryAddress()
     {
@@ -93,7 +100,7 @@ trait HasAddresses
     /**
      * Get the billing address.
      *
-     * @return Address|null
+     * @return Address
      */
     public function getBillingAddress()
     {
@@ -103,7 +110,7 @@ trait HasAddresses
     /**
      * Get the shipping address.
      *
-     * @return Address|null
+     * @return Address
      */
     public function getShippingAddress()
     {
@@ -124,9 +131,9 @@ trait HasAddresses
             return $attributes;
 
         // find country
-        $country = \Countries::where('iso_3166_2', $attributes['country'])
-                             ->orWhere('iso_3166_3', $attributes['country'])
-                             ->first();
+        $country = Countries::where('iso_3166_2', $attributes['country'])
+                            ->orWhere('iso_3166_3', $attributes['country'])
+                            ->first();
 
         // unset country from attributes array
         unset($attributes['country']);
@@ -149,12 +156,12 @@ trait HasAddresses
      * Validate the address.
      *
      * @param  array  $attributes
-     * @return array
+     * @return \Illuminate\Contracts\Validation\Validator
      */
     function validateAddress(array $attributes)
     {
         $rules = Address::getValidationRules();
 
-        return \Validator::make($attributes, $rules);
+        return validator($attributes, $rules);
     }
 }
