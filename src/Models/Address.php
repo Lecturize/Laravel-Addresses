@@ -19,6 +19,7 @@ class Address extends Model
      */
     protected $fillable = [
         'street',
+        'street_extra',
         'city',
         'state',
         'post_code',
@@ -79,11 +80,12 @@ class Address extends Model
     public static function getValidationRules()
     {
         $rules = [
-            'street'     => 'required|string|min:3|max:60',
-            'city'       => 'required|string|min:3|max:60',
-            'state'      => 'string|min:3|max:60',
-            'post_code'  => 'required|min:4|max:10|AlphaDash',
-            'country_id' => 'required|integer',
+            'street'       => 'required|string|min:3|max:60',
+            'street_extra' => 'string|min:3|max:60',
+            'city'         => 'required|string|min:3|max:60',
+            'state'        => 'string|min:3|max:60',
+            'post_code'    => 'required|min:4|max:10|AlphaDash',
+            'country_id'   => 'required|integer',
         ];
 
         foreach(config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag)
@@ -102,6 +104,7 @@ class Address extends Model
         // build query string
         $query = [];
         $query[] = $this->street       ?: '';
+        $query[] = $this->street_extra ?: '';
         $query[] = $this->city         ?: '';
         $query[] = $this->state        ?: '';
         $query[] = $this->post_code    ?: '';
@@ -145,7 +148,8 @@ class Address extends Model
         $two[] = $this->city      ?: '';
         $two[] = $this->state     ? '('. $this->state .')' : '';
 
-        $address[] = $this->street ?: '';
+        $address[] = $this->street       ?: '';
+        $address[] = $this->street_extra ?: '';
         $address[] = implode(' ', array_filter($two));
         $address[] = $this->getCountry() ?: '';
 
