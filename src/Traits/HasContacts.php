@@ -1,11 +1,11 @@
-<?php namespace Lecturize\Contacts\Traits;
+<?php namespace Lecturize\Addresses\Traits;
 
 use Lecturize\Addresses\Models\Contact;
 use Lecturize\Addresses\Exceptions\FailedValidationException;
 
 /**
  * Class HasContacts
- * @package Lecturize\Contacts\Traits
+ * @package Lecturize\Addresses\Traits
  */
 trait HasContacts
 {
