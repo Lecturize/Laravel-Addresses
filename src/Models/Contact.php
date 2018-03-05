@@ -66,4 +66,19 @@ class Contact extends Model
 
         return $rules;
     }
+
+    /**
+     * Get the contacts full name.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        $names = [];
+        $names[] = $this->first_name  ?: '';
+        $names[] = $this->middle_name ?: '';
+        $names[] = $this->last_name   ?: '';
+
+        return trim(implode(' ', array_filter($names)));
+    }
 }
