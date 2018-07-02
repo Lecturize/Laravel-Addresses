@@ -175,12 +175,13 @@ class Address extends Model
     /**
      * Get the address as a simple line.
      *
+     * @param  string  $glue
      * @return string
      */
-    public function getLine()
+    public function getLine($glue = ', ')
     {
         if ($address = $this->getArray())
-            return implode(', ', array_filter($address));
+            return implode($glue, array_filter($address));
 
         return null;
     }
