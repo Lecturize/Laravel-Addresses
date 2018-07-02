@@ -197,4 +197,30 @@ class Address extends Model
 
         return null;
     }
+
+    /**
+     * Get the route name (without street number).
+     *
+     * @return string
+     */
+    public function getRouteAttribute()
+    {
+        if (preg_match('/([^\d]+)\s?(.+)/i', $this->street, $result))
+            return $result[1];
+
+        return '';
+    }
+
+    /**
+     * Get the street number.
+     *
+     * @return string
+     */
+    public function getStreetNumberAttribute()
+    {
+        if (preg_match('/([^\d]+)\s?(.+)/i', $this->street, $result))
+            return $result[2];
+
+        return '';
+    }
 }
