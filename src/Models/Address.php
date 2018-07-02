@@ -151,7 +151,7 @@ class Address extends Model
         $address[] = $this->street       ?: '';
         $address[] = $this->street_extra ?: '';
         $address[] = implode(' ', array_filter($two));
-        $address[] = $this->getCountry() ?: '';
+        $address[] = $this->country_name ?: '';
 
         if (count($address = array_filter($address)) > 0)
             return $address;
@@ -187,15 +187,46 @@ class Address extends Model
 
     /**
      * Get the country name.
+     * @deprecated Unexpected behaviour (would expect $address->country()->get()), use country_name attribute instead.
      *
-     * @return string|null
+     * @return string
      */
     public function getCountry()
     {
         if ($this->country && $country = $this->country->name)
             return $country;
 
-        return null;
+        return '';
+    }
+
+    /**
+     * Get the country name.
+     *
+     * @return string
+     */
+    public function getCountryNameAttribute()
+    {
+        if ($this->country)
+            return $this->country->name;
+
+        return '';
+    }
+
+    /**
+     * Get the country code.
+     *
+     * @param  int  $digits
+     * @return string
+     */
+    public function getCountryCodeAttribute($digits = 2)
+    {
+        if (! $this->country)
+            return '';
+
+        if ($digits === 3)
+            return $this->country->iso_3166_3;
+
+        return $this->country->iso_3166_2;
     }
 
     /**
