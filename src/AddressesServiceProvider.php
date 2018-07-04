@@ -2,13 +2,17 @@
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class AddressesServiceProvider
+ * @package Lecturize\Addresses
+ */
 class AddressesServiceProvider extends ServiceProvider
 {
     protected $migrations = [
         'CreateAddressesTable' => 'create_addresses_table',
         'CreateContactsTable'  => 'create_contacts_table',
 
-        'AddStreetExtraToAddresses' => 'add_street_extra_to_addresses_table',
+        'AddStreetExtraToAddressesTable' => 'add_street_extra_to_addresses_table',
     ];
 
     /**
@@ -16,7 +20,6 @@ class AddressesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->handleConfig();
         $this->handleMigrations();
     }
 
@@ -25,7 +28,9 @@ class AddressesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/config.php', 'lecturize'
+        );
     }
 
     /**
@@ -34,20 +39,6 @@ class AddressesServiceProvider extends ServiceProvider
     public function provides()
     {
         return [];
-    }
-
-    /**
-     * Publish and merge the config file.
-     *
-     * @return void
-     */
-    private function handleConfig()
-    {
-        $configPath = __DIR__ . '/../config/config.php';
-
-        $this->publishes([$configPath => config_path('lecturize.php')]);
-
-        $this->mergeConfigFrom($configPath, 'lecturize');
     }
 
     /**
