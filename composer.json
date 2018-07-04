@@ -3,6 +3,7 @@
     "description": "Simple address and contact management for Laravel 5.",
     "homepage" : "https://github.com/Lecturize/Laravel-Addresses",
     "license": "MIT",
+     "minimum-stability": "dev",
     "keywords": [
         "lecturize",
         "addresses",
@@ -20,7 +21,7 @@
         "php"                 : ">=5.6.4|^7.0",
         "illuminate/support"  : ">=5.3",
         "illuminate/database" : ">=5.3",
-        "webpatser/laravel-countries" : "^1.5"
+        "webpatser/laravel-countries" : "dev-develop"
     },
     "require-dev": {
         "laravel/framework" : ">=5.3",
