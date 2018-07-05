@@ -81,9 +81,9 @@ class Address extends Model
     {
         $rules = [
             'street'       => 'required|string|min:3|max:60',
-            'street_extra' => 'string|min:3|max:60',
+            'street_extra' => 'nullable|string|min:3|max:60',
             'city'         => 'required|string|min:3|max:60',
-            'state'        => 'string|min:3|max:60',
+            'state'        => 'nullable|string|min:3|max:60',
             'post_code'    => 'required|min:4|max:10|AlphaDash',
             'country_id'   => 'required|integer',
         ];
