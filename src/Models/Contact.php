@@ -81,4 +81,22 @@ class Contact extends Model
 
         return trim(implode(' ', array_filter($names)));
     }
+
+    /**
+     * Get the contacts full name, reversed.
+     *
+     * @return string
+     */
+    public function getFullNameRevAttribute()
+    {
+        $first = [];
+        $first[] = $this->first_name  ?: '';
+        $first[] = $this->middle_name ?: '';
+
+        $names = [];
+        $names[] = $this->last_name ?: '';
+        $names[] = implode(' ', array_filter($first));
+
+        return trim(implode(', ', array_filter($names)));
+    }
 }
