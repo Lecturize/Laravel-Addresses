@@ -128,7 +128,7 @@ trait HasAddresses
     {
         // return if no country given
         if (! isset($attributes['country']))
-            return $attributes;
+            throw new FailedValidationException('[Addresses] No country given.');
 
         // find country
         $country = Countries::where('iso_3166_2', $attributes['country'])
@@ -145,8 +145,12 @@ trait HasAddresses
         // run validation
         $validator = $this->validateAddress($attributes);
 
-        if ($validator->fails())
-            throw new FailedValidationException('Validator failed for: '. implode(', ', $attributes));
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $error  = '[Addresses] '. implode(' ', $errors);
+
+            throw new FailedValidationException($error);
+        }
 
         // return attributes array with country_id key/value pair
         return $attributes;
@@ -160,7 +164,7 @@ trait HasAddresses
      */
     function validateAddress(array $attributes)
     {
-        $rules = Address::getValidationRules();
+        $rules = (new Address)->getValidationRules();
 
         return validator($attributes, $rules);
     }

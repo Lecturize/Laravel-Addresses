@@ -98,8 +98,12 @@ trait HasContacts
         // run validation
         $validator = $this->validateContact($attributes);
 
-        if ($validator->fails())
-            throw new FailedValidationException('Validator failed for: '. implode(', ', $attributes));
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $error  = '[Addresses] '. implode(' ', $errors);
+
+            throw new FailedValidationException($error);
+        }
 
         return $attributes;
     }
