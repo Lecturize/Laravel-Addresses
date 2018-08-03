@@ -128,19 +128,15 @@ trait HasAddresses
     {
         // return if no country given
         if (! isset($attributes['country']))
-            throw new FailedValidationException('[Addresses] No country given.');
+            throw new FailedValidationException('[Addresses] No country code given.');
 
         // find country
-        $country = Countries::where('iso_3166_2', $attributes['country'])
-                            ->orWhere('iso_3166_3', $attributes['country'])
-                            ->first();
+        if (! ($country = $this->findCountryByCode($attributes['country'])) || ! isset($country->id))
+            throw new FailedValidationException('[Addresses] Country not found, did you seed the countries table?');
 
         // unset country from attributes array
         unset($attributes['country']);
-
-        // add country_id to attributes array
-        if (is_object($country) && isset($country->id))
-            $attributes['country_id'] = $country->id;
+        $attributes['country_id'] = $country->id;
 
         // run validation
         $validator = $this->validateAddress($attributes);
@@ -167,5 +163,18 @@ trait HasAddresses
         $rules = (new Address)->getValidationRules();
 
         return validator($attributes, $rules);
+    }
+
+    /**
+     * Validate the address.
+     *
+     * @param  string  $country_code
+     * @return Countries
+     */
+    function findCountryByCode($country_code)
+    {
+        return Countries::where('iso_3166_2',   $country_code)
+                        ->orWhere('iso_3166_3', $country_code)
+                        ->first();
     }
 }
