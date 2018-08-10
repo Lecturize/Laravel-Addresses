@@ -29,6 +29,7 @@ class Address extends Model
         'lng',
         'addressable_id',
         'addressable_type',
+        'is_public',
         'is_primary',
         'is_billing',
         'is_shipping',
