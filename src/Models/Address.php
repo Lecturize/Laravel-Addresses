@@ -17,23 +17,7 @@ class Address extends Model
     /**
      * @inheritdoc
      */
-    protected $fillable = [
-        'street',
-        'street_extra',
-        'city',
-        'state',
-        'post_code',
-        'country_id',
-        'note',
-        'lat',
-        'lng',
-        'addressable_id',
-        'addressable_type',
-        'is_public',
-        'is_primary',
-        'is_billing',
-        'is_shipping',
-    ];
+    protected $fillable = [];
 
     /**
      * @inheritdoc
@@ -45,9 +29,40 @@ class Address extends Model
      */
     public function __construct(array $attributes = [])
     {
+        $this->setFillable();
+
         parent::__construct($attributes);
 
         $this->table = config('lecturize.addresses.table', 'addresses');
+    }
+
+    private function setFillable()
+    {
+        $fixed =  [
+            'street',
+            'street_extra',
+            'city',
+            'state',
+            'post_code',
+            'country_id',
+            'note',
+            'lat',
+            'lng',
+            'addressable_id',
+            'addressable_type'
+        ];
+
+        // load custom columns from config
+        $custom_columns = config('lecturize.addresses.columns', array());
+
+        // load flags from config and prepend "is_"
+        $custom_flags = config('lecturize.addresses.flags', array());
+        $custom_flags = array_map(function($val) { return "is_" . $val;} , $flags);
+
+        $fields = array_merge($fixed, $custom_columns, $custom_flags);
+
+        $this->fillable($fields);
+
     }
 
     /**

@@ -16,6 +16,11 @@ return [
         'flags' => ['public', 'primary', 'billing', 'shipping'],
 
         /*
+         * Extra columns to be added to the fillable array
+         */
+        'columns' => [],
+
+        /*
          * Enable geocoding to add coordinates (lon/lat) to addresses
          */
         'geocode' => true,
