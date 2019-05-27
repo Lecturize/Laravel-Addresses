@@ -13,6 +13,8 @@ class AddressesServiceProvider extends ServiceProvider
         'CreateContactsTable'  => 'create_contacts_table',
 
         'AddStreetExtraToAddressesTable' => 'add_street_extra_to_addresses_table',
+        'AddGenderToContactsTable'       => 'add_gender_to_contacts_table',
+        'AddTitleToContactsTable'        => 'add_title_to_contacts_table',
     ];
 
     /**
@@ -20,7 +22,10 @@ class AddressesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->handleConfig();
         $this->handleMigrations();
+
+        $this->loadTranslationsFrom(__DIR__ .'/../resources/lang/', 'addresses');
     }
 
     /**
@@ -28,9 +33,7 @@ class AddressesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/config.php', 'lecturize'
-        );
+        //
     }
 
     /**
@@ -39,6 +42,20 @@ class AddressesServiceProvider extends ServiceProvider
     public function provides()
     {
         return [];
+    }
+
+    /**
+     * Publish and merge the config file.
+     *
+     * @return void
+     */
+    private function handleConfig()
+    {
+        $configPath = __DIR__ . '/../config/config.php';
+
+        $this->publishes([$configPath => config_path('lecturize.php')]);
+
+        $this->mergeConfigFrom($configPath, 'lecturize');
     }
 
     /**
