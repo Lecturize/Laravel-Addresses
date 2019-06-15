@@ -72,11 +72,13 @@ class Contact extends Model
     /**
      * Get the contacts full name.
      *
+     * @param  bool $show_salutation
      * @return string
      */
-    public function getFullNameAttribute()
+    public function getFullNameAttribute($show_salutation = false)
     {
         $names = [];
+        $names[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.'. $this->gender) : '';
         $names[] = $this->first_name  ?: '';
         $names[] = $this->middle_name ?: '';
         $names[] = $this->last_name   ?: '';
@@ -87,16 +89,21 @@ class Contact extends Model
     /**
      * Get the contacts full name, reversed.
      *
+     * @param  bool $show_salutation
      * @return string
      */
-    public function getFullNameRevAttribute()
+    public function getFullNameRevAttribute($show_salutation = false)
     {
         $first = [];
         $first[] = $this->first_name  ?: '';
         $first[] = $this->middle_name ?: '';
 
+        $last = [];
+        $last[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.'. $this->gender) : '';
+        $last[] = $this->last_name ?: '';
+
         $names = [];
-        $names[] = $this->last_name ?: '';
+        $names[] = implode(' ', array_filter($last));
         $names[] = implode(' ', array_filter($first));
 
         return trim(implode(', ', array_filter($names)));
