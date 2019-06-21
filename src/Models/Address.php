@@ -102,26 +102,11 @@ class Address extends Model
      */
     public function geocode()
     {
-        // build query string
-        $query = [];
-        $query[] = $this->street       ?: '';
-        $query[] = $this->street_extra ?: '';
-        $query[] = $this->city         ?: '';
-        $query[] = $this->state        ?: '';
-        $query[] = $this->post_code    ?: '';
-        $query[] = $this->getCountry() ?: '';
-
-        // build query string
-        $query = trim(implode(',', array_filter($query)));
-        $query = str_replace(' ', '+', $query);
-
-        if (! $query)
+        if (! ($query = $this->getQueryString()))
             return $this;
 
-        // build url
         $url = 'https://maps.google.com/maps/api/geocode/json?address='. $query .'&sensor=false';
 
-        // try to get geo codes
         if ($geocode = file_get_contents($url)) {
             $output = json_decode($geocode);
 
@@ -134,6 +119,26 @@ class Address extends Model
         }
 
         return $this;
+    }
+
+    /**
+     * Get the encoded query string.
+     *
+     * @return string
+     */
+    public function getQueryString()
+    {
+        $query = [];
+        $query[] = $this->street       ?: '';
+    //  $query[] = $this->street_extra ?: '';
+        $query[] = $this->city         ?: '';
+        $query[] = $this->state        ?: '';
+        $query[] = $this->post_code    ?: '';
+        $query[] = $this->country_name ?: '';
+
+        $query = trim(implode(',', array_filter($query)));
+
+        return urlencode($query);
     }
 
     /**
