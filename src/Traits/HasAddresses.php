@@ -1,5 +1,9 @@
 <?php namespace Lecturize\Addresses\Traits;
 
+use Exception;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Lecturize\Addresses\Models\Address;
 use Lecturize\Addresses\Exceptions\FailedValidationException;
 use Webpatser\Countries\Countries;
@@ -13,7 +17,7 @@ trait HasAddresses
     /**
      * Get all addresses for this model.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function addresses()
     {
@@ -36,7 +40,7 @@ trait HasAddresses
      * @param  array  $attributes
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function addAddress(array $attributes)
     {
@@ -52,7 +56,7 @@ trait HasAddresses
      * @param  array    $attributes
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function updateAddress(Address $address, array $attributes)
     {
@@ -67,7 +71,7 @@ trait HasAddresses
      * @param  Address  $address
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function deleteAddress(Address $address)
     {
@@ -90,31 +94,34 @@ trait HasAddresses
     /**
      * Get the primary address.
      *
-     * @return Address
+     * @param  string  $direction
+     * @return Model|MorphMany|Address
      */
-    public function getPrimaryAddress()
+    public function getPrimaryAddress($direction = 'desc')
     {
-        return $this->addresses()->orderBy('is_primary', 'DESC')->first();
+        return $this->addresses()->primary()->orderBy('is_primary', $direction)->first();
     }
 
     /**
      * Get the billing address.
      *
-     * @return Address
+     * @param  string  $direction
+     * @return Model|MorphMany|Address
      */
-    public function getBillingAddress()
+    public function getBillingAddress($direction = 'desc')
     {
-        return $this->addresses()->orderBy('is_billing', 'DESC')->first();
+        return $this->addresses()->billing()->orderBy('is_billing', $direction)->first();
     }
 
     /**
-     * Get the shipping address.
+     * Get the first shipping address.
      *
-     * @return Address
+     * @param  string  $direction
+     * @return Model|MorphMany|Address
      */
-    public function getShippingAddress()
+    public function getShippingAddress($direction = 'desc')
     {
-        return $this->addresses()->orderBy('is_shipping', 'DESC')->first();
+        return $this->addresses()->shipping()->orderBy('is_shipping', $direction)->first();
     }
 
     /**
@@ -156,7 +163,7 @@ trait HasAddresses
      * Validate the address.
      *
      * @param  array  $attributes
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return Validator
      */
     function validateAddress(array $attributes)
     {

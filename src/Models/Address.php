@@ -261,4 +261,37 @@ class Address extends Model
 
         return '';
     }
+
+    /**
+     * Scope primary addresses
+     *
+     * @param  object  $query
+     * @return mixed
+     */
+    public function scopePrimary($query)
+    {
+        return $query->where('is_primary', true);
+    }
+
+    /**
+     * Scope billing addresses
+     *
+     * @param  object  $query
+     * @return mixed
+     */
+    public function scopeBilling($query)
+    {
+        return $query->where('is_billing', true);
+    }
+
+    /**
+     * Scope shipping addresses
+     *
+     * @param  object  $query
+     * @return mixed
+     */
+    public function scopeShipping($query)
+    {
+        return $query->where('is_shipping', true);
+    }
 }
