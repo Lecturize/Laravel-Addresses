@@ -3,16 +3,16 @@
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class Addresses
+ * Class Address
  * @package Lecturize\Addresses\Facades
  */
-class Addresses extends Facade
+class Address extends Facade
 {
     /**
      * @inheritdoc
      */
     protected static function getFacadeAccessor()
     {
-        return 'addresses';
+        return 'address';
     }
 }
