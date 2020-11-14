@@ -3,6 +3,7 @@
     "description": "Simple address and contact management for Laravel 5.",
     "homepage" : "https://github.com/Lecturize/Laravel-Addresses",
     "license": "MIT",
+    "type": "library",
     "keywords": [
         "lecturize",
         "addresses",
@@ -17,23 +18,45 @@
         }
     ],
     "require": {
-        "php"                 : ">=5.6.4|^7.0",
-        "illuminate/support"  : ">=5.3",
-        "illuminate/database" : ">=5.3",
+        "php"                 : ">=7.2",
+        "illuminate/support"  : ">=6.0",
+        "illuminate/database" : ">=6.0",
         "webpatser/laravel-countries" : "^1.5"
     },
     "require-dev": {
-        "laravel/framework" : ">=5.3",
-        "mockery/mockery" : "0.9.*",
-        "phpunit/phpunit" : "^6.0",
-        "doctrine/dbal"   : "2.5.x"
+        "laravel/framework"      : "^6.0",
+        "mockery/mockery"        : "~1.0",
+        "phpunit/phpunit"        : "^9.4",
+        "orchestra/testbench"    : "^4.10",
+        "doctrine/dbal"          : "^2.12"
     },
     "autoload": {
         "psr-4": {
             "Lecturize\\Addresses\\" : "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Lecturize\\Addresses\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "addresses": "vendor/bin/phpunit",
+        "addresses-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
     "extra": {
+        "laravel": {
+            "providers": [
+                "Lecturize\\Addresses\\AddressesServiceProvider"
+            ],
+            "aliases": {
+                "Address": "Lecturize\\Addresses\\Facades\\Address"
+            }
+        },
         "branch-alias" : {
             "dev-master" : "0.0.x-dev"
         }
