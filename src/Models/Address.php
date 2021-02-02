@@ -213,7 +213,7 @@ class Address extends Model
      */
     public function getCountry()
     {
-        if ($this->country && $country = $this->country->name)
+        if ($this->country && ($country = $this->country->name))
             return $country;
 
         return '';

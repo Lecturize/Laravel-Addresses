@@ -25,7 +25,7 @@ trait HasCountry
      * @param  integer  $id
      * @return mixed
      */
-    public function scopeByCountry( $query, $id )
+    public function scopeByCountry($query, $id)
     {
         return $query->whereHas('country', function($q) use($id) {
             $q->where('id', $id);
