@@ -6,19 +6,22 @@ return [
      */
     'addresses' => [
         /*
-         * Main table
+         * Main table.
          */
         'table' => 'addresses',
 
         /*
-         * Flag columns to be added to table
+         * Flag columns to be added to table.
+         * Custom flags might be removed in future versions
+         * in favor of the properties attribute.
          */
         'flags' => ['public', 'primary', 'billing', 'shipping'],
 
         /*
-         * Enable geocoding to add coordinates (lon/lat) to addresses
+         * Enable geocoding to add coordinates (lon/lat) to addresses.
+         * Default: false
          */
-        'geocode' => true,
+        'geocode' => false,
     ],
 
     /*
@@ -26,12 +29,14 @@ return [
      */
     'contacts' => [
         /*
-         * Main table
+         * Main table.
          */
         'table' => 'contacts',
 
         /*
-         * Flag columns to be added to table
+         * Flag columns to be added to table.
+         * Custom flags might be removed in future versions
+         * in favor of the properties attribute.
          */
         'flags' => ['public', 'primary'],
     ],
