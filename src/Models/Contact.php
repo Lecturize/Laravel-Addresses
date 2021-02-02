@@ -32,6 +32,8 @@ class Contact extends Model
         'email',
         'website',
 
+        'address_id',
+
         'notes',
         'properties',
     ];
