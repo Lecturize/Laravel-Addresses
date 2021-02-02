@@ -35,7 +35,7 @@ return [
         'city'       => 'Stadt',
         'country'    => 'Staat',
 
-        'note' => 'Anmerkung',
+        'notes' => 'Anmerkung|Anmerkungen',
 
         'route'         => 'Straße',
         'street_number' => 'Hausnummer',

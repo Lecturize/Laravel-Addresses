@@ -24,11 +24,16 @@ class Address extends Model
         'state',
         'post_code',
         'country_id',
-        'note',
+
+        'notes',
+        'properties',
+
         'lat',
         'lng',
+
         'addressable_id',
         'addressable_type',
+
         'is_public',
         'is_primary',
         'is_billing',
@@ -38,7 +43,16 @@ class Address extends Model
     /**
      * @inheritdoc
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'deleted_at',
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    protected $casts = [
+        'properties' => 'array',
+    ];
 
     /**
      * @inheritdoc

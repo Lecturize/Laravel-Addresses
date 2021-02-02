@@ -35,7 +35,7 @@ return [
         'city'       => 'City',
         'country'    => 'Country',
 
-        'note' => 'Note',
+        'notes' => 'Note|Notes',
 
         'route'         => 'Route',
         'street_number' => 'Street Number',

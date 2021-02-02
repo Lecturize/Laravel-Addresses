@@ -15,6 +15,9 @@ class AddressesServiceProvider extends ServiceProvider
         'AddStreetExtraToAddressesTable' => 'add_street_extra_to_addresses_table',
         'AddGenderToContactsTable'       => 'add_gender_to_contacts_table',
         'AddTitleToContactsTable'        => 'add_title_to_contacts_table',
+
+        'AddPropertiesToAddressesTable' => 'add_properties_to_addresses_table',
+        'AddPropertiesToContactsTable'  => 'add_properties_to_contacts_table',
     ];
 
     /**

@@ -23,19 +23,34 @@ class Contact extends Model
         'first_name',
         'middle_name',
         'last_name',
+
         'company',
+        'extra',
         'position',
+
         'phone',
         'mobile',
         'fax',
         'email',
         'website',
+
+        'notes',
+        'properties',
     ];
 
     /**
      * @inheritdoc
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'deleted_at',
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    protected $casts = [
+        'properties' => 'array',
+    ];
 
     /**
      * @inheritdoc
