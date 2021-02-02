@@ -14,9 +14,7 @@ class Contact extends Model
     use HasCountry;
     use SoftDeletes;
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     protected $fillable = [
         'gender',
         'title',
@@ -36,33 +34,38 @@ class Contact extends Model
 
         'notes',
         'properties',
-
-        'is_public',
-        'is_primary',
     ];
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     protected $dates = [
         'deleted_at',
     ];
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     protected $casts = [
         'properties' => 'array',
     ];
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
         $this->table = config('lecturize.contacts.table', 'contacts');
+        $this->updateFillables();
+    }
+
+    /**
+     * Update fillable fields dynamically.
+     *
+     * @return void.
+     */
+    private function updateFillables()
+    {
+        $fillable = $this->fillable;
+        $columns  = preg_filter('/^/', 'is_', config('lecturize.addresses.columns', ['public', 'primary', 'billing', 'shipping']));
+
+        $this->fillable(array_merge($fillable, $columns));
     }
 
     /**

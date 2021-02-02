@@ -14,9 +14,7 @@ class Address extends Model
     use HasCountry;
     use SoftDeletes;
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     protected $fillable = [
         'street',
         'street_extra',
@@ -33,35 +31,49 @@ class Address extends Model
 
         'addressable_id',
         'addressable_type',
-
-        'is_public',
-        'is_primary',
-        'is_billing',
-        'is_shipping',
     ];
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     protected $dates = [
         'deleted_at',
     ];
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     protected $casts = [
         'properties' => 'array',
     ];
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
         $this->table = config('lecturize.addresses.table', 'addresses');
+        $this->updateFillables();
+    }
+
+    /** @inheritdoc */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saving(function($address) {
+            if (config('lecturize.addresses.geocode', false))
+                $address->geocode();
+        });
+    }
+
+    /**
+     * Update fillable fields dynamically.
+     *
+     * @return void.
+     */
+    private function updateFillables()
+    {
+        $fillable = $this->fillable;
+        $columns  = preg_filter('/^/', 'is_', config('lecturize.addresses.columns', ['public', 'primary', 'billing', 'shipping']));
+
+        $this->fillable(array_merge($fillable, $columns));
     }
 
     /**
@@ -72,19 +84,6 @@ class Address extends Model
     public function addressable()
     {
         return $this->morphTo();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::saving(function($address) {
-            if (config('lecturize.addresses.geocode', false))
-                $address->geocode();
-        });
     }
 
     /**
