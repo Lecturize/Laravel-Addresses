@@ -6,41 +6,17 @@
 
 Simple address and contact management for Laravel 5 with automatical geocoding to add longitude and latitude. Uses the famous [Countries](https://github.com/webpatser/laravel-countries) package by Webpatser.
 
-## Important Notice
-
-**This package is a work in progress**, please use with care and feel free to report any issues or ideas you may have!
-
-We've transferred this package to a new owner and therefor updated the namespaces to **Lecturize\Addresses**. The config file is now `config/lecturize.php`.
-
 ## Installation
 
 Require the package from your `composer.json` file
 
 ```php
 "require": {
-	"lecturize/laravel-addresses": "dev-master"
+	"lecturize/laravel-addresses": "^1.0"
 }
 ```
 
 and run `$ composer update` or both in one with `$ composer require lecturize/laravel-addresses`.
-
-Next register the following service providers and facades to your `config/app.php` file
-
-```php
-'providers' => [
-    // Illuminate Providers ...
-    // App Providers ...
-    Lecturize\Addresses\AddressesServiceProvider::class,
-    Webpatser\Countries\CountriesServiceProvider::class,
-];
-```
-
-```php
-'aliases' => [
-	// Illuminate Facades ...
-    'Countries' => Webpatser\Countries\CountriesFacade::class,
-];
-```
 
 ## Configuration & Migration
 
@@ -55,6 +31,8 @@ This will create a `config/countries.php`, a `config/lecturize.php` and the migr
 $ php artisan countries:migration
 $ php artisan migrate
 ```
+
+For migrations to be properly published ensure that you have added the directory `database/migrations` to the classmap in your projects `composer.json`.
 
 Check out [Webpatser\Countries](https://github.com/webpatser/laravel-countries) readme to see how to seed their countries data to your database.
 
@@ -103,9 +81,9 @@ $post->addAddress($address);
 
 Available attributes are `street`, `city`, `post_code`, `state`, `country`, `state`, `note` (for internal use), `is_primary`, `is_billing` & `is_shipping`. Optionally you could also pass `lng` and `lat`, in case you deactivated the included geocoding functionality and want to add them yourself.
 
-##### Check if Model has an Address
+##### Check if Model has Addresses
 ```php
-if ($post->hasAddress()) {
+if ($post->hasAddresses()) {
     // Do something
 }
 ```
@@ -140,6 +118,11 @@ $post->deleteAddress($address); // delete by passing it as argument
 ```php
 $post->flushAddresses();
 ```
+
+## Changelog
+
+- [2021-02-02] **v1.0** The `geocode` configuration option now defaults to `false`.
+- [2021-02-02] **v1.0** The custom `flags` feature might be removed in future releases (in favour of the `properties` attribute).
 
 ## License
 
