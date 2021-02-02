@@ -25,7 +25,7 @@ class AddressesServiceProvider extends ServiceProvider
         $this->handleConfig();
         $this->handleMigrations();
 
-        $this->loadTranslationsFrom(__DIR__ .'/../resources/lang/', 'addresses');
+        $this->loadTranslationsFrom(__DIR__ .'/../resources/lang', 'addresses');
     }
 
     /**
@@ -65,14 +65,17 @@ class AddressesServiceProvider extends ServiceProvider
      */
     private function handleMigrations()
     {
+        $count = 0;
         foreach ($this->migrations as $class => $file) {
             if (! class_exists($class)) {
-                $timestamp = date('Y_m_d_His', time());
+                $timestamp = date('Y_m_d_Hi'. sprintf('%02d', $count), time());
 
                 $this->publishes([
                     __DIR__ .'/../database/migrations/'. $file .'.php.stub' =>
                         database_path('migrations/'. $timestamp .'_'. $file .'.php')
                 ], 'migrations');
+
+                $count++;
             }
         }
     }
