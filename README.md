@@ -169,7 +169,6 @@ use Lecturize\Addresses\Models\Address;
 
 $contact = Address::find(1)
                   ->contacts()
-                  ->byCountry('40')
                   ->first();
 ```
 
