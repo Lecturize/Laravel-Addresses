@@ -32,10 +32,13 @@ class Contact extends Model
         'email',
         'website',
 
-        'address_id',
-
         'notes',
         'properties',
+
+        'address_id',
+
+        'contactable_id',
+        'contactable_type',
     ];
 
     /** @inheritdoc */
@@ -78,6 +81,16 @@ class Contact extends Model
     public function contactable()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Get the address that might own this contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
     }
 
     /**

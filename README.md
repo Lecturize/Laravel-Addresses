@@ -149,10 +149,41 @@ $post->addContact([
 ]);
 ```
 
+## Relate Addresses with Contacts
+
+Above all, `addresses` and `contacts` can be connected with an optional One To Many relationship. Like so you could assign multiple contacts to an address and retrieve them like so:
+
+```php
+use Lecturize\Addresses\Models\Address;
+
+$address = Address::find(1);
+$contacts = $address->contacts;
+
+foreach ($contacts as $contact) {
+    //
+}
+```
+
+```php
+use Lecturize\Addresses\Models\Address;
+
+$contact = Address::find(1)
+                  ->comments()
+                  ->byCountry('40')
+                  ->first();
+```
+
+```php
+use Lecturize\Addresses\Models\Contact;
+
+$contact = Contact::find(1);
+
+return $contact->address->getHtml();
+```
+
 ## Changelog
 
 - [2021-02-02] **v1.0** The `geocode` configuration option now defaults to `false`.
-- [2021-02-02] **v1.0** The custom `flags` feature might be removed in future releases (in favour of the `properties` attribute).
 
 ## License
 

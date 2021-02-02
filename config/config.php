@@ -12,8 +12,6 @@ return [
 
         /*
          * Flag columns to be added to table.
-         * Custom flags might be removed in future versions
-         * in favor of the properties attribute.
          */
         'flags' => ['public', 'primary', 'billing', 'shipping'],
 
@@ -35,8 +33,6 @@ return [
 
         /*
          * Flag columns to be added to table.
-         * Custom flags might be removed in future versions
-         * in favor of the properties attribute.
          */
         'flags' => ['public', 'primary'],
     ],

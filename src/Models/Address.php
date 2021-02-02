@@ -87,6 +87,16 @@ class Address extends Model
     }
 
     /**
+     * Get the related contacts.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    /**
      * Get the validation rules.
      *
      * @return array
