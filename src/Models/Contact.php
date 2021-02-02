@@ -36,6 +36,9 @@ class Contact extends Model
 
         'notes',
         'properties',
+
+        'is_public',
+        'is_primary',
     ];
 
     /**
