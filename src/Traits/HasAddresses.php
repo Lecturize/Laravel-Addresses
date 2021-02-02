@@ -25,13 +25,24 @@ trait HasAddresses
     }
 
     /**
+     * Check if model has addresses.
+     *
+     * @return bool
+     */
+    public function hasAddresses()
+    {
+        return (bool) count($this->addresses);
+    }
+
+    /**
      * Check if model has an address.
+     * @deprecated Use hasAddresses() instead.
      *
      * @return bool
      */
     public function hasAddress()
     {
-        return (bool) $this->addresses()->count();
+        return $this->hasAddresses();
     }
 
     /**
@@ -75,10 +86,7 @@ trait HasAddresses
      */
     public function deleteAddress(Address $address)
     {
-        if ($this !== $address->addressable()->first())
-            return false;
-
-        return $address->delete();
+        return $this->addresses()->where('id', $address->id)->delete();
     }
 
     /**
@@ -99,7 +107,10 @@ trait HasAddresses
      */
     public function getPrimaryAddress($direction = 'desc')
     {
-        return $this->addresses()->primary()->orderBy('is_primary', $direction)->first();
+        return $this->addresses()
+                    ->primary()
+                    ->orderBy('is_primary', $direction)
+                    ->first();
     }
 
     /**
