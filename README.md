@@ -44,6 +44,7 @@ First, add our `HasAddresses` trait to your model.
 <?php namespace App\Models;
 
 use Lecturize\Addresses\Traits\HasAddresses;
+use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
@@ -79,7 +80,7 @@ $address = [
 $post->addAddress($address);
 ```
 
-Available attributes are `street`, `city`, `post_code`, `state`, `country`, `state`, `note` (for internal use), `is_primary`, `is_billing` & `is_shipping`. Optionally you could also pass `lng` and `lat`, in case you deactivated the included geocoding functionality and want to add them yourself.
+Available attributes are `street`, `street_extra`, `city`, `post_code`, `state`, `country`, `state`, `notes` (for internal use). You can also use custom flags like `is_primary`, `is_billing` & `is_shipping`. Optionally you could also pass `lng` and `lat`, in case you deactivated the included geocoding functionality and want to add them yourself.
 
 ##### Check if Model has Addresses
 ```php
@@ -117,6 +118,35 @@ $post->deleteAddress($address); // delete by passing it as argument
 ##### Delete all Addresses from a Model
 ```php
 $post->flushAddresses();
+```
+
+## Contacts
+
+First, add our `HasContacts` trait to your model.
+
+```php
+<?php namespace App\Models;
+
+use Lecturize\Addresses\Traits\HasContacts;
+use Illuminate\Database\Eloquent\Model;
+
+class Team extends Model
+{
+    use HasContacts;
+
+    // ...
+}
+?>
+```
+
+##### Add a Contact to a Model
+```php
+$post = Team::find(1);
+$post->addContact([
+    'first_name' => 'Alex',
+    'website'    => 'https://twitter.com/AMPoellmann',
+    'is_primary' => true, // optional flag
+]);
 ```
 
 ## Changelog
