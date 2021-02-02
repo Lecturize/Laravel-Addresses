@@ -77,13 +77,13 @@ trait HasContacts
     }
 
     /**
-     * Deletes all the contactes of this model.
+     * Deletes all the contacts of this model.
      *
      * @return bool
      */
     public function flushContacts()
     {
-        return $this->contactes()->delete();
+        return $this->contacts()->delete();
     }
 
     /**
