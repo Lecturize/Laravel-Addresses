@@ -168,7 +168,7 @@ foreach ($contacts as $contact) {
 use Lecturize\Addresses\Models\Address;
 
 $contact = Address::find(1)
-                  ->comments()
+                  ->contacts()
                   ->byCountry('40')
                   ->first();
 ```
