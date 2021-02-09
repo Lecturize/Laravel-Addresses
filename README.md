@@ -4,7 +4,7 @@
 
 # Laravel Addresses
 
-Simple address and contact management for Laravel 5 with automatical geocoding to add longitude and latitude. Uses the famous [Countries](https://github.com/webpatser/laravel-countries) package by Webpatser.
+Simple address and contact management for Laravel with automatical geocoding to add longitude and latitude. Uses the famous [Countries](https://github.com/webpatser/laravel-countries) package by Webpatser.
 
 ## Installation
 
@@ -25,7 +25,7 @@ $ php artisan vendor:publish --provider="Webpatser\Countries\CountriesServicePro
 $ php artisan vendor:publish --provider="Lecturize\Addresses\AddressesServiceProvider"
 ```
 
-This will create a `config/countries.php`, a `config/lecturize.php` and the migration files, that you'll have to run like so:
+This will publish a `config/countries.php`, a `config/lecturize.php` and some migration files, that you'll have to run:
 
 ```bash
 $ php artisan countries:migration
