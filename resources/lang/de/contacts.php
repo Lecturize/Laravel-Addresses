@@ -20,6 +20,7 @@ return [
         'company'     => 'Firma',
         'extra'       => 'Zusatz',
         'position'    => 'Funktion',
+        'vat-id'      => 'UID-Nummer',
 
         'gender' => 'Geschlecht',
 

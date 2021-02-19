@@ -23,10 +23,14 @@ return [
 
     'shipping' => [
         'title' => 'Lieferadresse|Lieferadressen',
+
+        'same-as-billing' => 'Lieferadresse entspricht Rechnungsadresse',
     ],
 
     'delivery' => [
         'title' => 'Zustelladresse|Zustelladressen',
+
+        'same-as-billing' => 'Zustelladresse entspricht Rechnungsadresse',
     ],
 
     'fields' => [

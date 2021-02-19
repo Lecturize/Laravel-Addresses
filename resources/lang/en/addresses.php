@@ -23,10 +23,14 @@ return [
 
     'shipping' => [
         'title' => 'Shipping Address|Shipping Addresses',
+
+        'same-as-billing' => 'Shipping address is same as billing address',
     ],
 
     'delivery' => [
         'title' => 'Delivery Address|Delivery Addresses',
+
+        'same-as-billing' => 'Delivery address is same as billing address',
     ],
 
     'fields' => [

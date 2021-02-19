@@ -20,6 +20,7 @@ return [
         'company'     => 'Company',
         'extra'       => 'Extra',
         'position'    => 'Position',
+        'vat-id'      => 'VAT-ID',
 
         'gender' => 'Gender',
 
