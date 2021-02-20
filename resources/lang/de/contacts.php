@@ -32,18 +32,26 @@ return [
     ],
 
     'salutation' => [
+        'title' => 'Anrede',
+
         'm' => 'Herr',
         'f' => 'Frau',
         'x' => '',
     ],
 
     'greetings' => [
+        'title' => 'Begrüßungsformel',
+
         'formal' => [
+            'title' => 'Formale Begrüßung',
+
             'm' => 'Sehr geehrter Herr',
             'f' => 'Sehr geehrte Frau',
             'x' => '',
         ],
         'informal' => [
+            'title' => 'Informelle Begrüßung',
+
             'm' => 'Lieber Herr',
             'f' => 'Liebe Frau',
             'x' => '',

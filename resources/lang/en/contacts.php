@@ -32,18 +32,26 @@ return [
     ],
 
     'salutation' => [
+        'title' => 'Salutation',
+
         'm' => 'Mr.',
         'f' => 'Mrs.',
         'x' => '',
     ],
 
     'greetings' => [
+        'title' => 'Greeting',
+
         'formal' => [
+            'title' => 'Formal Greeting',
+
             'm' => 'Dear Mr.',
             'f' => 'Dear Mrs.',
             'x' => '',
         ],
         'informal' => [
+            'title' => 'Informal Greeting',
+
             'm' => 'Hello Mr.',
             'f' => 'Hello Mrs.',
             'x' => '',
