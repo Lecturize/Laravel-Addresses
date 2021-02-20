@@ -32,6 +32,8 @@ class Contact extends Model
         'email',
         'website',
 
+        'vat_id',
+
         'notes',
         'properties',
 
