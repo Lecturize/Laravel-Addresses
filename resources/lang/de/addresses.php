@@ -13,6 +13,11 @@ return [
 
     'ajax-search' => 'Bitte Adresse eingeben...',
 
+    'autocomplete' => [
+        'placeholder' => 'Adresse eintippen um Vorschläge zu laden...',
+        'reset'       => 'zurücksetzen',
+    ],
+
     'primary' => [
         'title' => 'Hauptadresse|Hauptadressen',
     ],
@@ -37,6 +42,7 @@ return [
         'street'     => 'Straße & Hausnummer',
         'post_code'  => 'PLZ',
         'city'       => 'Stadt',
+        'state'      => 'Land',
         'country'    => 'Staat',
 
         'notes' => 'Anmerkung|Anmerkungen',

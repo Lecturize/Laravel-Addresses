@@ -13,6 +13,11 @@ return [
 
     'ajax-search' => 'Start typing an address...',
 
+    'autocomplete' => [
+        'placeholder' => 'Start typing an address to load suggestions...',
+        'reset'       => 'Reset',
+    ],
+
     'primary' => [
         'title' => 'Main Address|Main Addresses',
     ],
@@ -37,6 +42,7 @@ return [
         'street'     => 'Street & Number',
         'post_code'  => 'Post Code',
         'city'       => 'City',
+        'state'      => 'State',
         'country'    => 'Country',
 
         'notes' => 'Note|Notes',
