@@ -19,7 +19,8 @@ class AddressesServiceProvider extends ServiceProvider
         'AddPropertiesToAddressesTable' => 'add_properties_to_addresses_table',
         'AddPropertiesToContactsTable'  => 'add_properties_to_contacts_table',
 
-        'AddUserIdToAddressesTable' => 'add_user_id_to_addresses_table',
+        'AddUserIdToAddressesTable'          => 'add_user_id_to_addresses_table',
+        'AddUuidToAddressesAndContactsTable' => 'add_uuid_to_addresses_and_contacts_table',
     ];
 
     /**

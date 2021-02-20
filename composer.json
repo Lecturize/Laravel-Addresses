@@ -22,6 +22,7 @@
         "illuminate/support"          : "^6.0|^7.0|^8.0",
         "illuminate/database"         : "^6.0|^7.0|^8.0",
         "webpatser/laravel-countries" : "^1.5",
+        "webpatser/laravel-uuid"      : "^3.0|^4.0",
         "ext-json": "*"
     },
     "require-dev": {

@@ -29,10 +29,9 @@ class Address extends Model
         'lat',
         'lng',
 
-        'user_id',
-
-        'addressable_id',
         'addressable_type',
+        'addressable_id',
+        'user_id',
     ];
 
     /** @inheritdoc */
@@ -58,6 +57,13 @@ class Address extends Model
     public static function boot()
     {
         parent::boot();
+
+        static::creating(function ($model) {
+            if ($model->getConnection()
+                      ->getSchemaBuilder()
+                      ->hasColumn($model->getTable(), 'uuid'))
+                $model->uuid = \Webpatser\Uuid\Uuid::generate()->string;
+        });
 
         static::saving(function($address) {
             if (config('lecturize.addresses.geocode', false))
