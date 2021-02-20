@@ -18,6 +18,8 @@ class AddressesServiceProvider extends ServiceProvider
 
         'AddPropertiesToAddressesTable' => 'add_properties_to_addresses_table',
         'AddPropertiesToContactsTable'  => 'add_properties_to_contacts_table',
+
+        'AddUserIdToAddressesTable' => 'add_user_id_to_contacts_table',
     ];
 
     /**

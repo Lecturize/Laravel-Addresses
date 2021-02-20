@@ -29,6 +29,8 @@ class Address extends Model
         'lat',
         'lng',
 
+        'user_id',
+
         'addressable_id',
         'addressable_type',
     ];
@@ -94,6 +96,16 @@ class Address extends Model
     public function contacts()
     {
         return $this->hasMany(Contact::class);
+    }
+
+    /**
+     * Get the user this address belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(config('lecturize.addresses.users.model', config('auth.providers.users.model', 'App\Models\Users\User')));
     }
 
     /**
