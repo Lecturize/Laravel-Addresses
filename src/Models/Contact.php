@@ -30,6 +30,7 @@ class Contact extends Model
         'mobile',
         'fax',
         'email',
+        'email_invoice',
         'website',
 
         'vat_id',

@@ -22,6 +22,7 @@ class AddressesServiceProvider extends ServiceProvider
         'AddUserIdToAddressesTable'          => 'add_user_id_to_addresses_table',
         'AddUuidToAddressesAndContactsTable' => 'add_uuid_to_addresses_and_contacts_table',
         'AddVatIdToContactsTable'            => 'add_vat_id_to_contacts_table',
+        'AddEmailInvoiceToContactsTable'     => 'add_email_invoice_to_contacts_table',
     ];
 
     /**
