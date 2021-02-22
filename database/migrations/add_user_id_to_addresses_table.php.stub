@@ -35,7 +35,7 @@ class AddUserIdToAddressesTable extends Migration
     public function up()
     {
         Schema::table($this->table, function(Blueprint $table) {
-            $table->integer('user_id')->unsigned()->index()->after('addressable_id');
+            $table->integer('user_id')->nullable()->unsigned()->index()->after('addressable_id');
             $table->foreign('user_id')
                   ->references('id')
                   ->on($this->table_users);
