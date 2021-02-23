@@ -8,6 +8,7 @@ return [
     'browse' => 'Alle Adressen ansehen',
     'latest' => 'Neueste Adressen',
     'view'   => 'Adresse ansehen|Adressen ansehen',
+    'new'    => 'Neue Adresse|Neue Adressen',
     'none'   => 'Keine Adresse hinterlegt',
     'search' => 'Adresse suchen|Adressen suchen',
 
@@ -24,16 +25,19 @@ return [
 
     'billing' => [
         'title' => 'Rechnungsadresse|Rechnungsadressen',
+        'new'   => 'Neue Rechnungsadresse|Neue Rechnungsadressen',
     ],
 
     'shipping' => [
         'title' => 'Lieferadresse|Lieferadressen',
+        'new'   => 'Neue Lieferadresse|Neue Lieferadressen',
 
         'same-as-billing' => 'Lieferadresse entspricht Rechnungsadresse',
     ],
 
     'delivery' => [
         'title' => 'Zustelladresse|Zustelladressen',
+        'new'   => 'Neue Zustelladresse|Neue Zustelladressen',
 
         'same-as-billing' => 'Zustelladresse entspricht Rechnungsadresse',
     ],
