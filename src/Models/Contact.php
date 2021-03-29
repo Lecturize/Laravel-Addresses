@@ -1,6 +1,8 @@
 <?php namespace Lecturize\Addresses\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Lecturize\Addresses\Traits\HasCountry;
@@ -8,6 +10,25 @@ use Lecturize\Addresses\Traits\HasCountry;
 /**
  * Class Contact
  * @package Lecturize\Addresses\Models
+ * @property string|null   $gender
+ * @property string|null   $title
+ * @property string|null   $first_name
+ * @property string|null   $middle_name
+ * @property string|null   $last_name
+ * @property string|null   $company
+ * @property string|null   $extra
+ * @property string|null   $position
+ * @property string|null   $phone
+ * @property string|null   $mobile
+ * @property string|null   $fax
+ * @property string|null   $email
+ * @property string|null   $email_invoice
+ * @property string|null   $website
+ * @property string|null   $vat_id
+ * @property string|null   $notes
+ * @property array|null    $properties
+ * @property int|null      $address_id
+ * @property Address|null  $address
  */
 class Contact extends Model
 {
@@ -79,9 +100,9 @@ class Contact extends Model
     /**
      * Update fillable fields dynamically.
      *
-     * @return void.
+     * @return void
      */
-    private function updateFillables()
+    private function updateFillables(): void
     {
         $fillable = $this->fillable;
         $columns  = preg_filter('/^/', 'is_', config('lecturize.addresses.columns', ['public', 'primary', 'billing', 'shipping']));
@@ -92,9 +113,9 @@ class Contact extends Model
     /**
      * Get the related model.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return MorphTo
      */
-    public function contactable()
+    public function contactable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -102,9 +123,9 @@ class Contact extends Model
     /**
      * Get the address that might own this contact.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function address()
+    public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
     }
@@ -114,20 +135,18 @@ class Contact extends Model
      *
      * @return array
      */
-    public static function getValidationRules()
+    public static function getValidationRules(): array
     {
-        $rules = [];
-
-        return $rules;
+        return config('lecturize.contacts.rules', []);
     }
 
     /**
      * Get the contacts full name.
      *
-     * @param  bool $show_salutation
+     * @param  bool  $show_salutation
      * @return string
      */
-    public function getFullNameAttribute($show_salutation = false)
+    public function getFullNameAttribute(bool $show_salutation = false): string
     {
         $names = [];
         $names[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.'. $this->gender) : '';
@@ -141,10 +160,10 @@ class Contact extends Model
     /**
      * Get the contacts full name, reversed.
      *
-     * @param  bool $show_salutation
+     * @param  bool  $show_salutation
      * @return string
      */
-    public function getFullNameRevAttribute($show_salutation = false)
+    public function getFullNameRevAttribute(bool $show_salutation = false): string
     {
         $first = [];
         $first[] = $this->first_name  ?: '';

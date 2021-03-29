@@ -1,19 +1,24 @@
 <?php namespace Lecturize\Addresses\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 use Webpatser\Countries\Countries;
 
 /**
  * Class HasCountry
  * @package Lecturize\Addresses\Traits;
+ * @property int|null        $country_id
+ * @property Countries|null  $country
  */
 trait HasCountry
 {
     /**
      * Get the models country.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function country()
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Countries::class);
     }
@@ -21,11 +26,11 @@ trait HasCountry
     /**
      * Scope by country.
      *
-     * @param  object   $query
-     * @param  integer  $id
-     * @return mixed
+     * @param  Builder  $query
+     * @param  int      $id
+     * @return Builder
      */
-    public function scopeByCountry($query, $id)
+    public function scopeByCountry(Builder $query, int $id): Builder
     {
         return $query->whereHas('country', function($q) use($id) {
             $q->where('id', $id);

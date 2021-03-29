@@ -1,12 +1,14 @@
 <?php namespace Lecturize\Addresses\Traits;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
+
 use Lecturize\Addresses\Models\Address;
 
 /**
  * Class OwnsAddresses
  * @package Lecturize\Addresses\Traits
+ * @property Collection  $addresses
  */
 trait OwnsAddresses
 {
@@ -15,7 +17,7 @@ trait OwnsAddresses
      *
      * @return HasMany
      */
-    public function addresses()
+    public function addresses(): HasMany
     {
         return $this->hasMany(Address::class);
     }
@@ -25,9 +27,11 @@ trait OwnsAddresses
      *
      * @return Address[]|Collection
      */
-    public function getBillingAddresses()
+    public function getBillingAddresses(): Collection
     {
-        return $this->addresses()->where('is_billing', true)->get();
+        return $this->addresses()
+                    ->where('is_billing', true)
+                    ->get();
     }
 
     /**
@@ -35,8 +39,10 @@ trait OwnsAddresses
      *
      * @return Address[]|Collection
      */
-    public function getShippingAddresses()
+    public function getShippingAddresses(): Collection
     {
-        return $this->addresses()->where('is_shipping', true)->get();
+        return $this->addresses()
+                    ->where('is_shipping', true)
+                    ->get();
     }
 }

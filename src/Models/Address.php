@@ -1,6 +1,11 @@
 <?php namespace Lecturize\Addresses\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Lecturize\Addresses\Traits\HasCountry;
@@ -8,6 +13,19 @@ use Lecturize\Addresses\Traits\HasCountry;
 /**
  * Class Address
  * @package Lecturize\Addresses\Models
+ * @property string|null  $street
+ * @property string|null  $street_extra
+ * @property string|null  $city
+ * @property string|null  $state
+ * @property string|null  $post_code
+ * @property string|null  $country_name
+ * @property string|null  $notes
+ * @property array|null   $properties
+ * @property string|null  $lat
+ * @property string|null  $lng
+ * @property Model|null   $addressable
+ * @property Collection   $contacts
+ * @property Model|null   $user
  */
 class Address extends Model
 {
@@ -87,9 +105,9 @@ class Address extends Model
     /**
      * Get the related model.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return MorphTo
      */
-    public function addressable()
+    public function addressable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -97,9 +115,9 @@ class Address extends Model
     /**
      * Get the related contacts.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function contacts()
+    public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
     }
@@ -107,9 +125,9 @@ class Address extends Model
     /**
      * Get the user this address belongs to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(config('lecturize.addresses.users.model', config('auth.providers.users.model', 'App\Models\Users\User')));
     }
@@ -119,18 +137,18 @@ class Address extends Model
      *
      * @return array
      */
-    public static function getValidationRules()
+    public static function getValidationRules(): array
     {
-        $rules = [
+        $rules = config('lecturize.addresses.rules', [
             'street'       => 'required|string|min:3|max:60',
             'street_extra' => 'nullable|string|min:3|max:60',
             'city'         => 'required|string|min:3|max:60',
             'state'        => 'nullable|string|min:3|max:60',
             'post_code'    => 'required|min:4|max:10|AlphaDash',
             'country_id'   => 'required|integer',
-        ];
+        ]);
 
-        foreach(config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag)
+        foreach (config('lecturize.addresses.flags', ['public', 'primary', 'billing', 'shipping']) as $flag)
             $rules['is_'.$flag] = 'boolean';
 
         return $rules;
@@ -141,7 +159,7 @@ class Address extends Model
      *
      * @return $this
      */
-    public function geocode()
+    public function geocode(): self
     {
         if (! ($query = $this->getQueryString()))
             return $this;
@@ -167,7 +185,7 @@ class Address extends Model
      *
      * @return string
      */
-    public function getQueryString()
+    public function getQueryString(): string
     {
         $query = [];
         $query[] = $this->street       ?: '';
@@ -187,7 +205,7 @@ class Address extends Model
      *
      * @return array
      */
-    public function getArray()
+    public function getArray(): array
     {
         $address = $two = [];
 
@@ -203,7 +221,7 @@ class Address extends Model
         if (count($address = array_filter($address)) > 0)
             return $address;
 
-        return null;
+        return [];
     }
 
     /**
@@ -211,12 +229,12 @@ class Address extends Model
      *
      * @return string
      */
-    public function getHtml()
+    public function getHtml(): string
     {
         if ($address = $this->getArray())
             return '<address>'. implode('<br />', array_filter($address)) .'</address>';
 
-        return null;
+        return '';
     }
 
     /**
@@ -225,12 +243,12 @@ class Address extends Model
      * @param  string  $glue
      * @return string
      */
-    public function getLine($glue = ', ')
+    public function getLine($glue = ', '): string
     {
         if ($address = $this->getArray())
             return implode($glue, array_filter($address));
 
-        return null;
+        return '';
     }
 
     /**
@@ -239,7 +257,7 @@ class Address extends Model
      *
      * @return string
      */
-    public function getCountry()
+    public function getCountry(): string
     {
         if ($this->country && ($country = $this->country->name))
             return $country;
@@ -252,7 +270,7 @@ class Address extends Model
      *
      * @return string
      */
-    public function getCountryNameAttribute()
+    public function getCountryNameAttribute(): string
     {
         if ($this->country)
             return $this->country->name;
@@ -266,7 +284,7 @@ class Address extends Model
      * @param  int  $digits
      * @return string
      */
-    public function getCountryCodeAttribute($digits = 2)
+    public function getCountryCodeAttribute($digits = 2): string
     {
         if (! $this->country)
             return '';
@@ -282,7 +300,7 @@ class Address extends Model
      *
      * @return string
      */
-    public function getRouteAttribute()
+    public function getRouteAttribute(): string
     {
         if (preg_match('/([^\d]+)\s?(.+)/i', $this->street, $result))
             return $result[1];
@@ -295,7 +313,7 @@ class Address extends Model
      *
      * @return string
      */
-    public function getStreetNumberAttribute()
+    public function getStreetNumberAttribute(): string
     {
         if (preg_match('/([^\d]+)\s?(.+)/i', $this->street, $result))
             return $result[2];
@@ -306,10 +324,10 @@ class Address extends Model
     /**
      * Scope primary addresses
      *
-     * @param  object  $query
-     * @return mixed
+     * @param  Builder  $query
+     * @return Builder
      */
-    public function scopePrimary($query)
+    public function scopePrimary(Builder $query): Builder
     {
         return $query->where('is_primary', true);
     }
@@ -317,10 +335,10 @@ class Address extends Model
     /**
      * Scope billing addresses
      *
-     * @param  object  $query
-     * @return mixed
+     * @param  Builder  $query
+     * @return Builder
      */
-    public function scopeBilling($query)
+    public function scopeBilling(Builder $query): Builder
     {
         return $query->where('is_billing', true);
     }
@@ -328,10 +346,10 @@ class Address extends Model
     /**
      * Scope shipping addresses
      *
-     * @param  object  $query
-     * @return mixed
+     * @param  Builder  $query
+     * @return Builder
      */
-    public function scopeShipping($query)
+    public function scopeShipping(Builder $query): Builder
     {
         return $query->where('is_shipping', true);
     }

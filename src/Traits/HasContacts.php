@@ -1,20 +1,26 @@
 <?php namespace Lecturize\Addresses\Traits;
 
+use Exception;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Collection;
+
 use Lecturize\Addresses\Models\Contact;
 use Lecturize\Addresses\Exceptions\FailedValidationException;
 
 /**
  * Class HasContacts
  * @package Lecturize\Addresses\Traits
+ * @property Collection  $contacts
  */
 trait HasContacts
 {
     /**
      * Get all contacts for this model.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
-    public function contacts()
+    public function contacts(): MorphMany
     {
         return $this->morphMany(Contact::class, 'contactable');
     }
@@ -24,7 +30,7 @@ trait HasContacts
      *
      * @return bool
      */
-    public function hasContacts()
+    public function hasContacts(): bool
     {
         return (bool) $this->contacts()->count();
     }
@@ -34,8 +40,7 @@ trait HasContacts
      *
      * @param  array  $attributes
      * @return mixed
-     *
-     * @throws \Exception
+     * @throws Exception
      */
     public function addContact(array $attributes)
     {
@@ -50,10 +55,9 @@ trait HasContacts
      * @param  Contact  $contact
      * @param  array    $attributes
      * @return bool
-     *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function updateContact(Contact $contact, array $attributes)
+    public function updateContact(Contact $contact, array $attributes): bool
     {
         $attributes = $this->loadContactAttributes($attributes);
 
@@ -65,10 +69,9 @@ trait HasContacts
      *
      * @param  Contact  $contact
      * @return bool
-     *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function deleteContact(Contact $contact)
+    public function deleteContact(Contact $contact): bool
     {
         if ($this !== $contact->contactable()->first())
             return false;
@@ -81,7 +84,7 @@ trait HasContacts
      *
      * @return bool
      */
-    public function flushContacts()
+    public function flushContacts(): bool
     {
         return $this->contacts()->delete();
     }
@@ -93,7 +96,7 @@ trait HasContacts
      * @return array
      * @throws FailedValidationException
      */
-    public function loadContactAttributes(array $attributes)
+    public function loadContactAttributes(array $attributes): array
     {
         // run validation
         $validator = $this->validateContact($attributes);
@@ -112,9 +115,9 @@ trait HasContacts
      * Validate the contact.
      *
      * @param  array  $attributes
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return Validator
      */
-    function validateContact(array $attributes)
+    function validateContact(array $attributes): Validator
     {
         $rules = Contact::getValidationRules();
 

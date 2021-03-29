@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
  */
 class AddressesServiceProvider extends ServiceProvider
 {
+    /** @var string[]|array */
     protected $migrations = [
         'CreateAddressesTable' => 'create_addresses_table',
         'CreateContactsTable'  => 'create_contacts_table',
@@ -25,9 +26,6 @@ class AddressesServiceProvider extends ServiceProvider
         'AddEmailInvoiceToContactsTable'     => 'add_email_invoice_to_contacts_table',
     ];
 
-    /**
-     * @inheritdoc
-     */
     public function boot()
     {
         $this->handleConfig();
@@ -36,18 +34,14 @@ class AddressesServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__ .'/../resources/lang', 'addresses');
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function register()
     {
         //
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function provides()
+    /** @inheritdoc */
+    public function provides(): array
     {
         return [];
     }
