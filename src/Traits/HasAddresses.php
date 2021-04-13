@@ -13,7 +13,7 @@ use Webpatser\Countries\Countries;
 /**
  * Class HasAddresses
  * @package Lecturize\Addresses\Traits
- * @property Collection  $addresses
+ * @property Collection|Address[]  $addresses
  */
 trait HasAddresses
 {

@@ -11,7 +11,7 @@ use Lecturize\Addresses\Exceptions\FailedValidationException;
 /**
  * Class HasContacts
  * @package Lecturize\Addresses\Traits
- * @property Collection  $contacts
+ * @property Collection|Contact[]  $contacts
  */
 trait HasContacts
 {

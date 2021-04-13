@@ -4,22 +4,34 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Collection;
 
 use Lecturize\Addresses\Models\Address;
+use Lecturize\Addresses\Models\Contact;
 
 /**
  * Class OwnsAddresses
  * @package Lecturize\Addresses\Traits
- * @property Collection  $addresses
+ * @property Collection|Address[]  $addresses
+ * @property Collection|Contact[]  $contacts
  */
 trait OwnsAddresses
 {
     /**
-     * Get all addresses for this model.
+     * Get all addresses this model owns.
      *
      * @return HasMany
      */
     public function addresses(): HasMany
     {
         return $this->hasMany(Address::class);
+    }
+
+    /**
+     * Get all contacts this model owns.
+     *
+     * @return HasMany
+     */
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
     }
 
     /**
