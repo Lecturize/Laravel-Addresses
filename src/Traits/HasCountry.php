@@ -10,6 +10,7 @@ use Webpatser\Countries\Countries;
  * @package Lecturize\Addresses\Traits;
  * @property int|null        $country_id
  * @property Countries|null  $country
+ * @property string          $country_code
  */
 trait HasCountry
 {
@@ -21,6 +22,19 @@ trait HasCountry
     public function country(): BelongsTo
     {
         return $this->belongsTo(Countries::class);
+    }
+
+    /**
+     * Get the models country code.
+     *
+     * @return string
+     */
+    public function getCountryCodeAttribute(): string
+    {
+        if ($country = $this->country)
+            return $country->iso_3166_2;
+
+        return '';
     }
 
     /**
