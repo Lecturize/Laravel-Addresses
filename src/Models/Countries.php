@@ -1,6 +1,5 @@
 <?php namespace Lecturize\Addresses\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Sushi\Sushi;
 
