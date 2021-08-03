@@ -27,7 +27,6 @@ $ php artisan vendor:publish --provider="Lecturize\Addresses\AddressesServicePro
 This will publish a `config/countries.php`, a `config/lecturize.php` and some migration files, that you'll have to run:
 
 ```bash
-$ php artisan countries:migration
 $ php artisan migrate
 ```
 
