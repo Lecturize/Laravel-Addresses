@@ -21,7 +21,7 @@ trait HasCountry
      */
     public function country(): BelongsTo
     {
-        return $this->belongsTo(Countries::class);
+        return $this->belongsTo(Country::class);
     }
 
     /**
