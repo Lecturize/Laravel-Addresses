@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-use Webpatser\Countries\Countries;
+use Lecturize\Addresses\Models\Countries;
 
 /**
  * Class HasCountry
