@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Sushi\Sushi;
 
-class Countries extends Model
+class Country extends Model
 {
     use Sushi;
 
