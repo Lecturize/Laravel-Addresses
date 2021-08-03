@@ -21,7 +21,6 @@ and run `$ composer update` or both in one with `$ composer require lecturize/la
 ## Configuration & Migration
 
 ```bash
-$ php artisan vendor:publish --provider="Webpatser\Countries\CountriesServiceProvider"
 $ php artisan vendor:publish --provider="Lecturize\Addresses\AddressesServiceProvider"
 ```
 
@@ -31,10 +30,6 @@ This will publish a `config/countries.php`, a `config/lecturize.php` and some mi
 $ php artisan countries:migration
 $ php artisan migrate
 ```
-
-For migrations to be properly published ensure that you have added the directory `database/migrations` to the classmap in your projects `composer.json`.
-
-Check out [Webpatser\Countries](https://github.com/webpatser/laravel-countries) readme to see how to seed their countries data to your database.
 
 ## Usage
 
