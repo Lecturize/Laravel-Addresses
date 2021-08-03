@@ -6,7 +6,6 @@ use Sushi\Sushi;
 
 class Countries extends Model
 {
-    use HasFactory;
     use Sushi;
 
     protected $rows = [
