@@ -4,7 +4,7 @@
 
 # Laravel Addresses
 
-Simple address and contact management for Laravel with automatical geocoding to add longitude and latitude. Uses the famous [Countries](https://github.com/webpatser/laravel-countries) package by Webpatser.
+Simple address and contact management for Laravel with automatical geocoding to add longitude and latitude.
 
 ## Installation
 
