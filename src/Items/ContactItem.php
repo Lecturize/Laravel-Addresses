@@ -12,9 +12,15 @@ class ContactItem
      */
     protected $data;
 
+    /**
+     * @param object|string $data
+     */
     public function __construct($data)
     {
-        $this->data = json_decode($data);
+        $this->data = $data;
+        if (is_string($data)) {
+            $this->data = json_decode($data);
+        }
     }
 
     /**
@@ -31,6 +37,31 @@ class ContactItem
         if (isset($this->data->$name)) {
             return $this->data->$name;
         }
-        return null;
+        return $this->defaults($name);
+    }
+
+    /**
+     * @param mixed $name
+     *
+     * @return mixed|null
+     */
+    protected function defaults($name)
+    {
+        $defs = ['type' => 'email', 'value' => null]; //@todo move to config
+        if (!in_array($name, $defs)) {
+            return null;
+        }
+        return $defs[$name];
+    }
+
+    public static function newCollection($data)
+    {
+        if (is_string($data)) {
+            $data = json_decode($data);
+        }
+
+        return collect($data)->map(function ($item) {
+            return new self($item);
+        });
     }
 }
