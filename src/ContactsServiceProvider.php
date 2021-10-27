@@ -13,6 +13,7 @@ class ContactsServiceProvider extends ServiceProvider
     /** @var string[]|array */
     protected $migrations = [
         'CreateContactsTable'  => 'create_contacts_table',
+        'CreateContactValuesTable' => 'create_contact_values_table',
     ];
 
     public function boot()
