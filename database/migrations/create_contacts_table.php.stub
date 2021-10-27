@@ -21,7 +21,7 @@ class CreateContactsTable extends Migration
      */
     public function __construct()
     {
-        $this->table = config('contacts.table', 'contacts');
+        $this->table = config('contacts.tables.main', 'contacts');
     }
 
     /**
@@ -34,36 +34,26 @@ class CreateContactsTable extends Migration
         Schema::create($this->table, function(Blueprint $table)
         {
             $table->increments('id');
+            $table->uuid('uuid')->nullable()->after('id');
 
-            $table->string('type', 20)->default('default');
+            $table->enum('type', config('contacts.types', ['personal', 'business']))->default('personal');
+            $table->string('title', 20)->nullable();
 
             $table->string('first_name',  20)->nullable();
             $table->string('middle_name', 20)->nullable();
             $table->string('last_name',   20)->nullable();
 
-            $table->string('company',  60)->nullable();
-            $table->string('position', 60)->nullable();
+            $table->string('company',  255)->nullable();
+            $table->string(config('contacts.tax_column', 'vat_id'))->nullable();
 
-            $table->string('phone',    32)->nullable();
-            $table->string('mobile',   32)->nullable();
-            $table->string('fax',      32)->nullable();
-            $table->string('email',    60)->nullable();
-            $table->string('website', 100)->nullable();
-
-            $table->integer('address_id')
-                  ->nullable()
-                  ->unsigned()
-                  ->references('id')
-                  ->on(config('addresses.table', 'addresses'));
+            $table->string('extra',    255)->nullable();
+            $table->string('position', 255)->nullable();
 
             $table->nullableMorphs('contactable');
 
-            foreach(config('contacts.flags', ['public', 'primary']) as $flag) {
-                $table->boolean('is_'. $flag)->default(false)->index();
-            }
-
+            
             $table->longText('notes')->nullable();
-
+            $table->text('properties')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

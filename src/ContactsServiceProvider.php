@@ -13,15 +13,6 @@ class ContactsServiceProvider extends ServiceProvider
     /** @var string[]|array */
     protected $migrations = [
         'CreateContactsTable'  => 'create_contacts_table',
-
-        'AddGenderToContactsTable'       => 'add_gender_to_contacts_table',
-        'AddTitleToContactsTable'        => 'add_title_to_contacts_table',
-
-        'AddPropertiesToContactsTable'  => 'add_properties_to_contacts_table',
-
-        'AddUuidContactsTable'              => 'add_uuid_to_contacts_table',
-        'AddVatIdToContactsTable'            => 'add_tax_column_to_contacts_table',
-        'AddEmailInvoiceToContactsTable'     => 'add_email_invoice_to_contacts_table',
     ];
 
     public function boot()

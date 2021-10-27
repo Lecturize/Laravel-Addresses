@@ -1,0 +1,62 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+/**
+ * Class CreateContactValuesTable
+ */
+class CreateContactValuesTable extends Migration
+{
+    /**
+     * Table names.
+     *
+     * @var string  $table  The main table name for this migration.
+     */
+    protected $table;
+
+    /**
+     * Create a new migration instance.
+     */
+    public function __construct()
+    {
+        $this->table = config('contacts.tables.values', 'contact_values');
+    }
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create($this->table, function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->unsignedBigInteger('contact_id');
+            $table->enum('value_type', config('contacts.value_types', ['phone']))->default('phone');
+            $table->text('value')->nullable();
+
+            foreach(config('contacts.value_flags', ['public', 'primary']) as $flag) {
+                $table->boolean('is_'. $flag)->default(false)->index();
+            }
+
+            $table->longText('notes')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('contact_id')->references('id')->on(config('contacts.tables.main', 'contacts'))->onDelete('CASCADE')->onUpdate('CASCADE');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists($this->table);
+    }
+}

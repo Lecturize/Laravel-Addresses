@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Webpatser\Uuid\Uuid;
 
-
 class Contact extends Model
 {
     use SoftDeletes;
@@ -50,7 +49,7 @@ class Contact extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = config('contacts.table.main', 'contacts');
+        $this->table = config('contacts.table.values', 'contact_values');
         $this->updateFillables();
     }
 
@@ -76,7 +75,7 @@ class Contact extends Model
     private function updateFillables(): void
     {
         $fillable = $this->fillable;
-        $columns  = config('contacts.tax_column', 'vat_id');
+        $columns  = config('contacts.value_flags', ['public', 'primary']);
 
         $this->fillable(array_merge($fillable, $columns));
     }
@@ -86,20 +85,12 @@ class Contact extends Model
      *
      * @return MorphTo
      */
-    public function contactable(): MorphTo
+    public function contact(): BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Contact::class);
     }
 
-    /**
-     * Get the address that might own this contact.
-     *
-     * @return BelongsTo
-     */
-    public function values(): HasMany
-    {
-        return $this->hasMany(Address::class);
-    }
+
 
     /**
      * Get the validation rules.
@@ -108,46 +99,6 @@ class Contact extends Model
      */
     public static function getValidationRules(): array
     {
-        return config('contacts.rules', []);
-    }
-
-    /**
-     * Get the contacts full name.
-     *
-     * @param  bool  $show_salutation
-     * @return string
-     */
-    public function getFullNameAttribute(bool $show_salutation = false): string
-    {
-        $names = [];
-        $names[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.' . $this->gender) : '';
-        $names[] = $this->first_name  ?: '';
-        $names[] = $this->middle_name ?: '';
-        $names[] = $this->last_name   ?: '';
-
-        return trim(implode(' ', array_filter($names)));
-    }
-
-    /**
-     * Get the contacts full name, reversed.
-     *
-     * @param  bool  $show_salutation
-     * @return string
-     */
-    public function getFullNameRevAttribute(bool $show_salutation = false): string
-    {
-        $first = [];
-        $first[] = $this->first_name  ?: '';
-        $first[] = $this->middle_name ?: '';
-
-        $last = [];
-        $last[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.' . $this->gender) : '';
-        $last[] = $this->last_name ?: '';
-
-        $names = [];
-        $names[] = implode(' ', array_filter($last));
-        $names[] = implode(' ', array_filter($first));
-
-        return trim(implode(', ', array_filter($names)));
+        return config('contacts.value_rules', []);
     }
 }
