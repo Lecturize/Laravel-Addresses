@@ -4,25 +4,25 @@ return [
     /*
      * Contacts
      */
-    'contacts' => [
-        /*
+
+    /*
          * Main table.
          */
-        'table' => 'contacts',
+    'table' => 'contacts',
 
-        /*
+    /*
          * Flag columns to be added to table.
          */
-        'flags' => ['public', 'primary'],
+    'flags' => ['public', 'primary'],
 
-        /*
+    /*
          * The validation rules for a contact.
          */
-        'rules' => [],
+    'rules' => [],
 
-        /**
-         * Tax column name
-         */
-        'tax_column' => "vat_id",
-    ],
+    /**
+     * Tax column name
+     */
+    'tax_column' => "vat_id",
+
 ];
