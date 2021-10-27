@@ -12,6 +12,8 @@ use Webpatser\Uuid\Uuid;
 
 class Contact extends Model
 {
+    public const DEFAULT_TYPE = 'email';
+
     use SoftDeletes;
 
     /** @inheritdoc */
