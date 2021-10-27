@@ -47,8 +47,7 @@ class CreateContactsTable extends Migration
             $table->string('position', 255)->nullable();
             $table->string(config('contacts.tax_column', 'vat_id'))->nullable();
 
-            $table->enum('value_type', config('contacts.value_types', ['email']))->nullable();
-            $table->text('value')->nullable()
+            $table->json('values')->nullable();
 
             $table->nullableMorphs('contactable');
 

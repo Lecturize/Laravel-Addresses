@@ -26,8 +26,6 @@ class Contact extends Model
         'extra',
         'position',
 
-        'vat_id',
-
         'notes',
         'properties',
 
@@ -42,6 +40,7 @@ class Contact extends Model
 
     /** @inheritdoc */
     protected $casts = [
+        'values' => 'json',
         'properties' => 'array',
     ];
 

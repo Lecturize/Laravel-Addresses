@@ -25,7 +25,7 @@ return [
     /*
          * Flag columns to be added to table.
          */
-    'flags' => ['public', 'primary'],
+    'flags' => [],
 
     /*
          * The validation rules for a contact.
