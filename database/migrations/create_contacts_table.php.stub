@@ -34,7 +34,7 @@ class CreateContactsTable extends Migration
         Schema::create($this->table, function(Blueprint $table)
         {
             $table->increments('id');
-            $table->uuid('uuid')->nullable()->after('id');
+            $table->uuid('uuid')->nullable();
 
             $table->enum('type', config('contacts.types', ['personal', 'business']))->default('personal');
             $table->string('title', 20)->nullable();
