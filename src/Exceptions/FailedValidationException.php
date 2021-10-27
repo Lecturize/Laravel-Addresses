@@ -1,8 +1,8 @@
-<?php namespace Lecturize\Addresses\Exceptions;
+<?php namespace Kwidoo\Contacts\Exceptions;
 
 /**
  * Class FailedValidationException
- * @package Lecturize\Addresses\Exceptions
+ * @package Kwidoo\Contacts\Exceptions
  */
 class FailedValidationException extends \Exception
 {

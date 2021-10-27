@@ -21,7 +21,7 @@ class AddPropertiesToContactsTable extends Migration
      */
     public function __construct()
     {
-        $this->table = config('lecturize.contacts.table', 'contacts');
+        $this->table = config('contacts.table', 'contacts');
     }
 
     /**

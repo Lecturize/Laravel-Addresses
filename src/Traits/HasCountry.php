@@ -1,4 +1,4 @@
-<?php namespace Lecturize\Addresses\Traits;
+<?php namespace Kwidoo\Contacts\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -7,7 +7,7 @@ use Webpatser\Countries\Countries;
 
 /**
  * Class HasCountry
- * @package Lecturize\Addresses\Traits;
+ * @package Kwidoo\Contacts\Traits;
  * @property int|null        $country_id
  * @property Countries|null  $country
  * @property string          $country_code

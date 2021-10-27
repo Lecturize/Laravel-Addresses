@@ -1,12 +1,11 @@
 {
-    "name": "lecturize/laravel-addresses",
-    "description": "Simple address and contact management for Laravel.",
-    "homepage": "https://github.com/Lecturize/Laravel-Addresses",
+    "name": "kwidoo/laravel-contacts",
+    "description": "Simple contact management for Laravel.",
+    "homepage": "https://github.com/kwidoo/laravel-contacts",
     "license": "MIT",
     "type": "library",
     "keywords": [
         "lecturize",
-        "addresses",
         "contacts",
         "laravel"
     ],
@@ -15,13 +14,16 @@
             "name": "Alexander Manfred Poellmann",
             "homepage": "https://twitter.com/AMPoellmann",
             "role": "developer"
+        },
+        {
+            "name": "Oleg Pashkovsky",
+            "role": "developer"
         }
     ],
     "require": {
         "php": "^7.3|^8.0",
         "illuminate/support": "^6.0|^7.0|^8.0",
         "illuminate/database": "^6.0|^7.0|^8.0",
-        "webpatser/laravel-countries": "^1.5",
         "webpatser/laravel-uuid": "^3.0|^4.0",
         "ext-json": "*"
     },
@@ -33,17 +35,17 @@
     },
     "autoload": {
         "psr-4": {
-            "Lecturize\\Addresses\\": "src"
+            "Kwidoo\\Contacts\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Lecturize\\Addresses\\Test\\": "tests"
+            "Kwidoo\\Contacts\\Test\\": "tests"
         }
     },
     "scripts": {
-        "addresses": "vendor/bin/phpunit",
-        "addresses-coverage": "vendor/bin/phpunit --coverage-html coverage"
+        "contacts": "vendor/bin/phpunit",
+        "contacts-coverage": "vendor/bin/phpunit --coverage-html coverage"
 
     },
     "config": {
@@ -52,10 +54,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Lecturize\\Addresses\\AddressesServiceProvider"
+                "Kwidoo\\Contacts\\ContactsServiceProvider"
             ],
             "aliases": {
-                "Address": "Lecturize\\Addresses\\Facades\\Address"
+                "Contact": "Kwidoo\\Contacts\\Facades\\Contact"
             }
         },
         "branch-alias": {
@@ -63,7 +65,7 @@
         }
     },
     "support": {
-        "source": "https://github.com/Lecturize/Laravel-Addresses",
-        "issues": "https://github.com/Lecturize/Laravel-Addresses/issues"
+        "source": "https://github.com/kwidoo/laravel-contacts",
+        "issues": "https://github.com/kwidoo/laravel-contacts/issues"
     }
 }

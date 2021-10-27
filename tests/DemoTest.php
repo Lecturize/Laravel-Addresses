@@ -1,4 +1,4 @@
-<?php namespace Lecturize\Addresses\Tests;
+<?php namespace Kwidoo\Contacts\Tests;
 
 class DemoTest extends TestCase
 {

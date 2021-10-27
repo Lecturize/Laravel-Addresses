@@ -1,6 +1,6 @@
-<?php namespace Lecturize\Addresses\Tests;
+<?php namespace Kwidoo\Contacts\Tests;
 
-use Lecturize\Addresses\AddressesServiceProvider;
+use Kwidoo\Contacts\AddressesServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {

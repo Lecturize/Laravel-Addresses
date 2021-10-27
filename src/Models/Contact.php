@@ -1,15 +1,17 @@
-<?php namespace Lecturize\Addresses\Models;
+<?php
+
+namespace Kwidoo\Contacts\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Lecturize\Addresses\Traits\HasCountry;
+use Kwidoo\Contacts\Traits\HasCountry;
 
 /**
  * Class Contact
- * @package Lecturize\Addresses\Models
+ * @package Kwidoo\Contacts\Models
  * @property string|null   $gender
  * @property string|null   $title
  * @property string|null   $first_name
@@ -80,7 +82,7 @@ class Contact extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = config('lecturize.contacts.table', 'contacts');
+        $this->table = config('contacts.table', 'contacts');
         $this->updateFillables();
     }
 
@@ -91,8 +93,9 @@ class Contact extends Model
 
         static::creating(function ($model) {
             if ($model->getConnection()
-                      ->getSchemaBuilder()
-                      ->hasColumn($model->getTable(), 'uuid'))
+                ->getSchemaBuilder()
+                ->hasColumn($model->getTable(), 'uuid')
+            )
                 $model->uuid = \Webpatser\Uuid\Uuid::generate()->string;
         });
     }
@@ -105,7 +108,7 @@ class Contact extends Model
     private function updateFillables(): void
     {
         $fillable = $this->fillable;
-        $columns  = preg_filter('/^/', 'is_', config('lecturize.addresses.columns', ['public', 'primary', 'billing', 'shipping']));
+        $columns  = preg_filter('/^/', 'is_', config('addresses.columns', ['public', 'primary', 'billing', 'shipping']));
 
         $this->fillable(array_merge($fillable, $columns));
     }
@@ -137,7 +140,7 @@ class Contact extends Model
      */
     public static function getValidationRules(): array
     {
-        return config('lecturize.contacts.rules', []);
+        return config('contacts.rules', []);
     }
 
     /**
@@ -149,7 +152,7 @@ class Contact extends Model
     public function getFullNameAttribute(bool $show_salutation = false): string
     {
         $names = [];
-        $names[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.'. $this->gender) : '';
+        $names[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.' . $this->gender) : '';
         $names[] = $this->first_name  ?: '';
         $names[] = $this->middle_name ?: '';
         $names[] = $this->last_name   ?: '';
@@ -170,7 +173,7 @@ class Contact extends Model
         $first[] = $this->middle_name ?: '';
 
         $last = [];
-        $last[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.'. $this->gender) : '';
+        $last[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.' . $this->gender) : '';
         $last[] = $this->last_name ?: '';
 
         $names = [];

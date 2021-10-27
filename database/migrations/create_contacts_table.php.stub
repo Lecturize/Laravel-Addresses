@@ -21,7 +21,7 @@ class CreateContactsTable extends Migration
      */
     public function __construct()
     {
-        $this->table = config('lecturize.contacts.table', 'contacts');
+        $this->table = config('contacts.table', 'contacts');
     }
 
     /**
@@ -54,11 +54,11 @@ class CreateContactsTable extends Migration
                   ->nullable()
                   ->unsigned()
                   ->references('id')
-                  ->on(config('lecturize.addresses.table', 'addresses'));
+                  ->on(config('addresses.table', 'addresses'));
 
             $table->nullableMorphs('contactable');
 
-            foreach(config('lecturize.contacts.flags', ['public', 'primary']) as $flag) {
+            foreach(config('contacts.flags', ['public', 'primary']) as $flag) {
                 $table->boolean('is_'. $flag)->default(false)->index();
             }
 

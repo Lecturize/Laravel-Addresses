@@ -22,7 +22,7 @@ and run `$ composer update` or both in one with `$ composer require lecturize/la
 
 ```bash
 $ php artisan vendor:publish --provider="Webpatser\Countries\CountriesServiceProvider"
-$ php artisan vendor:publish --provider="Lecturize\Addresses\AddressesServiceProvider"
+$ php artisan vendor:publish --provider="Kwidoo\Contacts\AddressesServiceProvider"
 ```
 
 This will publish a `config/countries.php`, a `config/lecturize.php` and some migration files, that you'll have to run:
@@ -43,7 +43,7 @@ First, add our `HasAddresses` trait to your model.
 ```php
 <?php namespace App\Models;
 
-use Lecturize\Addresses\Traits\HasAddresses;
+use Kwidoo\Contacts\Traits\HasAddresses;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
@@ -127,7 +127,7 @@ First, add our `HasContacts` trait to your model.
 ```php
 <?php namespace App\Models;
 
-use Lecturize\Addresses\Traits\HasContacts;
+use Kwidoo\Contacts\Traits\HasContacts;
 use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
@@ -154,7 +154,7 @@ $post->addContact([
 Above all, `addresses` and `contacts` can be connected with an optional One To Many relationship. Like so you could assign multiple contacts to an address and retrieve them like so:
 
 ```php
-use Lecturize\Addresses\Models\Address;
+use Kwidoo\Contacts\Models\Address;
 
 $address = Address::find(1);
 $contacts = $address->contacts;
@@ -165,7 +165,7 @@ foreach ($contacts as $contact) {
 ```
 
 ```php
-use Lecturize\Addresses\Models\Address;
+use Kwidoo\Contacts\Models\Address;
 
 $contact = Address::find(1)
                   ->contacts()
@@ -173,7 +173,7 @@ $contact = Address::find(1)
 ```
 
 ```php
-use Lecturize\Addresses\Models\Contact;
+use Kwidoo\Contacts\Models\Contact;
 
 $contact = Contact::find(1);
 

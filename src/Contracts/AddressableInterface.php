@@ -1,8 +1,8 @@
-<?php namespace Lecturize\Addresses\Contracts;
+<?php namespace Kwidoo\Contacts\Contracts;
 
 /**
  * Interface AddressableInterface
- * @package Lecturize\Addresses\Contracts
+ * @package Kwidoo\Contacts\Contracts
  */
 interface AddressableInterface
 {

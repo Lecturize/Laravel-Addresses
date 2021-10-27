@@ -1,16 +1,18 @@
-<?php namespace Lecturize\Addresses\Facades;
+<?php
+
+namespace Kwidoo\Contacts\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
  * Class Address
- * @package Lecturize\Addresses\Facades
+ * @package Kwidoo\Contacts\Facades
  */
-class Address extends Facade
+class Contact extends Facade
 {
     /** @inheritdoc */
     protected static function getFacadeAccessor(): string
     {
-        return 'address';
+        return 'contact';
     }
 }
