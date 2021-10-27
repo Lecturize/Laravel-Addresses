@@ -20,7 +20,7 @@ class ContactsServiceProvider extends ServiceProvider
         'AddPropertiesToContactsTable'  => 'add_properties_to_contacts_table',
 
         'AddUuidContactsTable'              => 'add_uuid_to_contacts_table',
-        'AddVatIdToContactsTable'            => 'add_vat_id_to_contacts_table',
+        'AddVatIdToContactsTable'            => 'add_tax_column_to_contacts_table',
         'AddEmailInvoiceToContactsTable'     => 'add_email_invoice_to_contacts_table',
     ];
 

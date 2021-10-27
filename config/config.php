@@ -19,5 +19,10 @@ return [
          * The validation rules for a contact.
          */
         'rules' => [],
+
+        /**
+         * Tax column name
+         */
+        'tax_column' => "vat_id",
     ],
 ];
