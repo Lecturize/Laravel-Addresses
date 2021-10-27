@@ -98,7 +98,7 @@ class Contact extends Model
      */
     public function values(): HasMany
     {
-        return $this->hasMany(Address::class);
+        return $this->hasMany(ContactValue::class);
     }
 
     /**

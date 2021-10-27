@@ -1,41 +1,40 @@
 <?php
 
 return [
-     /*
+    /*
      * Contacts
      */
 
-     /*
+    /*
      * Tables
      */
-     'tables' => [
-          'main' => 'contacts',
-          'values' => 'contact_values'
-     ],
+    'tables' => [
+        'main' => 'contacts',
+    ],
 
-     /**
-      * Possible owner types
-      */
-     'types' => ['personal', 'business'],
+    /**
+     * Possible owner types
+     */
+    'types' => ['personal', 'business'],
 
-     /**
-      * Possible contact types
-      */
-     'value_types' => ['phone', 'mobile', 'fax', 'email', 'address', 'website', 'facebook', 'twitter'],
+    /**
+     * Possible contact types
+     */
+    'value_types' => ['phone', 'mobile', 'fax', 'email', 'address', 'website', 'facebook', 'twitter'],
 
-     /*
+    /*
          * Flag columns to be added to table.
          */
-     'value_flags' => ['public', 'primary', 'shipping', 'billing'],
+    'flags' => ['public', 'primary'],
 
-     /*
+    /*
          * The validation rules for a contact.
          */
-     'rules' => [],
+    'rules' => [],
 
-     /**
-      * Tax column name
-      */
-     'tax_column' => "vat_id",
+    /**
+     * Tax column name
+     */
+    'tax_column' => "vat_id",
 
 ];

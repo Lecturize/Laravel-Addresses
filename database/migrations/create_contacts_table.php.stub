@@ -36,7 +36,7 @@ class CreateContactsTable extends Migration
             $table->increments('id');
             $table->uuid('uuid')->nullable();
 
-            $table->enum('type', config('contacts.types', ['personal', 'business']))->default('personal');
+            $table->enum('type', config('contacts.types', ['personal', 'business']))->default(config('contacts.types', ['personal', 'business'])[0]);
             $table->string('title', 20)->nullable();
 
             $table->string('first_name',  20)->nullable();
@@ -44,16 +44,20 @@ class CreateContactsTable extends Migration
             $table->string('last_name',   20)->nullable();
 
             $table->string('company',  255)->nullable();
+            $table->string('position', 255)->nullable();
             $table->string(config('contacts.tax_column', 'vat_id'))->nullable();
 
-            $table->string('extra',    255)->nullable();
-            $table->string('position', 255)->nullable();
+            $table->enum('value_type', config('contacts.value_types', ['email']))->nullable();
+            $table->text('value')->nullable()
 
             $table->nullableMorphs('contactable');
 
-            
+            foreach(config('contacts.flags', ['public', 'primary']) as $flag) {
+                $table->boolean('is_'. $flag)->default(false)->index();
+            }
+
             $table->longText('notes')->nullable();
-            $table->text('properties')->nullable();
+            $table->json('properties')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
