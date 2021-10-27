@@ -76,7 +76,7 @@ class Contact extends Model
     private function updateFillables(): void
     {
         $fillable = $this->fillable;
-        $columns  = config('contacts.tax_column', 'vat_id');
+        $columns  = [config('contacts.tax_column', 'vat_id')];
 
         $this->fillable(array_merge($fillable, $columns));
     }
