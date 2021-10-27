@@ -25,8 +25,6 @@ class Contact extends Model
         'extra',
         'position',
 
-        'vat_id',
-
         'notes',
         'properties',
 
@@ -49,7 +47,7 @@ class Contact extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = config('contacts.table.values', 'contact_values');
+        $this->table = config('contacts.tables.values', 'contact_values');
         $this->updateFillables();
     }
 

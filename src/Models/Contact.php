@@ -50,7 +50,7 @@ class Contact extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = config('contacts.table.main', 'contacts');
+        $this->table = config('contacts.tables.main', 'contacts');
         $this->updateFillables();
     }
 
