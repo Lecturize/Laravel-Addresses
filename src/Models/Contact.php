@@ -2,16 +2,25 @@
 
 namespace Kwidoo\Contacts\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Kwidoo\Contacts\Collections\ContactItemCollection;
+use Kwidoo\Contacts\Contracts\Item;
+use Kwidoo\Contacts\Items\ContactItem;
+use Spatie\Translatable\HasTranslations;
 use Webpatser\Uuid\Uuid;
 
 
 class Contact extends Model
 {
+    use HasTranslations;
+
     public const DEFAULT_TYPE = 'email';
 
     use SoftDeletes;
@@ -27,6 +36,7 @@ class Contact extends Model
         'company',
         'extra',
         'position',
+        'values',
 
         'notes',
         'properties',
@@ -45,6 +55,11 @@ class Contact extends Model
         'values' => 'json',
         'properties' => 'array',
     ];
+
+    /**
+     * @var array
+     */
+    public $translatable = ['title', 'first_name', 'middle_name', 'last_name'];
 
     /** @inheritdoc */
     public function __construct(array $attributes = [])
@@ -93,62 +108,67 @@ class Contact extends Model
     }
 
     /**
-     * Get the address that might own this contact.
-     *
-     * @return BelongsTo
+     * @return ContactItem[]|Collection
      */
-    public function values(): HasMany
+    public function getValuesAttribute(): Collection
     {
-        return $this->hasMany(ContactValue::class);
+        if (!array_key_exists('values', $this->attributes)) {
+            return  new ContactItemCollection;
+        }
+        return ContactItem::newCollection($this->attributes['values']);
     }
 
     /**
-     * Get the validation rules.
+     * @param array $attributes
      *
-     * @return array
+     * @return Collection
      */
-    public static function getValidationRules(): array
+    public function addValue(array $attributes): Collection
     {
-        return config('contacts.rules', []);
+        $values = $this->values;
+        $this->values = $values->push(new ContactItem((object)$attributes));
+
+        return $this->values; //$this->getValuesAttribute();
     }
 
     /**
-     * Get the contacts full name.
+     * @param Item|string $item
      *
-     * @param  bool  $show_salutation
-     * @return string
+     * @return Collection
      */
-    public function getFullNameAttribute(bool $show_salutation = false): string
+    public function removeValue($item): Collection
     {
-        $names = [];
-        $names[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.' . $this->gender) : '';
-        $names[] = $this->first_name  ?: '';
-        $names[] = $this->middle_name ?: '';
-        $names[] = $this->last_name   ?: '';
+        $value = $this->values->findWithKey($item);
+        if (!empty($value)) {
+            $key = array_keys($value)[0];
+            // $this->values =
+            $this->values->forget($key);
+        }
 
-        return trim(implode(' ', array_filter($names)));
+        return $this->getValuesAttribute();
     }
 
-    /**
-     * Get the contacts full name, reversed.
-     *
-     * @param  bool  $show_salutation
-     * @return string
-     */
-    public function getFullNameRevAttribute(bool $show_salutation = false): string
+    public function getNovaValuesAttribute()
     {
-        $first = [];
-        $first[] = $this->first_name  ?: '';
-        $first[] = $this->middle_name ?: '';
+        return $this->attributes['values'];
+    }
 
-        $last = [];
-        $last[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.' . $this->gender) : '';
-        $last[] = $this->last_name ?: '';
-
-        $names = [];
-        $names[] = implode(' ', array_filter($last));
-        $names[] = implode(' ', array_filter($first));
-
-        return trim(implode(', ', array_filter($names)));
+    public function __call($method, $parameters)
+    {
+        $name = Str::lower(str_replace('Value', '', str_replace('add', '', $method)));
+        if (in_array($name, config('contacts.value_types', ['email']))) {
+            $value = $parameters[0];
+            if (is_array($parameters[0])) {
+                if (!array_key_exists($name, $parameters[0])) {
+                    throw new Exception('Wrong parameter type');
+                }
+                $value = $parameters[0][$name];
+            }
+            return $this->addValue([
+                'type' => $name,
+                'value' => $value
+            ]);
+        }
+        return parent::__call($method, $parameters);
     }
 }

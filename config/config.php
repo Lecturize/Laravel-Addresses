@@ -30,11 +30,13 @@ return [
     /*
          * The validation rules for a contact.
          */
-    'rules' => [],
+    'rules' => [
+        'type' => 'required|in:email,phone, mobile, fax, website, facebook, twitter',
+        'value' => 'required|string',
+    ],
 
     /**
      * Tax column name
      */
     'tax_column' => "vat_id",
-
 ];

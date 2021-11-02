@@ -37,11 +37,11 @@ class CreateContactsTable extends Migration
             $table->uuid('uuid')->nullable();
 
             $table->enum('type', config('contacts.types', ['personal', 'business']))->default(config('contacts.types', ['personal', 'business'])[0]);
-            $table->string('title', 20)->nullable();
+            $table->json('title')->nullable();
 
-            $table->string('first_name',  20)->nullable();
-            $table->string('middle_name', 20)->nullable();
-            $table->string('last_name',   20)->nullable();
+            $table->json('first_name')->nullable();
+            $table->json('middle_name')->nullable();
+            $table->json('last_name')->nullable();
 
             $table->string('company',  255)->nullable();
             $table->string('position', 255)->nullable();
