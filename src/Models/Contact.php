@@ -16,7 +16,21 @@ use Kwidoo\Contacts\Items\ContactItem;
 use Spatie\Translatable\HasTranslations;
 use Webpatser\Uuid\Uuid;
 
-
+/**
+ *
+ * @package Kwidoo\Contacts\Models
+ *
+ * @method Collection<ContactItem> addEmailValue(string $data)
+ * @method Collection<ContactItem> addPhoneValue(string $data)
+ * @method Collection<ContactItem> addMobileValue(string $data)
+ * @method Collection<ContactItem> addAddressValue(string $data)
+ *
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $company
+ * @property string $vat_id
+ *
+ */
 class Contact extends Model
 {
     use HasTranslations;
@@ -34,6 +48,7 @@ class Contact extends Model
         'last_name',
 
         'company',
+        'vat_id',
         'extra',
         'position',
         'values',
@@ -67,7 +82,6 @@ class Contact extends Model
         parent::__construct($attributes);
 
         $this->table = config('contacts.tables.main', 'contacts');
-        $this->updateFillables();
     }
 
     /** @inheritdoc */
@@ -82,19 +96,6 @@ class Contact extends Model
             )
                 $model->uuid = Uuid::generate()->string;
         });
-    }
-
-    /**
-     * Update fillable fields dynamically.
-     *
-     * @return void
-     */
-    private function updateFillables(): void
-    {
-        $fillable = $this->fillable;
-        $columns  = [config('contacts.tax_column', 'vat_id')];
-
-        $this->fillable(array_merge($fillable, $columns));
     }
 
     /**
@@ -148,15 +149,10 @@ class Contact extends Model
         return $this->getValuesAttribute();
     }
 
-    public function getNovaValuesAttribute()
-    {
-        return $this->attributes['values'];
-    }
-
     public function __call($method, $parameters)
     {
         $name = Str::lower(str_replace('Value', '', str_replace('add', '', $method)));
-        if (in_array($name, config('contacts.value_types', ['email']))) {
+        if (in_array($name, config('contacts.value_types'))) {
             $value = $parameters[0];
             if (is_array($parameters[0])) {
                 if (!array_key_exists($name, $parameters[0])) {

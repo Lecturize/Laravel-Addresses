@@ -111,9 +111,9 @@ class ContactItem implements Item, JsonSerializable
     /**
      * @return string
      */
-    public function jsonSerialize(): string
+    public function jsonSerialize()
     {
-        return json_encode($this->data);
+        return $this->data;
     }
 
     public function is(Item $value): bool
