@@ -20,7 +20,7 @@ return [
          */
         'rules' => [
             'street'       => 'required|string|min:3|max:60',
-            'street_extra' => 'nullable|string|min:3|max:60',
+            'street_extra' => 'nullable|string|max:60',
             'city'         => 'required|string|min:3|max:60',
             'state'        => 'nullable|string|min:3|max:60',
             'post_code'    => 'required|min:4|max:10|AlphaDash',
