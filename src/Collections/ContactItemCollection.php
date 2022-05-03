@@ -2,28 +2,32 @@
 
 namespace Kwidoo\Contacts\Collections;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Kwidoo\Contacts\Contracts\Item;
+use Kwidoo\Contacts\Items\ContactItem;
 
 class ContactItemCollection extends Collection
 {
+    protected Model $model;
+
     /**
      * Push one or more items onto the end of the collection.
      *
      * @param  mixed  $values
      * @return $this
      */
-    public function push($value)
+    public function push(...$values)
     {
-        if ($value instanceof Item) {
+        if ($values[0] instanceof Item) {
             foreach ($this->items as $item) {
-                if ($item->is($value)) {
+                if ($item->is($values[0])) {
                     return $this;
                 }
             }
         }
-        return parent::push($value);
+        return parent::push($values[0]);
     }
 
     /**
@@ -73,6 +77,36 @@ class ContactItemCollection extends Collection
         return [];
     }
 
+    public function pull($value, $default = null)
+    {
+        $item = $this->findWithKey($value);
+        if (!empty($item)) {
+            $key = array_keys($item)[0];
+            return parent::pull($key, $default);
+        }
+    }
+
+    /**
+     * Get the values of a given key.
+     *
+     * @param  string|array $value
+     * @param  string|null  $key
+     * @return static
+     */
+    public function pluck($value = 'value', $key = null)
+    {
+        $values = [];
+        foreach ($this->items as $item) {
+            if ($key) {
+                $values[$item->$key] = $item->$value;
+            }
+            if ($key === null) {
+                $values[] = $item->$value;
+            }
+        }
+        return new static($values);
+    }
+
     /**
      * @param string $uuid
      *
@@ -95,17 +129,37 @@ class ContactItemCollection extends Collection
     public function ofType(string $type): self
     {
         return $this->filter(function (Item $item) use ($type) {
-            return $item->type == $type;
+            return $item->type === $type;
         });
     }
 
-    public function fixTree(): self
+    public function __get($name)
     {
-        return $this->filter(function (Item $item) {
-            var_dump($item); // . "\n";
-            var_dump($item->value); // . "\n";
-            var_dump(isset($item->type)); // && isset($item->value) && $item->type !== null && $item->value !== null);
-            return true;
-        });
+        if (in_array($name, config('contacts.value_types'))) {
+            return $this->ofType($name)->pluck('value');
+        }
+        return parent::__get($name);
+    }
+
+    public function __set($name, $value)
+    {
+        if (in_array($name, config('contacts.value_types'))) {
+            $this->push(new ContactItem(['type' => $name, 'value' => $value]));
+        }
+    }
+
+    /**
+     * @todo Find a better way to save the collection
+     */
+    public function setModel($model)
+    {
+        $this->model = $model;
+        return $this;
+    }
+
+    public function save()
+    {
+        $this->model->values = $this->all();
+        $this->model->save();
     }
 }

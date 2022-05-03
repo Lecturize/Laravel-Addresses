@@ -2,10 +2,6 @@
 
 return [
     /*
-     * Contacts
-     */
-
-    /*
      * Tables
      */
     'tables' => [

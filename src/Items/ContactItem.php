@@ -156,11 +156,13 @@ class ContactItem implements Item, JsonSerializable
     {
         $validator = Validator::make((array)$data, $this->rules);
         if ($validator->fails()) {
-            dump($data);
             throw new ValidationException($validator);
         }
     }
 
+    /**
+     * @return void
+     */
     protected function setRulesFromConfig(): void
     {
         $this->rules = config('contacts.rules');

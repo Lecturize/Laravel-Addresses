@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Collection;
-
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Kwidoo\Contacts\Models\Contact;
 use Kwidoo\Contacts\Exceptions\FailedValidationException;
 
@@ -22,9 +22,9 @@ trait HasContacts
      *
      * @return MorphMany
      */
-    public function contacts(): MorphMany
+    public function contact(): MorphOne
     {
-        return $this->morphMany(Contact::class, 'contactable');
+        return $this->morphOne(Contact::class, 'contactable')->latestOfMany();
     }
 
     /**

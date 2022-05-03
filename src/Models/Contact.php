@@ -4,26 +4,20 @@ namespace Kwidoo\Contacts\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Kwidoo\Contacts\Collections\ContactItemCollection;
+use Kwidoo\Contacts\Collections\ContactCollection;
 use Kwidoo\Contacts\Contracts\Item;
 use Kwidoo\Contacts\Items\ContactItem;
+use Kwidoo\Contacts\Casts\ContactItemCast;
 use Spatie\Translatable\HasTranslations;
 use Webpatser\Uuid\Uuid;
 
 /**
  *
  * @package Kwidoo\Contacts\Models
- *
- * @method Collection<ContactItem> addEmailValue(string $data)
- * @method Collection<ContactItem> addPhoneValue(string $data)
- * @method Collection<ContactItem> addMobileValue(string $data)
- * @method Collection<ContactItem> addAddressValue(string $data)
  *
  * @property string $first_name
  * @property string $last_name
@@ -67,7 +61,7 @@ class Contact extends Model
 
     /** @inheritdoc */
     protected $casts = [
-        'values' => 'json',
+        'values' => ContactItemCast::class,
         'properties' => 'array',
     ];
 
@@ -80,7 +74,6 @@ class Contact extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-
         $this->table = config('contacts.tables.main', 'contacts');
     }
 
@@ -109,44 +102,13 @@ class Contact extends Model
     }
 
     /**
-     * @return ContactItem[]|Collection
-     */
-    public function getValuesAttribute(): Collection
-    {
-        if (!array_key_exists('values', $this->attributes)) {
-            return  new ContactItemCollection;
-        }
-        return ContactItem::newCollection($this->attributes['values']);
-    }
-
-    /**
-     * @param array $attributes
+     * @param array $models
      *
-     * @return Collection
+     * @return ContactCollection
      */
-    public function addValue(array $attributes): Collection
+    public function newCollection(array $models = [])
     {
-        $values = $this->values;
-        $this->values = $values->push(new ContactItem((object)$attributes));
-
-        return $this->values; //$this->getValuesAttribute();
-    }
-
-    /**
-     * @param Item|string $item
-     *
-     * @return Collection
-     */
-    public function removeValue($item): Collection
-    {
-        $value = $this->values->findWithKey($item);
-        if (!empty($value)) {
-            $key = array_keys($value)[0];
-            // $this->values =
-            $this->values->forget($key);
-        }
-
-        return $this->getValuesAttribute();
+        return new ContactCollection($models);
     }
 
     public function __call($method, $parameters)
