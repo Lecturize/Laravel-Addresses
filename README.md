@@ -12,7 +12,7 @@ Require the package from your `composer.json` file
 
 ```php
 "require": {
-	"lecturize/laravel-addresses": "^1.0"
+	"lecturize/laravel-addresses": "^1.1"
 }
 ```
 
