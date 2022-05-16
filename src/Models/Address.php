@@ -13,19 +13,23 @@ use Lecturize\Addresses\Traits\HasCountry;
 /**
  * Class Address
  * @package Lecturize\Addresses\Models
- * @property string|null  $street
- * @property string|null  $street_extra
- * @property string|null  $city
- * @property string|null  $state
- * @property string|null  $post_code
- * @property string|null  $country_name
- * @property string|null  $notes
- * @property array|null   $properties
- * @property string|null  $lat
- * @property string|null  $lng
- * @property Model|null   $addressable
- * @property Collection   $contacts
- * @property Model|null   $user
+ * @property string|null           $street
+ * @property string|null           $street_extra
+ * @property string|null           $city
+ * @property string|null           $state
+ * @property string|null           $post_code
+ * @property string|null           $country_name
+ * @property string|null           $notes
+ * @property array|null            $properties
+ * @property string|null           $lat
+ * @property string|null           $lng
+ * @property Model|null            $addressable
+ * @property Collection|Contact[]  $contacts
+ * @property Model|null            $user
+ *
+ * @method static Builder|Address primary()
+ * @method static Builder|Address billing()
+ * @method static Builder|Address shipping()
  */
 class Address extends Model
 {
@@ -243,7 +247,7 @@ class Address extends Model
      * @param  string  $glue
      * @return string
      */
-    public function getLine($glue = ', '): string
+    public function getLine(string $glue = ', '): string
     {
         if ($address = $this->getArray())
             return implode($glue, array_filter($address));
