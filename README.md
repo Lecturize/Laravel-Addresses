@@ -183,7 +183,7 @@ return $contact->address->getHtml();
 ## Changelog
 
 - [2021-02-02] **v1.0** The `geocode` configuration option now defaults to `false`.
-- [2022-05-16] **v1.1** Updated dependencies to PHP 8 and Laravel 8/9 - for older versions please refer to v1.0
+- [2022-05-16] **v1.1** Updated dependencies to PHP 8 and Laravel 8/9 - for older versions please refer to v1.0.
 
 ## License
 
