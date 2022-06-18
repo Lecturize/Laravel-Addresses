@@ -1,4 +1,6 @@
-<?php namespace Lecturize\Addresses\Exceptions;
+<?php
+
+namespace Lecturize\Addresses\Exceptions;
 
 /**
  * Class AddressNotFoundException

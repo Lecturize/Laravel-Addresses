@@ -1,4 +1,6 @@
-<?php namespace Lecturize\Addresses;
+<?php
+
+namespace Lecturize\Addresses;
 
 use Illuminate\Support\ServiceProvider;
 

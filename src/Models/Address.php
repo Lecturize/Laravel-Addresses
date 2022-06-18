@@ -1,4 +1,6 @@
-<?php namespace Lecturize\Addresses\Models;
+<?php
+
+namespace Lecturize\Addresses\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

@@ -1,4 +1,6 @@
-<?php namespace Lecturize\Addresses\Traits;
+<?php
+
+namespace Lecturize\Addresses\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

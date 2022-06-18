@@ -1,4 +1,6 @@
-<?php namespace Lecturize\Addresses\Facades;
+<?php
+
+namespace Lecturize\Addresses\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
