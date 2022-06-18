@@ -2,6 +2,7 @@
 
 use Exception;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -15,48 +16,26 @@ use Lecturize\Addresses\Exceptions\FailedValidationException;
  */
 trait HasContacts
 {
-    /**
-     * Get all contacts for this model.
-     *
-     * @return MorphMany
-     */
     public function contacts(): MorphMany
     {
+        /** @var Model $this */
         return $this->morphMany(Contact::class, 'contactable');
     }
 
-    /**
-     * Check if model has contacts.
-     *
-     * @return bool
-     */
     public function hasContacts(): bool
     {
-        return (bool) $this->contacts()->count();
+        return $this->contacts->isNotEmpty();
     }
 
-    /**
-     * Add a contact to this model.
-     *
-     * @param  array  $attributes
-     * @return mixed
-     * @throws Exception
-     */
-    public function addContact(array $attributes)
+    /** @throws Exception */
+    public function addContact(array $attributes): Contact|Model
     {
         $attributes = $this->loadContactAttributes($attributes);
 
         return $this->contacts()->updateOrCreate($attributes);
     }
 
-    /**
-     * Updates the given contact.
-     *
-     * @param  Contact  $contact
-     * @param  array    $attributes
-     * @return bool
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function updateContact(Contact $contact, array $attributes): bool
     {
         $attributes = $this->loadContactAttributes($attributes);
@@ -64,13 +43,7 @@ trait HasContacts
         return $contact->fill($attributes)->save();
     }
 
-    /**
-     * Deletes given contact.
-     *
-     * @param  Contact  $contact
-     * @return bool
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function deleteContact(Contact $contact): bool
     {
         if ($this !== $contact->contactable()->first())
@@ -79,23 +52,12 @@ trait HasContacts
         return $contact->delete();
     }
 
-    /**
-     * Deletes all the contacts of this model.
-     *
-     * @return bool
-     */
     public function flushContacts(): bool
     {
         return $this->contacts()->delete();
     }
 
-    /**
-     * Add country id to attributes array.
-     *
-     * @param  array  $attributes
-     * @return array
-     * @throws FailedValidationException
-     */
+    /** @throws FailedValidationException */
     public function loadContactAttributes(array $attributes): array
     {
         // run validation
@@ -111,12 +73,6 @@ trait HasContacts
         return $attributes;
     }
 
-    /**
-     * Validate the contact.
-     *
-     * @param  array  $attributes
-     * @return Validator
-     */
     function validateContact(array $attributes): Validator
     {
         $rules = Contact::getValidationRules();

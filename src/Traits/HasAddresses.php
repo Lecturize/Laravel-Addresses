@@ -2,74 +2,41 @@
 
 use Exception;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Collection;
 
 use Lecturize\Addresses\Models\Address;
 use Lecturize\Addresses\Exceptions\FailedValidationException;
-
-use Webpatser\Countries\Countries;
+use Lecturize\Addresses\Models\Country;
 
 /**
  * Class HasAddresses
  * @package Lecturize\Addresses\Traits
- * @property Collection|Address[]  $addresses
+ * @property-read Collection|Address[]  $addresses
  */
 trait HasAddresses
 {
-    /**
-     * Get all addresses for this model.
-     *
-     * @return MorphMany
-     */
     public function addresses(): MorphMany
     {
+        /** @var Model $this */
         return $this->morphMany(Address::class, 'addressable');
     }
 
-    /**
-     * Check if model has addresses.
-     *
-     * @return bool
-     */
     public function hasAddresses(): bool
     {
-        return (bool) count($this->addresses);
+        return $this->addresses->isNotEmpty();
     }
 
-    /**
-     * Check if model has an address.
-     * @deprecated Use hasAddresses() instead.
-     *
-     * @return bool
-     */
-    public function hasAddress(): bool
-    {
-        return $this->hasAddresses();
-    }
-
-    /**
-     * Add an address to this model.
-     *
-     * @param  array  $attributes
-     * @return mixed
-     * @throws Exception
-     */
-    public function addAddress(array $attributes)
+    /** @throws Exception */
+    public function addAddress(array $attributes): Address|Model
     {
         $attributes = $this->loadAddressAttributes($attributes);
 
         return $this->addresses()->updateOrCreate($attributes);
     }
 
-    /**
-     * Updates the given address.
-     *
-     * @param  Address  $address
-     * @param  array    $attributes
-     * @return bool
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function updateAddress(Address $address, array $attributes): bool
     {
         $attributes = $this->loadAddressAttributes($attributes);
@@ -77,35 +44,18 @@ trait HasAddresses
         return $address->fill($attributes)->save();
     }
 
-    /**
-     * Deletes given address.
-     *
-     * @param  Address  $address
-     * @return bool
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function deleteAddress(Address $address): bool
     {
         return $this->addresses()->where('id', $address->id)->delete();
     }
 
-    /**
-     * Deletes all the addresses of this model.
-     *
-     * @return bool
-     */
     public function flushAddresses(): bool
     {
         return $this->addresses()->delete();
     }
 
-    /**
-     * Get the primary address.
-     *
-     * @param  string  $direction
-     * @return Address|null
-     */
-    public function getPrimaryAddress($direction = 'desc'): ?Address
+    public function getPrimaryAddress(string $direction = 'desc'): ?Address
     {
         return $this->addresses()
                     ->primary()
@@ -113,12 +63,6 @@ trait HasAddresses
                     ->first();
     }
 
-    /**
-     * Get the billing address.
-     *
-     * @param  string  $direction
-     * @return Address|null
-     */
     public function getBillingAddress(string $direction = 'desc'): ?Address
     {
         return $this->addresses()
@@ -127,12 +71,6 @@ trait HasAddresses
                     ->first();
     }
 
-    /**
-     * Get the first shipping address.
-     *
-     * @param  string  $direction
-     * @return Address|null
-     */
     public function getShippingAddress(string $direction = 'desc'): ?Address
     {
         return $this->addresses()
@@ -141,13 +79,7 @@ trait HasAddresses
                     ->first();
     }
 
-    /**
-     * Add country id to attributes array.
-     *
-     * @param  array  $attributes
-     * @return array
-     * @throws FailedValidationException
-     */
+    /** @throws FailedValidationException */
     public function loadAddressAttributes(array $attributes): array
     {
         // return if no country given
@@ -176,12 +108,6 @@ trait HasAddresses
         return $attributes;
     }
 
-    /**
-     * Validate the address.
-     *
-     * @param  array  $attributes
-     * @return Validator
-     */
     function validateAddress(array $attributes): Validator
     {
         $rules = (new Address)->getValidationRules();
@@ -189,16 +115,9 @@ trait HasAddresses
         return validator($attributes, $rules);
     }
 
-    /**
-     * Validate the address.
-     *
-     * @param  string  $country_code
-     * @return Countries|null
-     */
-    function findCountryByCode($country_code): ?Countries
+    function findCountryByCode(string $country_code): ?Country
     {
-        return Countries::where('iso_3166_2',   $country_code)
-                        ->orWhere('iso_3166_3', $country_code)
-                        ->first();
+        return Country::whereCountryCode($country_code)
+                      ->first();
     }
 }

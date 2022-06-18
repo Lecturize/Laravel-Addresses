@@ -10,7 +10,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
         // additional setup
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             AddressesServiceProvider::class,

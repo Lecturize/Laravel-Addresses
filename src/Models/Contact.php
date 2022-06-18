@@ -10,6 +10,9 @@ use Lecturize\Addresses\Traits\HasCountry;
 /**
  * Class Contact
  * @package Lecturize\Addresses\Models
+ *
+ * @property-read int  $id
+ *
  * @property string|null   $gender
  * @property string|null   $title
  * @property string|null   $first_name
@@ -28,7 +31,12 @@ use Lecturize\Addresses\Traits\HasCountry;
  * @property string|null   $notes
  * @property array|null    $properties
  * @property int|null      $address_id
- * @property Address|null  $address
+ *
+ * @property-read string  $full_name
+ * @property-read string  $full_name_rev
+ *
+ * @property-read Model|null    $contactable
+ * @property-read Address|null  $address
  */
 class Contact extends Model
 {
@@ -97,11 +105,6 @@ class Contact extends Model
         });
     }
 
-    /**
-     * Update fillable fields dynamically.
-     *
-     * @return void
-     */
     private function updateFillables(): void
     {
         $fillable = $this->fillable;
@@ -110,42 +113,21 @@ class Contact extends Model
         $this->fillable(array_merge($fillable, $columns));
     }
 
-    /**
-     * Get the related model.
-     *
-     * @return MorphTo
-     */
     public function contactable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * Get the address that might own this contact.
-     *
-     * @return BelongsTo
-     */
     public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
     }
 
-    /**
-     * Get the validation rules.
-     *
-     * @return array
-     */
     public static function getValidationRules(): array
     {
         return config('lecturize.contacts.rules', []);
     }
 
-    /**
-     * Get the contacts full name.
-     *
-     * @param  bool  $show_salutation
-     * @return string
-     */
     public function getFullNameAttribute(bool $show_salutation = false): string
     {
         $names = [];
@@ -157,12 +139,6 @@ class Contact extends Model
         return trim(implode(' ', array_filter($names)));
     }
 
-    /**
-     * Get the contacts full name, reversed.
-     *
-     * @param  bool  $show_salutation
-     * @return string
-     */
     public function getFullNameRevAttribute(bool $show_salutation = false): string
     {
         $first = [];

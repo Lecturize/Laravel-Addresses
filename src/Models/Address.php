@@ -13,19 +13,27 @@ use Lecturize\Addresses\Traits\HasCountry;
 /**
  * Class Address
  * @package Lecturize\Addresses\Models
+ *
+ * @property-read int  $id
+ *
  * @property string|null           $street
  * @property string|null           $street_extra
  * @property string|null           $city
  * @property string|null           $state
  * @property string|null           $post_code
- * @property string|null           $country_name
  * @property string|null           $notes
  * @property array|null            $properties
  * @property string|null           $lat
  * @property string|null           $lng
- * @property Model|null            $addressable
- * @property Collection|Contact[]  $contacts
- * @property Model|null            $user
+ *
+ * @property-read string  $country_name
+ * @property-read string  $country_code
+ * @property-read string  $route
+ * @property-read string  $street_number
+ *
+ * @property-read Model|null            $addressable
+ * @property-read Collection|Contact[]  $contacts
+ * @property-read Model|null            $user
  *
  * @method static Builder|Address primary()
  * @method static Builder|Address billing()
@@ -93,12 +101,7 @@ class Address extends Model
         });
     }
 
-    /**
-     * Update fillable fields dynamically.
-     *
-     * @return void.
-     */
-    private function updateFillables()
+    private function updateFillables(): void
     {
         $fillable = $this->fillable;
         $columns  = preg_filter('/^/', 'is_', config('lecturize.addresses.columns', ['public', 'primary', 'billing', 'shipping']));
@@ -106,41 +109,21 @@ class Address extends Model
         $this->fillable(array_merge($fillable, $columns));
     }
 
-    /**
-     * Get the related model.
-     *
-     * @return MorphTo
-     */
     public function addressable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * Get the related contacts.
-     *
-     * @return HasMany
-     */
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
     }
 
-    /**
-     * Get the user this address belongs to.
-     *
-     * @return BelongsTo
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(config('lecturize.addresses.users.model', config('auth.providers.users.model', 'App\Models\Users\User')));
     }
 
-    /**
-     * Get the validation rules.
-     *
-     * @return array
-     */
     public static function getValidationRules(): array
     {
         $rules = config('lecturize.addresses.rules', [
@@ -158,11 +141,6 @@ class Address extends Model
         return $rules;
     }
 
-    /**
-     * Try to fetch the coordinates from Google and store them.
-     *
-     * @return $this
-     */
     public function geocode(): self
     {
         if (! ($query = $this->getQueryString()))
@@ -184,11 +162,6 @@ class Address extends Model
         return $this;
     }
 
-    /**
-     * Get the encoded query string.
-     *
-     * @return string
-     */
     public function getQueryString(): string
     {
         $query = [];
@@ -204,11 +177,6 @@ class Address extends Model
         return urlencode($query);
     }
 
-    /**
-     * Get the address as array.
-     *
-     * @return array
-     */
     public function getArray(): array
     {
         $address = $two = [];
@@ -228,11 +196,6 @@ class Address extends Model
         return [];
     }
 
-    /**
-     * Get the address as html block.
-     *
-     * @return string
-     */
     public function getHtml(): string
     {
         if ($address = $this->getArray())
@@ -241,12 +204,6 @@ class Address extends Model
         return '';
     }
 
-    /**
-     * Get the address as a simple line.
-     *
-     * @param  string  $glue
-     * @return string
-     */
     public function getLine(string $glue = ', '): string
     {
         if ($address = $this->getArray())
@@ -255,25 +212,6 @@ class Address extends Model
         return '';
     }
 
-    /**
-     * Get the country name.
-     * @deprecated Unexpected behaviour (would expect $address->country()->get()), use country_name attribute instead.
-     *
-     * @return string
-     */
-    public function getCountry(): string
-    {
-        if ($this->country && ($country = $this->country->name))
-            return $country;
-
-        return '';
-    }
-
-    /**
-     * Get the country name.
-     *
-     * @return string
-     */
     public function getCountryNameAttribute(): string
     {
         if ($this->country)
@@ -282,13 +220,7 @@ class Address extends Model
         return '';
     }
 
-    /**
-     * Get the country code.
-     *
-     * @param  int  $digits
-     * @return string
-     */
-    public function getCountryCodeAttribute($digits = 2): string
+    public function getCountryCodeAttribute(int $digits = 2): string
     {
         if (! $this->country)
             return '';
@@ -299,60 +231,32 @@ class Address extends Model
         return $this->country->iso_3166_2;
     }
 
-    /**
-     * Get the route name (without street number).
-     *
-     * @return string
-     */
     public function getRouteAttribute(): string
     {
-        if (preg_match('/([^\d]+)\s?(.+)/i', $this->street, $result))
+        if (preg_match('/(\D+)\s?(.+)/i', $this->street, $result))
             return $result[1];
 
         return '';
     }
 
-    /**
-     * Get the street number.
-     *
-     * @return string
-     */
     public function getStreetNumberAttribute(): string
     {
-        if (preg_match('/([^\d]+)\s?(.+)/i', $this->street, $result))
+        if (preg_match('/(\D+)\s?(.+)/i', $this->street, $result))
             return $result[2];
 
         return '';
     }
 
-    /**
-     * Scope primary addresses
-     *
-     * @param  Builder  $query
-     * @return Builder
-     */
     public function scopePrimary(Builder $query): Builder
     {
         return $query->where('is_primary', true);
     }
 
-    /**
-     * Scope billing addresses
-     *
-     * @param  Builder  $query
-     * @return Builder
-     */
     public function scopeBilling(Builder $query): Builder
     {
         return $query->where('is_billing', true);
     }
 
-    /**
-     * Scope shipping addresses
-     *
-     * @param  Builder  $query
-     * @return Builder
-     */
     public function scopeShipping(Builder $query): Builder
     {
         return $query->where('is_shipping', true);

@@ -1,34 +1,29 @@
 <?php namespace Lecturize\Addresses\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-use Webpatser\Countries\Countries;
+use Lecturize\Addresses\Models\Country;
 
 /**
  * Class HasCountry
  * @package Lecturize\Addresses\Traits;
- * @property int|null        $country_id
- * @property Countries|null  $country
- * @property string          $country_code
+ *
+ * @property int|null  $country_id
+ * @property string    $country_code
+ *
+ * @property-read Country|null  $country
+ *
+ * @method static Builder|Model byCountry(string $value)
  */
 trait HasCountry
 {
-    /**
-     * Get the models country.
-     *
-     * @return BelongsTo
-     */
     public function country(): BelongsTo
     {
-        return $this->belongsTo(Countries::class);
+        return $this->belongsTo(Country::class);
     }
 
-    /**
-     * Get the models country code.
-     *
-     * @return string
-     */
     public function getCountryCodeAttribute(): string
     {
         if ($country = $this->country)
@@ -37,17 +32,12 @@ trait HasCountry
         return '';
     }
 
-    /**
-     * Scope by country.
-     *
-     * @param  Builder  $query
-     * @param  int      $id
-     * @return Builder
-     */
-    public function scopeByCountry(Builder $query, int $id): Builder
+    public function scopeByCountry(Builder $query, Country|int $country): Builder
     {
-        return $query->whereHas('country', function($q) use($id) {
-            $q->where('id', $id);
+        $country = is_int($country) ? $country : $country->id;
+
+        return $query->whereHas('country', function(Builder $q) use($country) {
+            $q->where('id', $country);
         });
     }
 }

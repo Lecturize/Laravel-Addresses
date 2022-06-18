@@ -8,8 +8,7 @@ use Illuminate\Support\ServiceProvider;
  */
 class AddressesServiceProvider extends ServiceProvider
 {
-    /** @var string[]|array */
-    protected $migrations = [
+    protected array $migrations = [
         'CreateAddressesTable' => 'create_addresses_table',
         'CreateContactsTable'  => 'create_contacts_table',
 
@@ -46,12 +45,7 @@ class AddressesServiceProvider extends ServiceProvider
         return [];
     }
 
-    /**
-     * Publish and merge the config file.
-     *
-     * @return void
-     */
-    private function handleConfig()
+    private function handleConfig(): void
     {
         $configPath = __DIR__ . '/../config/config.php';
 
@@ -60,12 +54,7 @@ class AddressesServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($configPath, 'lecturize');
     }
 
-    /**
-     * Publish migrations.
-     *
-     * @return void
-     */
-    private function handleMigrations()
+    private function handleMigrations(): void
     {
         $count = 0;
         foreach ($this->migrations as $class => $file) {

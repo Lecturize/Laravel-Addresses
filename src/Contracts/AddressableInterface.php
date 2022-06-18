@@ -1,13 +1,12 @@
 <?php namespace Lecturize\Addresses\Contracts;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+
 /**
  * Interface AddressableInterface
  * @package Lecturize\Addresses\Contracts
  */
 interface AddressableInterface
 {
-    /**
-     * @return mixed
-     */
-    public function addresses();
+    public function addresses(): MorphMany;
 }
