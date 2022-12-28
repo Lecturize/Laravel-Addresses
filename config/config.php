@@ -32,6 +32,7 @@ return [
          * Default: false
          */
         'geocode' => false,
+				'google_maps_api_key' => null,
     ],
 
     /*

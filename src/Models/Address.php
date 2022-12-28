@@ -145,10 +145,10 @@ class Address extends Model
 
     public function geocode(): self
     {
-        if (! ($query = $this->getQueryString()))
+        if (! ($query = $this->getQueryString()) || ! config('lecturize.addresses.google_maps_api_key', false))
             return $this;
 
-        $url = 'https://maps.google.com/maps/api/geocode/json?address='. $query .'&sensor=false';
+        $url = 'https://maps.google.com/maps/api/geocode/json?address='. $query .'&sensor=false&key='. config('lecturize.addresses.google_maps_api_key');
 
         if ($geocode = file_get_contents($url)) {
             $output = json_decode($geocode);
