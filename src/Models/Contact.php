@@ -130,8 +130,10 @@ class Contact extends Model
         return config('lecturize.contacts.rules', []);
     }
 
-    public function getFullNameAttribute(bool $show_salutation = false): string
+    public function getFullNameAttribute(?bool $show_salutation = null): string
     {
+        $show_salutation = (bool) $show_salutation;
+
         $names = [];
         $names[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.'. $this->gender) : '';
         $names[] = $this->first_name  ?: '';
@@ -141,11 +143,13 @@ class Contact extends Model
         return trim(implode(' ', array_filter($names)));
     }
 
-    public function getFullNameRevAttribute(bool $show_salutation = false): string
+    public function getFullNameRevAttribute(?bool $show_salutation = null): string
     {
         $first = [];
         $first[] = $this->first_name  ?: '';
         $first[] = $this->middle_name ?: '';
+
+        $show_salutation = (bool) $show_salutation;
 
         $last = [];
         $last[] = $show_salutation && $this->gender ? trans('addresses::contacts.salutation.'. $this->gender) : '';
