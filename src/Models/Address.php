@@ -18,15 +18,15 @@ use Lecturize\Addresses\Traits\HasCountry;
  *
  * @property-read int  $id
  *
- * @property string|null           $street
- * @property string|null           $street_extra
- * @property string|null           $city
- * @property string|null           $state
- * @property string|null           $post_code
- * @property string|null           $notes
- * @property array|null            $properties
- * @property string|null           $lat
- * @property string|null           $lng
+ * @property string|null  $street
+ * @property string|null  $street_extra
+ * @property string|null  $city
+ * @property string|null  $state
+ * @property string|null  $post_code
+ * @property string|null  $notes
+ * @property array|null   $properties
+ * @property string|null  $lat
+ * @property string|null  $lng
  *
  * @property-read string  $country_name
  * @property-read string  $country_code
@@ -222,7 +222,7 @@ class Address extends Model
         return '';
     }
 
-    public function getCountryCodeAttribute(int $digits = 2): string
+    public function getCountryCodeAttribute(?int $digits = 2): string
     {
         if (! $this->country)
             return '';
