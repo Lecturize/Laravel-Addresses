@@ -20,8 +20,8 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "illuminate/support": "^9.0|^10.0",
         "illuminate/database": "^9.0|^10.0",
+        "illuminate/support": "^9.0|^10.0",
         "webpatser/laravel-countries": "^1.5",
         "webpatser/laravel-uuid": "^3.0|^4.0"
     },
