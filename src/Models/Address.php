@@ -67,13 +67,10 @@ class Address extends Model
     ];
 
     /** @inheritdoc */
-    protected $dates = [
-        'deleted_at',
-    ];
-
-    /** @inheritdoc */
     protected $casts = [
         'properties' => 'array',
+
+        'deleted_at' => 'datetime',
     ];
 
     /** @inheritdoc */
