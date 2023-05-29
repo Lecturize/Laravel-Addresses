@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Lecturize\Addresses\Traits\HasCountry;
-
 /**
  * Class Contact
  * @package Lecturize\Addresses\Models
@@ -42,7 +40,6 @@ use Lecturize\Addresses\Traits\HasCountry;
  */
 class Contact extends Model
 {
-    use HasCountry;
     use SoftDeletes;
 
     /** @inheritdoc */
@@ -76,13 +73,10 @@ class Contact extends Model
     ];
 
     /** @inheritdoc */
-    protected $dates = [
-        'deleted_at',
-    ];
-
-    /** @inheritdoc */
     protected $casts = [
         'properties' => 'array',
+
+        'deleted_at' => 'datetime',
     ];
 
     /** @inheritdoc */
