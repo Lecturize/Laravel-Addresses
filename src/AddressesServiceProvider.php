@@ -3,6 +3,7 @@
 namespace Lecturize\Addresses;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Arr;
 
 /**
  * Class AddressesServiceProvider
@@ -29,7 +30,6 @@ class AddressesServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->handleConfig();
         $this->handleMigrations();
 
         $this->loadTranslationsFrom(__DIR__ .'/../resources/lang', 'addresses');
@@ -38,13 +38,58 @@ class AddressesServiceProvider extends ServiceProvider
     /** @inheritdoc */
     public function register()
     {
-        //
+        $this->handleConfig();
     }
 
     /** @inheritdoc */
     public function provides(): array
     {
         return [];
+    }
+
+    /**
+     * Merge the given configuration with the existing configuration.
+     * This implementation of mergeConfigFrom respects multi dimensional configs.
+     *
+     * @param  string  $path
+     * @param  string  $key
+     * @return void
+     */
+    protected function mergeConfigFrom($path, $key)
+    {
+        $config = $this->app['config']->get($key, []);
+
+        $this->app['config']->set($key, $this->mergeConfig(require $path, $config));
+    }
+
+    /**
+     * Merges the configs together and takes multi-dimensional arrays into account.
+     *
+     * @param  array  $original
+     * @param  array  $merging
+     * @return array
+     */
+    protected function mergeConfig(array $original, array $merging)
+    {
+        $array = array_merge($original, $merging);
+
+        foreach ($original as $key => $value) {
+            if (! is_array($value)) {
+                continue;
+            }
+
+            if (! Arr::exists($merging, $key)) {
+                continue;
+            }
+
+            if (is_numeric($key)) {
+                continue;
+            }
+
+            $array[$key] = $this->mergeConfig($value, $merging[$key]);
+        }
+
+        return $array;
     }
 
     private function handleConfig(): void
