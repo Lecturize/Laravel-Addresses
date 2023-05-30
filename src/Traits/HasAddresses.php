@@ -82,7 +82,7 @@ trait HasAddresses
         return $this->addresses()->delete();
     }
 
-    public function getAddressByFlag(?string $flag = null, string $direction = 'desc'): ?Address
+    protected function getAddressByFlag(?string $flag = null, string $direction = 'desc'): ?Address
     {
         if (! $this->hasAddresses()) {
             return null; // short circuit if no addresses exist
