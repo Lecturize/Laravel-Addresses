@@ -102,7 +102,7 @@ trait HasAddresses
              * use the array order of config lecturize.addresses.flags to build up
              * a fallback solution for when no address with the given flag exists
              */
-            $fallback_order = config('lecturize.addresses.flags');
+            $fallback_order = config('lecturize.addresses.flags', []);
 
             /**
              * fallback order is an array of flags like: ['public', 'primary', 'billing', 'shipping']
