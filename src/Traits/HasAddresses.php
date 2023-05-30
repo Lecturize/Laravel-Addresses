@@ -22,7 +22,7 @@ trait HasAddresses
     public function addresses(): MorphMany
     {
         /** @var Model $this */
-        return $this->morphMany(Address::class, 'addressable');
+        return $this->morphMany(config('lecturize.addresses.model'), 'addressable');
     }
 
     public function hasAddresses(): bool
@@ -112,7 +112,8 @@ trait HasAddresses
 
     function validateAddress(array $attributes): Validator
     {
-        $rules = (new Address)->getValidationRules();
+        $model = config('lecturize.addresses.model');
+        $rules = (new $model)->getValidationRules();
 
         return validator($attributes, $rules);
     }
