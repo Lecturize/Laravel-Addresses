@@ -7,6 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 
 use Lecturize\Addresses\Models\Address;
 use Lecturize\Addresses\Exceptions\FailedValidationException;
@@ -19,6 +20,30 @@ use Lecturize\Addresses\Models\Country;
  */
 trait HasAddresses
 {
+    /**
+     * This method allows for dynamic method calls to retrieve addresses by their associated flags,
+     * which can be useful for managing addresses with different purposes or locations
+     *
+     * @param string $method
+     * @param array $parameters
+     *
+     */
+    public function __call($method, $parameters)
+    {
+        $available_flags = config('lecturize.addresses.flags');
+        $available_flags = array_map(function ($flag) {
+            return Str::ucfirst($flag);
+        }, $available_flags);
+
+        if (preg_match('/^get(' . implode('|', $available_flags) . ')Address$/', $method, $matches)) {
+            $flag = strtolower($matches[1]);
+
+            return $this->getAddressByFlag($flag, $parameters[0] ?? 'desc');
+        }
+
+        return parent::__call($method, $parameters);
+    }
+
     public function addresses(): MorphMany
     {
         /** @var Model $this */
@@ -57,28 +82,55 @@ trait HasAddresses
         return $this->addresses()->delete();
     }
 
-    public function getPrimaryAddress(string $direction = 'desc'): ?Address
+    protected function getAddressByFlag(?string $flag = null, string $direction = 'desc'): ?Address
     {
-        return $this->addresses()
-                    ->primary()
-                    ->orderBy('is_primary', $direction)
-                    ->first();
-    }
+        if (! $this->hasAddresses()) {
+            return null; // short circuit if no addresses exist
+        }
 
-    public function getBillingAddress(string $direction = 'desc'): ?Address
-    {
-        return $this->addresses()
-                    ->billing()
-                    ->orderBy('is_billing', $direction)
-                    ->first();
-    }
+        if ($flag !== null) {
+            $search_flag = 'is_' . $flag;
+            $address = $this->addresses()->where($search_flag, true)
+                ->orderBy($search_flag, $direction)
+                ->first();
 
-    public function getShippingAddress(string $direction = 'desc'): ?Address
-    {
-        return $this->addresses()
-                    ->shipping()
-                    ->orderBy('is_shipping', $direction)
-                    ->first();
+            if ($address !== null) {
+                return $address;
+            }
+
+            /**
+             * use the array order of config lecturize.addresses.flags to build up
+             * a fallback solution for when no address with the given flag exists
+             */
+            $fallback_order = config('lecturize.addresses.flags', []);
+
+            /**
+             * fallback order is an array of flags like: ['public', 'primary', 'billing', 'shipping']
+             * when calling getBillingAddress() and no address with the billing flag exists, the next earliest flag is used
+             * in this case, the flag 'primary' would be used
+             */
+            $current_flag_index = array_search($flag, $fallback_order);
+            $try_flag = $fallback_order[$current_flag_index - 1] ?? null;
+
+            if ($try_flag !== null) {
+                $address = $this->getAddressByFlag($try_flag, $direction);
+
+                if ($address !== null) {
+                    return $address;
+                }
+            }
+        }
+
+        /**
+         * should the default fallback logic fail, try to get the first or last address
+         */
+        if (! $address && $direction === 'desc') {
+            return $this->addresses()->first();
+        } elseif (! $address && $direction === 'asc') {
+            return $this->addresses()->last();
+        }
+
+        return null;
     }
 
     /** @throws FailedValidationException */
