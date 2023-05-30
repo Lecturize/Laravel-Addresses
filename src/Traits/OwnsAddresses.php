@@ -20,13 +20,13 @@ trait OwnsAddresses
     public function addresses(): HasMany
     {
         /** @var Model $this */
-        return $this->hasMany(config('lecturize.addresses.model'));
+        return $this->hasMany(config('lecturize.addresses.model', Address::class));
     }
 
     public function contacts(): HasMany
     {
         /** @var Model $this */
-        return $this->hasMany(config('lecturize.contacts.model'));
+        return $this->hasMany(config('lecturize.contacts.model', Contact::class));
     }
 
     /** @return Address[]|Collection */
