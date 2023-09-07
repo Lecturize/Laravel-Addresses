@@ -155,4 +155,9 @@ class Contact extends Model
 
         return trim(implode(', ', array_filter($names)));
     }
+
+    public function scopeFlag(Builder $query, string $flag): Builder
+    {
+        return $query->where('is_'.$flag, true);
+    }
 }
