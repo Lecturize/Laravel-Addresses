@@ -131,9 +131,9 @@ trait HasContacts
          * should the default fallback logic fail, try to get the first or last contact
          */
         if (! $contact && $direction === 'DESC') {
-            return $this->addresses()->first();
+            return $this->contacts()->first();
         } elseif (! $contact && $direction === 'ASC') {
-            return $this->addresses()->last();
+            return $this->contacts()->last();
         }
 
         return null;
