@@ -25,7 +25,6 @@ class AddressFactory extends Factory
 
             'street'        => $this->faker->streetAddress(),
             'city'          => $this->faker->city,
-            'state'         => '',
             'post_code'     => $this->faker->postcode(),
             'country_id'    => 40,
 
