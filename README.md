@@ -4,7 +4,7 @@
 
 # Laravel Addresses
 
-Simple address and contact management for Laravel with automatical geocoding to add longitude and latitude. Uses the famous [Countries](https://github.com/webpatser/laravel-countries) package by Webpatser.
+Simple address and contact management for Laravel with automatical geocoding to add longitude and latitude.
 
 ## Installation
 
@@ -21,11 +21,10 @@ and run `$ composer update` or both in one with `$ composer require lecturize/la
 ## Configuration & Migration
 
 ```bash
-$ php artisan vendor:publish --provider="Webpatser\Countries\CountriesServiceProvider"
 $ php artisan vendor:publish --provider="Lecturize\Addresses\AddressesServiceProvider"
 ```
 
-This will publish a `config/countries.php`, a `config/lecturize.php` and some migration files, that you'll have to run:
+This will publish the config file to `config/lecturize.php` and some migration files, that you'll have to run:
 
 ```bash
 $ php artisan countries:migration
@@ -185,6 +184,7 @@ The address model provides a method `geocode()` which will try to fetch longitud
 - [2022-05-16] **v1.1** Updated dependencies to PHP 8 and Laravel 8/9 - for older versions please refer to v1.0.
 - [2023-02-21] **v1.2** Laravel 10 support.
 - [2023-09-21] **v1.3** Support custom models for addresses and contacts, thanks to @bfiessinger. The geocoding feature now requires a Google Maps key, see 'Geocoding' above. Also, @bfiessinger has added fallback support for flags, see pull request #40 for further info.
+- [in-progress] **v1.4** Added additional contact fields to the addresses table, to allow for easier standalone usage (without the contacts model). This is intended to reduce the complexity of relationships and queries, that before were necessary e.g. to generate a shipping label from address and contact.
 
 ## License
 
