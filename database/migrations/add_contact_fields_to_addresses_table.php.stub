@@ -28,7 +28,8 @@ return new class extends Migration
             $table->string('extra')->nullable()->after('company');
 
             $table->string('vat_id')->nullable()->after('country_id');
-            $table->string('contact_phone', 32)->nullable()->after('vat_id');
+            $table->string('eori_id')->nullable()->after('vat_id');
+            $table->string('contact_phone', 32)->nullable()->after('eori_id');
             $table->string('contact_email')->nullable()->after('contact_phone');
             $table->string('billing_email')->nullable()->after('contact_email');
 
@@ -39,7 +40,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table($this->table, function (Blueprint $table) {
-            $table->dropColumn('gender', 'first_name', 'middle_name', 'last_name', 'title_before', 'title_after', 'company', 'extra', 'vat_id', 'instructions', 'contact_phone', 'contact_email', 'billing_email');
+            $table->dropColumn('gender', 'first_name', 'middle_name', 'last_name', 'title_before', 'title_after', 'company', 'extra', 'vat_id', 'eori_id', 'instructions', 'contact_phone', 'contact_email', 'billing_email');
         });
     }
 };
