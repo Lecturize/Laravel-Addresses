@@ -16,7 +16,7 @@ class AddTitleFieldsToContactsTable extends Migration
     public function up(): void
     {
         Schema::table($this->table, function (Blueprint $table) {
-            $table->string('title_before')->nullable()->after('last_name');
+            $table->rename('title', 'title_before');
             $table->string('title_after')->nullable()->after('title_before');
         });
     }
@@ -24,7 +24,8 @@ class AddTitleFieldsToContactsTable extends Migration
     public function down(): void
     {
         Schema::table($this->table, function (Blueprint $table) {
-            $table->dropColumn('title_before', 'title_after');
+            $table->rename('title_before', 'title');
+            $table->dropColumn('title_after');
         });
     }
 };

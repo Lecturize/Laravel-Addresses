@@ -46,7 +46,9 @@ class Contact extends Model
     /** @inheritdoc */
     protected $fillable = [
         'gender',
-        'title',
+        'title_before',
+        'title_after',
+
         'first_name',
         'middle_name',
         'last_name',

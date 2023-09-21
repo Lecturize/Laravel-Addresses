@@ -48,6 +48,17 @@ class Address extends Model
 
     /** @inheritdoc */
     protected $fillable = [
+        'gender',
+        'title_before',
+        'title_after',
+
+        'first_name',
+        'middle_name',
+        'last_name',
+
+        'company',
+        'extra',
+
         'street',
         'street_extra',
         'city',
@@ -55,6 +66,12 @@ class Address extends Model
         'post_code',
         'country_id',
 
+        'vat_id',
+        'contact_phone',
+        'contact_email',
+        'billing_email',
+
+        'instructions',
         'notes',
         'properties',
 
