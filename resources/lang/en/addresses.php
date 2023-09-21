@@ -14,6 +14,8 @@ return [
 
     'ajax-search' => 'Start typing an address...',
 
+    'care-of' => 'c/o',
+
     'autocomplete' => [
         'placeholder' => 'Start typing an address to load suggestions...',
         'reset'       => 'Reset',

@@ -14,6 +14,8 @@ return [
 
     'ajax-search' => 'Bitte Adresse eingeben...',
 
+    'care-of' => 'z.H.',
+
     'autocomplete' => [
         'placeholder' => 'Adresse eintippen um Vorschläge zu laden...',
         'reset'       => 'zurücksetzen',

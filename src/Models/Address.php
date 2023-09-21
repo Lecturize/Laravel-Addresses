@@ -10,19 +10,38 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Lecturize\Addresses\Helpers\NameGenerator;
 use Lecturize\Addresses\Traits\HasCountry;
 
 /**
  * Class Address
  * @package Lecturize\Addresses\Models
  *
- * @property-read int  $id
+ * @property-read int          $id
+ * @property-read string|null  $uuid
+ *
+ * @property string|null  $gender
+ * @property string|null  $title_before
+ * @property string|null  $title_after
+ * @property string|null  $first_name
+ * @property string|null  $middle_name
+ * @property string|null  $last_name
+ * @property string|null  $company
+ * @property string|null  $extra
  *
  * @property string|null  $street
  * @property string|null  $street_extra
  * @property string|null  $city
  * @property string|null  $state
  * @property string|null  $post_code
+ *
+ * @property string|null  $vat_id
+ * @property string|null  $eori_id
+ * @property string|null  $contact_phone
+ * @property string|null  $contact_email
+ * @property string|null  $billing_email
+ *
+ * @property string|null  $instructions
  * @property string|null  $notes
  * @property array|null   $properties
  * @property string|null  $lat
@@ -37,9 +56,7 @@ use Lecturize\Addresses\Traits\HasCountry;
  * @property-read Collection|Contact[]  $contacts
  * @property-read Model|null            $user
  *
- * @method static Builder|Address primary()
- * @method static Builder|Address billing()
- * @method static Builder|Address shipping()
+ * @method static Builder|Address flag(string $flag)
  */
 class Address extends Model
 {
@@ -67,6 +84,7 @@ class Address extends Model
         'country_id',
 
         'vat_id',
+        'eori_id',
         'contact_phone',
         'contact_email',
         'billing_email',
@@ -261,6 +279,24 @@ class Address extends Model
             return $result[2];
 
         return '';
+    }
+
+    public function getAddresseeLines(): array
+    {
+        $name = (new NameGenerator(
+            $this->gender,
+            $this->first_name,
+            $this->middle_name,
+            $this->last_name,
+            $this->title_before,
+            $this->title_after,
+        ))->forShippingLabel()->toString();
+
+        return array_filter([
+            $this->company,
+            $this->extra,
+            $name,
+        ]);
     }
 
     public function scopeFlag(Builder $query, string $flag): Builder
