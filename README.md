@@ -140,6 +140,7 @@ class Team extends Model
 ```
 
 ##### Add a Contact to a Model
+
 ```php
 $post = Team::find(1);
 $post->addContact([
@@ -149,7 +150,7 @@ $post->addContact([
 ]);
 ```
 
-## Relate Addresses with Contacts
+##### Relate Addresses with Contacts
 
 Above all, `addresses` and `contacts` can be connected with an optional One To Many relationship. Like so you could assign multiple contacts to an address and retrieve them like so:
 
@@ -173,6 +174,10 @@ $contact = config('lecturize.contacts.model', \Lecturize\Addresses\Models\Contac
 
 return $contact->address->getHtml();
 ```
+
+##### Geocoding
+
+The address model provides a method `geocode()` which will try to fetch longitude and latitude through the Google Maps API. Please make sure to add your key within the services config file at `services.google.maps.key`. If you set the option `lecturize.addresses.geocode` to `true`, the package will automatically fire the `geocode()` method whenever an addresses model is saved (precisely we hook into the `saving` event).
 
 ## Changelog
 
