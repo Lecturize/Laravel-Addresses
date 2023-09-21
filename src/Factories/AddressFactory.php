@@ -15,7 +15,7 @@ class AddressFactory extends Factory
         $gender = $this->faker->randomElement(['male', 'female']);
 
         return [
-            'gender'       => str($gender)->limit(1),
+            'gender'       => substr($gender, 0, 1),
             'title_before' => $this->faker->randomElement([null, 'Ing.', 'Dr.']),
 
             'first_name'  => $this->faker->firstName($gender),

@@ -15,8 +15,8 @@ class ContactFactory extends Factory
         $gender = $this->faker->randomElement(['male', 'female']);
 
         return [
-            'gender'       => str($gender)->limit(1),
-            'title-before' => $this->faker->randomElement([null, 'Ing.', 'Dr.']),
+            'gender'       => substr($gender, 0, 1),
+            'title_before' => $this->faker->randomElement([null, 'Ing.', 'Dr.']),
 
             'first_name'  => $this->faker->firstName($gender),
             'last_name'   => $this->faker->lastName(),
