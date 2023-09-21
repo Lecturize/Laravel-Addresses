@@ -25,6 +25,9 @@ class AddressesServiceProvider extends ServiceProvider
         'AddUuidToAddressesAndContactsTable' => 'add_uuid_to_addresses_and_contacts_table',
         'AddVatIdToContactsTable'            => 'add_vat_id_to_contacts_table',
         'AddEmailInvoiceToContactsTable'     => 'add_email_invoice_to_contacts_table',
+
+        'AddContactFieldsToAddressesTable' => 'add_contact_fields_to_addresses_table',
+        'AddTitleFieldsToContactsTable'    => 'add_title_fields_to_contacts_table',
     ];
 
     public function boot()
