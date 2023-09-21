@@ -17,10 +17,10 @@ return new class extends Migration
     {
         Schema::table($this->table, function (Blueprint $table) {
             $table->string('gender', 1)->nullable()->after('uuid');
-            $table->string('title_before')->nullable()->after('last_name');
+            $table->string('title_before')->nullable()->after('gender');
             $table->string('title_after')->nullable()->after('title_before');
 
-            $table->string('first_name')->nullable()->after('gender');
+            $table->string('first_name')->nullable()->after('title_after');
             $table->string('middle_name')->nullable()->after('first_name');
             $table->string('last_name')->nullable()->after('middle_name');
 
