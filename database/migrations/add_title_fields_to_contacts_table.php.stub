@@ -10,7 +10,7 @@ class AddTitleFieldsToContactsTable extends Migration
 
     public function __construct()
     {
-        $this->table = config('lecturize.contacts.table', 'addresses');
+        $this->table = config('lecturize.contacts.table', 'contacts');
     }
 
     public function up(): void
