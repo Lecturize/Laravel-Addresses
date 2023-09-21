@@ -11,6 +11,11 @@ return [
         'table' => 'addresses',
 
         /*
+         * The model used for addresses.
+         */
+        'model' => \Lecturize\Addresses\Models\Address::class,
+
+        /*
          * Flag columns to be added to table.
          */
         'flags' => ['public', 'primary', 'billing', 'shipping'],
@@ -28,7 +33,10 @@ return [
         ],
 
         /*
-         * Enable geocoding to add coordinates (lon/lat) to addresses.
+         * Enable automatic geocoding to add coordinates (lon/lat) to addresses.
+         * If you enable this option, please make sure to also add a
+         * Google Maps API Key to your services' config file.
+         * The key used is 'services.google.maps.key'.
          * Default: false
          */
         'geocode' => false,
@@ -42,6 +50,11 @@ return [
          * Main table.
          */
         'table' => 'contacts',
+
+        /*
+         * The model used for contacts.
+         */
+        'model' => \Lecturize\Addresses\Models\Contact::class,
 
         /*
          * Flag columns to be added to table.

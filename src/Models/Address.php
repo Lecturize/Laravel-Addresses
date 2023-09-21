@@ -115,7 +115,7 @@ class Address extends Model
 
     public function contacts(): HasMany
     {
-        return $this->hasMany(Contact::class);
+        return $this->hasMany(config('lecturize.contacts.model', Contact::class));
     }
 
     public function user(): BelongsTo
@@ -142,10 +142,10 @@ class Address extends Model
 
     public function geocode(): self
     {
-        if (! ($query = $this->getQueryString()))
+        if (! ($query = $this->getQueryString()) || ! ($key = config('services.google.maps.key', '')))
             return $this;
 
-        $url = 'https://maps.google.com/maps/api/geocode/json?address='. $query .'&sensor=false';
+        $url = "https://maps.google.com/maps/api/geocode/json?address=$query&sensor=false&key=$key";
 
         if ($geocode = file_get_contents($url)) {
             $output = json_decode($geocode);

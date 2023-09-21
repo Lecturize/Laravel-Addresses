@@ -140,6 +140,7 @@ class Team extends Model
 ```
 
 ##### Add a Contact to a Model
+
 ```php
 $post = Team::find(1);
 $post->addContact([
@@ -149,14 +150,12 @@ $post->addContact([
 ]);
 ```
 
-## Relate Addresses with Contacts
+##### Relate Addresses with Contacts
 
 Above all, `addresses` and `contacts` can be connected with an optional One To Many relationship. Like so you could assign multiple contacts to an address and retrieve them like so:
 
 ```php
-use Lecturize\Addresses\Models\Address;
-
-$address = Address::find(1);
+$address = config('lecturize.addresses.model', \Lecturize\Addresses\Models\Address::class)::find(1);
 $contacts = $address->contacts;
 
 foreach ($contacts as $contact) {
@@ -165,25 +164,27 @@ foreach ($contacts as $contact) {
 ```
 
 ```php
-use Lecturize\Addresses\Models\Address;
-
-$contact = Address::find(1)
+$contact = config('lecturize.contacts.model', \Lecturize\Addresses\Models\Contact::class)::find(1)
                   ->contacts()
                   ->first();
 ```
 
 ```php
-use Lecturize\Addresses\Models\Contact;
-
-$contact = Contact::find(1);
+$contact = config('lecturize.contacts.model', \Lecturize\Addresses\Models\Contact::class)::find(1);
 
 return $contact->address->getHtml();
 ```
+
+##### Geocoding
+
+The address model provides a method `geocode()` which will try to fetch longitude and latitude through the Google Maps API. Please make sure to add your key within the services config file at `services.google.maps.key`. If you set the option `lecturize.addresses.geocode` to `true`, the package will automatically fire the `geocode()` method whenever an addresses model is saved (precisely we hook into the `saving` event).
 
 ## Changelog
 
 - [2021-02-02] **v1.0** The `geocode` configuration option now defaults to `false`.
 - [2022-05-16] **v1.1** Updated dependencies to PHP 8 and Laravel 8/9 - for older versions please refer to v1.0.
+- [2023-02-21] **v1.2** Laravel 10 support.
+- [2023-09-21] **v1.3** Support custom models for addresses and contacts, thanks to @bfiessinger.
 
 ## License
 

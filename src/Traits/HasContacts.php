@@ -21,7 +21,7 @@ trait HasContacts
     public function contacts(): MorphMany
     {
         /** @var Model $this */
-        return $this->morphMany(Contact::class, 'contactable');
+        return $this->morphMany(config('lecturize.contacts.model', Contact::class), 'contactable');
     }
 
     public function hasContacts(): bool
@@ -77,7 +77,7 @@ trait HasContacts
 
     function validateContact(array $attributes): Validator
     {
-        $rules = Contact::getValidationRules();
+        $rules = config('lecturize.contacts.model', Contact::class)::getValidationRules();
 
         return validator($attributes, $rules);
     }

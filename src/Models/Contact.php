@@ -117,7 +117,7 @@ class Contact extends Model
 
     public function address(): BelongsTo
     {
-        return $this->belongsTo(Address::class);
+        return $this->belongsTo(config('lecturize.addresses.model', Address::class));
     }
 
     public static function getValidationRules(): array
