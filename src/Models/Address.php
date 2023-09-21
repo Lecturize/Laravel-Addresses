@@ -115,7 +115,7 @@ class Address extends Model
 
     public function contacts(): HasMany
     {
-        return $this->hasMany(Contact::class);
+        return $this->hasMany(config('lecturize.contacts.model', Contact::class));
     }
 
     public function user(): BelongsTo
