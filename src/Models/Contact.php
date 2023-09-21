@@ -2,6 +2,7 @@
 
 namespace Lecturize\Addresses\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -154,5 +155,10 @@ class Contact extends Model
         $names[] = implode(' ', array_filter($first));
 
         return trim(implode(', ', array_filter($names)));
+    }
+
+    public function scopeFlag(Builder $query, string $flag): Builder
+    {
+        return $query->where('is_'.$flag, true);
     }
 }

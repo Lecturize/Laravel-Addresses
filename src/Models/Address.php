@@ -246,16 +246,24 @@ class Address extends Model
         return '';
     }
 
+    public function scopeFlag(Builder $query, string $flag): Builder
+    {
+        return $query->where('is_'.$flag, true);
+    }
+
+    /** @deprecated use scopeFlag('primary') instead */
     public function scopePrimary(Builder $query): Builder
     {
         return $query->where('is_primary', true);
     }
 
+    /** @deprecated use scopeFlag('billing') instead */
     public function scopeBilling(Builder $query): Builder
     {
         return $query->where('is_billing', true);
     }
 
+    /** @deprecated use scopeFlag('shipping') instead */
     public function scopeShipping(Builder $query): Builder
     {
         return $query->where('is_shipping', true);

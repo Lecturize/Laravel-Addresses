@@ -57,28 +57,79 @@ trait HasAddresses
         return $this->addresses()->delete();
     }
 
+    public function getAddress(string $flag = null, string $direction = 'desc', bool $strict = false): ?Address
+    {
+        if (! $this->hasAddresses()) {
+            return null; // short circuit if no addresses exist
+        }
+
+        $direction = strtoupper($direction) === 'ASC' ? 'ASC' : 'DESC';
+
+        if ($flag !== null) {
+            $address = $this->addresses()
+                ->flag($flag, true)
+                ->orderBy('is_' . $flag, $direction)
+                ->first();
+
+            if ($address !== null) {
+                return $address;
+            }
+
+            if ($strict) {
+                return null;
+            }
+
+            /**
+             * use the array order of config lecturize.addresses.flags to build up
+             * a fallback solution for when no address with the given flag exists
+             */
+            $fallback_order = config('lecturize.addresses.flags', []);
+
+            /**
+             * fallback order is an array of flags like: ['public', 'primary', 'billing', 'shipping']
+             * when calling getAddress('billing') and no address with the billing flag exists, the next earliest flag is used
+             * in this case, the flag 'primary' would be used
+             */
+            $current_flag_index = array_search($flag, $fallback_order);
+            $try_flag = $fallback_order[$current_flag_index - 1] ?? null;
+
+            if ($try_flag !== null) {
+                $address = $this->getAddress($try_flag, $direction);
+
+                if ($address !== null) {
+                    return $address;
+                }
+            }
+        }
+
+        /**
+         * should the default fallback logic fail, try to get the first or last address
+         */
+        if (! $address && $direction === 'DESC') {
+            return $this->addresses()->first();
+        } elseif (! $address && $direction === 'ASC') {
+            return $this->addresses()->last();
+        }
+
+        return null;
+    }
+
+    /** @deprecated use getAddress('primary', $direction) instead */
     public function getPrimaryAddress(string $direction = 'desc'): ?Address
     {
-        return $this->addresses()
-                    ->primary()
-                    ->orderBy('is_primary', $direction)
-                    ->first();
+        return $this->getAddress('primary', $direction, true);
     }
 
+    /** @deprecated use getAddress('billing', $direction) instead */
     public function getBillingAddress(string $direction = 'desc'): ?Address
     {
-        return $this->addresses()
-                    ->billing()
-                    ->orderBy('is_billing', $direction)
-                    ->first();
+        return $this->getAddress('billing', $direction, true);
     }
 
+    /** @deprecated use getAddress('shipping', $direction) instead */
     public function getShippingAddress(string $direction = 'desc'): ?Address
     {
-        return $this->addresses()
-                    ->shipping()
-                    ->orderBy('is_shipping', $direction)
-                    ->first();
+        return $this->getAddress('shipping', $direction, true);
     }
 
     /** @throws FailedValidationException */
