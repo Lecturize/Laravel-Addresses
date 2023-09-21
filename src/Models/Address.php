@@ -4,12 +4,14 @@ namespace Lecturize\Addresses\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Lecturize\Addresses\Factories\AddressFactory;
 use Lecturize\Addresses\Helpers\NameGenerator;
 use Lecturize\Addresses\Traits\HasCountry;
 
@@ -61,6 +63,7 @@ use Lecturize\Addresses\Traits\HasCountry;
 class Address extends Model
 {
     use HasCountry;
+    use HasFactory;
     use SoftDeletes;
 
     /** @inheritdoc */
@@ -320,5 +323,10 @@ class Address extends Model
     public function scopeShipping(Builder $query): Builder
     {
         return $query->where('is_shipping', true);
+    }
+
+    protected static function newFactory(): AddressFactory
+    {
+        return new AddressFactory();
     }
 }

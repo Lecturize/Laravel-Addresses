@@ -3,10 +3,13 @@
 namespace Lecturize\Addresses\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Lecturize\Addresses\Factories\AddressFactory;
+use Lecturize\Addresses\Factories\ContactFactory;
 use Lecturize\Addresses\Helpers\NameGenerator;
 
 /**
@@ -47,6 +50,7 @@ use Lecturize\Addresses\Helpers\NameGenerator;
  */
 class Contact extends Model
 {
+    use HasFactory;
     use SoftDeletes;
 
     /** @inheritdoc */
@@ -164,5 +168,10 @@ class Contact extends Model
     public function scopeFlag(Builder $query, string $flag): Builder
     {
         return $query->where('is_'.$flag, true);
+    }
+
+    protected static function newFactory(): ContactFactory
+    {
+        return new ContactFactory();
     }
 }
