@@ -271,7 +271,7 @@ class Address extends Model
     public function getRouteAttribute(): string
     {
         if (preg_match('/(\D+)\s?(.+)/i', $this->street, $result))
-            return $result[1];
+            return trim($result[1]);
 
         return '';
     }
@@ -279,7 +279,7 @@ class Address extends Model
     public function getStreetNumberAttribute(): string
     {
         if (preg_match('/(\D+)\s?(.+)/i', $this->street, $result))
-            return $result[2];
+            return trim($result[2]);
 
         return '';
     }
