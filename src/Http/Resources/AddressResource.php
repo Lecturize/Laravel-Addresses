@@ -14,7 +14,7 @@ class AddressResource extends JsonResource
         return [
             'uuid' => $this->uuid,
 
-            'address' => $this->getAddresseeLines(),
+            'addressee' => $this->getAddresseeLines(),
 
             'gender'       => $this->gender,
             'title-before' => $this->title_before,
