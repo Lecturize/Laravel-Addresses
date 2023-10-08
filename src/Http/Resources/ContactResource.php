@@ -15,30 +15,32 @@ class ContactResource extends JsonResource
             'uuid' => $this->uuid,
 
             'gender'       => $this->gender,
-            'title-before' => $this->title_before,
-            'title-after'  => $this->title_after,
+            'titleBefore' => $this->title_before,
+            'titleAfter'  => $this->title_after,
 
-            'first-name'  => $this->first_name,
-            'middle-name' => $this->middle_name,
-            'last-name'   => $this->last_name,
+            'firstName'  => $this->first_name,
+            'middleName' => $this->middle_name,
+            'lastName'   => $this->last_name,
 
             'company' => $this->company,
             'extra'   => $this->extra,
 
-            'position'      => $this->position,
-            'phone'         => $this->phone,
-            'mobile'        => $this->mobile,
-            'fax'           => $this->fax,
-            'email'         => $this->email,
-            'email_invoice' => $this->email_invoice,
-            'website'       => $this->website,
+            'position'     => $this->position,
+            'phone'        => $this->phone,
+            'mobile'       => $this->mobile,
+            'fax'          => $this->fax,
+            'email'        => $this->email,
+            'emailInvoice' => $this->email_invoice,
+            'website'      => $this->website,
 
-            'vat-id' => $this->vat_id,
+            'vatId' => $this->vat_id,
 
             'notes' => $this->notes,
 
-            'full-name'     => $this->full_name,
-            'full-name-rev' => $this->full_name_rev,
+            'name' => [
+                'full'     => $this->full_name,
+                'reversed' => $this->full_name_rev,
+            ],
         ];
     }
 }
