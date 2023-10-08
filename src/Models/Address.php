@@ -49,8 +49,11 @@ use Lecturize\Addresses\Traits\HasCountry;
  * @property string|null  $lat
  * @property string|null  $lng
  *
+ * @property boolean  $is_primary
+ * @property boolean  $is_billing
+ * @property boolean  $is_shipping
+ *
  * @property-read string  $country_name
- * @property-read string  $country_code
  * @property-read string  $route
  * @property-read string  $street_number
  *
