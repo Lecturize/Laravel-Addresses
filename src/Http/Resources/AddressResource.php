@@ -31,10 +31,10 @@ class AddressResource extends JsonResource
             'street-number' => $this->street_number,
             'street'        => $this->street,
             'street-extra'  => $this->street_extra,
+            'post-code'     => $this->post_code,
             'city'          => $this->city,
             'state'         => $this->state,
-            'post-code'     => $this->post_code,
-            'country'       => (new CountryResource($this->country))->toArray($request),
+            'country'       => new CountryResource($this->country),
 
             'vat-id'        => $this->vat_id,
             'eori-id'       => $this->eori_id,
@@ -44,6 +44,12 @@ class AddressResource extends JsonResource
 
             'instructions' => $this->instructions,
             'notes'        => $this->notes,
+
+            'presenters' => [
+                'array'  => $this->getArray(),
+                'string' => $this->getLine(),
+                'html'   => $this->getHtml(),
+            ],
         ];
     }
 }
