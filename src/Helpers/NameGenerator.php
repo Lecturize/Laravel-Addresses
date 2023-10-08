@@ -64,7 +64,7 @@ class NameGenerator
 
     public function getCareOfPrefix(): string
     {
-        if (! $this->with_care_of_prefix)
+        if (! $this->with_care_of_prefix || ! $this->last_name)
             return '';
 
         return trans('addresses::addresses.care-of');
@@ -72,7 +72,7 @@ class NameGenerator
 
     public function getSalutation(): string
     {
-        if (! $this->with_salutation)
+        if (! $this->with_salutation || ! $this->last_name)
             return '';
 
         return $this->gender ? trans('addresses::contacts.salutation.'. $this->gender) : '';
