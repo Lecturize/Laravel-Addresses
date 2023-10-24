@@ -98,12 +98,14 @@ class Address extends Model
         'instructions',
         'notes',
         'properties',
+        'external_id',
 
         'lat',
         'lng',
 
         'addressable_type',
         'addressable_id',
+
         'user_id',
     ];
 
@@ -219,12 +221,12 @@ class Address extends Model
 
     public function getArray(): array
     {
-        $address = $two = [];
-
+        $two = [];
         $two[] = $this->post_code ?: '';
         $two[] = $this->city      ?: '';
         $two[] = $this->state     ? '('. $this->state .')' : '';
 
+        $address = $this->getAddresseeLines();
         $address[] = $this->street       ?: '';
         $address[] = $this->street_extra ?: '';
         $address[] = implode(' ', array_filter($two));
