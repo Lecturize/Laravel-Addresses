@@ -185,7 +185,7 @@ class Address extends Model
 
     public function geocode(): self
     {
-        if (! ($query = $this->getQueryString()) || ! ($key = config('services.google.maps.key', '')))
+        if (! ($query = $this->getQueryString()) || ! ($key = config('services.google.maps.key')))
             return $this;
 
         $url = "https://maps.google.com/maps/api/geocode/json?address=$query&sensor=false&key=$key";
